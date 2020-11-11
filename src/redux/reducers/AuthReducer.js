@@ -13,20 +13,30 @@ export const updateObject = (oldObject, updatedProperties) => {
   };
 };
 
+const login = (state, action) => {
+  console.log(action.data);
+  return updateObject(state, {
+    currentUser: action.data,
+    loading: true,
+    isLogin: true,
+  });
+};
+
+const logout = (state, action) => {
+  console.log("HUy");
+  return updateObject(state, {
+    currentUser: {},
+    loading: false,
+    isLogin: false,
+  });
+};
+
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_USER:
-      return {
-        ...state,
-        currentUser: action.data,
-        loading: true,
-        isLogin: true,
-      };
-    // case LOGOUT_USER:
-    //   return {
-    //     ...state,
-    //     foodList: state.foodList.filter((item) => item.key !== action.key),
-    //   };
+      return login(state, action);
+    case LOGOUT_USER:
+      return logout(state, action);
     default:
       return state;
   }

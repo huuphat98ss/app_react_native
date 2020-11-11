@@ -36,21 +36,45 @@ import {AuthContext} from './components/context';
 
 import {connect} from 'react-redux';
 import {checkLogin} from './src/redux/actions/auth';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 class App extends Component {
   // state = {
   //   login: false,
   // };
-  componentDidMount = () => {
-    this.props.checkLogin();
+
+  // componentDidMount = async () => {
+  //   try {await this.props.checkLogin();}
+  //   catch(e){console.log(e)}
+  // };
+
+  removeValue = async () => {
+    try {
+      await AsyncStorage.removeItem('userToken');
+    } catch (e) {
+      // remove error
+    }
+    console.log('Done.');
   };
+
+  storeData = async () => {
+    await AsyncStorage.setItem('userToken', 'phat');
+  };
+
+  getData = async () => {
+    const data = await AsyncStorage.getItem('userToken');
+    console.log(data);
+  };
+
 
   render() {
     console.log('app ' + this.props.isLogin);
     // this.props.currentUser
+    console.log(this.props.isLogin);
     return (
-      // <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {this.props.isLogin ? (
+        { this.props.isLogin ? (
           <Drawer.Navigator
             drawerContent={(props) => <DrawerContent {...props} />}>
             <Drawer.Screen name="Home" component={MainTabScreen} />

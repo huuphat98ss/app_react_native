@@ -13,6 +13,8 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../components/context';
+import * as actions from '../src/redux/actions/auth';
+import {connect} from 'react-redux';
 
 export function DrawerContent(props) {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
@@ -22,7 +24,6 @@ export function DrawerContent(props) {
   const toggleTheme = () => {
     setIsDarkTheme(!isDarkTheme);
   };
-
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -94,14 +95,28 @@ export function DrawerContent(props) {
             <Icon name="exit-to-app" color={color} size={size} />;
           }}
           label="Sign Out"
-          onPress={() => {
-            // signOut();
-          }}
+          onPress={() => {}
+          }
         />
       </Drawer.Section>
     </View>
   );
 }
+
+const mapStateToProps = (state) => {
+  return {
+    currentUser: state.authReducer.currentUser,
+    isLogin: state.authReducer.isLogin,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    logout : () => dispatch(actions.logout())
+ };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(DrawerContent);
 
 const styles = StyleSheet.create({
   drawerContent: {

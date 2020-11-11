@@ -8,44 +8,34 @@ export const login = (datapayload) => ({
 });
 
 export const userLoginFetch = (data) => {
-  //console.log('fetch');
-  console.log('sdsds' + data);
+  AsyncStorage.setItem('userToken', JSON.stringify(data));
   return (dispatch) => {
-    AsyncStorage.setItem('userToken', JSON.stringify('phat'));
     dispatch(login(data));
   };
-  // return (dispatch) => {
-  //   fetch(`http://${localhost}:3456/login`, {
-  //     method: 'POST',
-  //     headers: {
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //     body: JSON.stringify({
-  //       username: data.username,
-  //       password:data.password
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((json) => {
-  //      console.log("res login")
-  //       console.log(json);
-  //     })
-  //     .catch((error) => console.error(error));
-  // };
 };
-export const checkLogin = () => {
-  console.log('check login');
+
+// export const getUserLoginFetch = (data) => {
+//   //console.log('fetch');
+//   return (dispatch) => {
+//     dispatch(login(data));
+//   };
+// }
+
+export const checkLogin = async () => {
+  const jsonValue = await AsyncStorage.getItem('userToken');
+  console.log('jsonValue' + jsonValue);
   return (dispatch) => {
-    let jsonValue = JSON.parse(AsyncStorage.getItem('userToken'));
-    console.log(jsonValue);
-    // console.log(JSON.parse(jsonValue));
-    // if (value) {
-    //   dispatch(login(data));
-    // }
+    // dispatch(login(jsonValue));
+    console.log('Hut');
   };
 };
-export const logout = (key) => ({
-  type: LOGOUT_USER,
-  key: key,
+
+export const dataCheckLogin = async (jsonValue) => {
+  return (dispatch) => {
+    console.log('Huy');
+  };
+};
+
+export const logout = () => ({
+  type: actionTypes.LOGOUT_USER,
 });

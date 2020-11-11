@@ -81,12 +81,17 @@ class SignInScreen extends Component {
     });
   };
 
-  loginHandle = (userName, password) => {
-    let data = {
-      username: userName,
-      password: password,
-    };
-    this.props.userLoginFetch(data);
+  loginHandle = async (userName, password) => {
+    try {
+      let data = {
+        username: userName,
+        password: password,
+      };
+      console.log(data);
+      await this.props.userLoginFetch(data);
+    } catch (e) {
+      console.log(e);
+    }
     // console.log(userName, password);
     // foundUser = Users.filter((item) => {
     //   return userName == item.username && password == item.password;
@@ -211,8 +216,8 @@ class SignInScreen extends Component {
 // }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    userLoginFetch: (data) => dispatch(userLoginFetch(data)),
+   return {
+    userLoginFetch: async (data) => await dispatch(userLoginFetch(data)),
   };
 };
 

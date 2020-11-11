@@ -10,7 +10,17 @@ import {Provider} from 'react-redux';
 
 import configureStore from './src/redux/store';
 
-const store = configureStore();
+import {createStore, combineReducers, applyMiddleware} from 'redux';
+import authReducer from './src/redux/reducers/AuthReducer';
+import thunk from 'redux-thunk';
+const rootReducer = combineReducers({
+  authReducer: authReducer
+});
+
+
+const store = createStore(rootReducer, applyMiddleware(thunk));
+
+
 
 const ReduxTutorial = () => (
   <Provider store={store}>
