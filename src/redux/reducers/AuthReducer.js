@@ -23,7 +23,7 @@ const login = (state, action) => {
 };
 
 const logout = (state, action) => {
-  console.log("HUy");
+  console.log('HUy');
   return updateObject(state, {
     currentUser: {},
     loading: false,

@@ -16,6 +16,7 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import {connect} from 'react-redux';
 import {userLoginFetch} from '../src/redux/actions/auth';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {AuthContext} from '../components/context';
 
 //import Users from '../model/Users';
@@ -87,8 +88,9 @@ class SignInScreen extends Component {
         username: userName,
         password: password,
       };
-      console.log(data);
+      console.log('login ' + data);
       await this.props.userLoginFetch(data);
+      // await AsyncStorage.setItem('token', JSON.stringify(data));
     } catch (e) {
       console.log(e);
     }
@@ -216,7 +218,7 @@ class SignInScreen extends Component {
 // }
 
 const mapDispatchToProps = (dispatch) => {
-   return {
+  return {
     userLoginFetch: async (data) => await dispatch(userLoginFetch(data)),
   };
 };

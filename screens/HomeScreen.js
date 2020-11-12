@@ -8,11 +8,26 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const HomeScreen = ({navigation}) => {
 class HomeScreen extends Component {
-  componentDidMount = () => {
+  state = {
+    name: '',
+  };
+  componentDidMount = async () => {
+    console.log('is home');
     try {
-      let jsonValue = AsyncStorage.getItem('userToken');
+      let jsonValue = await AsyncStorage.getItem('userToken');
+      // let user = await AsyncStorage.getItem('userToken');
+      console.log(jsonValue);
+      console.log(typeof jsonValue);
       if (jsonValue !== null) {
-        console.log('home' + JSON.parse(jsonValue));
+        //  console.log('home say' + JSON.parse(jsonValue));
+        console.log('home at ne');
+        console.log(typeof jsonValue);
+        let object = JSON.parse(jsonValue);
+        console.log('dua ve object ');
+        console.log(object.username);
+        this.setState({
+          name: object.username,
+        });
       }
     } catch (error) {
       console.log('read home error');
@@ -26,11 +41,18 @@ class HomeScreen extends Component {
         animation="fadeInUpBig">
         {/* <StatusBar backgroundColor="#009387" barStyle="light-content" /> */}
         <Text>Home Screen </Text>
-        <Text>{this.props.currentUser.username}</Text>
+        <Text>{'data redux ' + this.props.currentUser.username}</Text>
+        <Text>{'data usertoken ' + this.state.name}</Text>
         <Button
           title="Go to details screen"
-          onPress={() => {
-            this.props.navigation.navigate('Details');
+          onPress={async () => {
+            // this.props.navigation.navigate('Details');
+            try {
+              await AsyncStorage.clear();
+            } catch (e) {
+              console.log('logout wtf');
+            }
+            console.log('logout at home');
           }}></Button>
       </Animatable.View>
     );

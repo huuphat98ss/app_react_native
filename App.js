@@ -29,6 +29,7 @@ import SettingsScreen from './screens/SettingScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
 import CheckProduct from './screens/CheckProduct';
 import RootStackScreen from './screens/RootStackScreen';
+import SignInScreen from './screens/SignInScreen';
 import {ActivityIndicator} from 'react-native-paper';
 
 import {AuthContext} from './components/context';
@@ -40,14 +41,20 @@ import {checkLogin} from './src/redux/actions/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class App extends Component {
-  // state = {
-  //   login: false,
-  // };
+  state = {
+    datalogin: '',
+  };
 
-  // componentDidMount = async () => {
-  //   try {await this.props.checkLogin();}
-  //   catch(e){console.log(e)}
-  // };
+  componentDidMount = async () => {
+    console.log('didmount');
+    // await this.props.checkLogin();
+    //   console.log(AsyncStorage.getItem('userToken'));
+    let data = await AsyncStorage.getItem('userToken');
+    console.log(data);
+    this.setState({
+      datalogin: data,
+    });
+  };
 
   removeValue = async () => {
     try {
@@ -64,17 +71,15 @@ class App extends Component {
 
   getData = async () => {
     const data = await AsyncStorage.getItem('userToken');
-    console.log(data);
+    return data;
   };
-
 
   render() {
     console.log('app ' + this.props.isLogin);
-    // this.props.currentUser
-    console.log(this.props.isLogin);
-    return (
-      <NavigationContainer>
-        { this.props.isLogin ? (
+
+    if (this.state.datalogin !== null) {
+      return (
+        <NavigationContainer>
           <Drawer.Navigator
             drawerContent={(props) => <DrawerContent {...props} />}>
             <Drawer.Screen name="Home" component={MainTabScreen} />
@@ -82,13 +87,30 @@ class App extends Component {
             <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
             <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
             <Drawer.Screen name="CheckProduct" component={CheckProduct} />
+            <Drawer.Screen name="SignInScreen" component={SignInScreen} />
           </Drawer.Navigator>
-        ) : (
-          <RootStackScreen />
-        )}
-      </NavigationContainer>
-      // </AuthContext.Provider>
-    );
+        </NavigationContainer>
+      );
+    } else {
+      return (
+        <NavigationContainer>
+          {/* { this.props.isLogin ? ( */}
+          {this.props.isLogin ? (
+            <Drawer.Navigator
+              drawerContent={(props) => <DrawerContent {...props} />}>
+              <Drawer.Screen name="Home" component={MainTabScreen} />
+              <Drawer.Screen name="SupportScreen" component={SupportScreen} />
+              <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
+              <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+              <Drawer.Screen name="CheckProduct" component={CheckProduct} />
+              <Drawer.Screen name="SignInScreen" component={SignInScreen} />
+            </Drawer.Navigator>
+          ) : (
+            <RootStackScreen />
+          )}
+        </NavigationContainer>
+      );
+    }
   }
 }
 const styles = StyleSheet.create({});

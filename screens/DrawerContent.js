@@ -16,6 +16,8 @@ import {AuthContext} from '../components/context';
 import * as actions from '../src/redux/actions/auth';
 import {connect} from 'react-redux';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export function DrawerContent(props) {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
@@ -95,8 +97,11 @@ export function DrawerContent(props) {
             <Icon name="exit-to-app" color={color} size={size} />;
           }}
           label="Sign Out"
-          onPress={() => {}
-          }
+          onPress={async () => {
+            console.log('logout');
+            await AsyncStorage.removeItem('userToken');
+            return props.navigation.navigate('SignInScreen');
+          }}
         />
       </Drawer.Section>
     </View>
@@ -112,8 +117,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    logout : () => dispatch(actions.logout())
- };
+    logout: () => dispatch(actions.logout()),
+  };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DrawerContent);

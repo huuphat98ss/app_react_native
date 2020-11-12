@@ -9,6 +9,7 @@ export const login = (datapayload) => ({
 
 export const userLoginFetch = (data) => {
   AsyncStorage.setItem('userToken', JSON.stringify(data));
+
   return (dispatch) => {
     dispatch(login(data));
   };
@@ -22,12 +23,18 @@ export const userLoginFetch = (data) => {
 // }
 
 export const checkLogin = async () => {
-  const jsonValue = await AsyncStorage.getItem('userToken');
-  console.log('jsonValue' + jsonValue);
-  return (dispatch) => {
-    // dispatch(login(jsonValue));
-    console.log('Hut');
-  };
+  let checktoken = await AsyncStorage.getItem('userToken');
+  console.log('check login');
+  if (checktoken !== null) {
+    return (dispatch) => {
+      console.log('check');
+      console.log(typeof checktoken);
+      let object = JSON.parse(checktoken);
+      console.log('dua ve object ');
+      console.log(object.username);
+      dispatch(login(object));
+    };
+  }
 };
 
 export const dataCheckLogin = async (jsonValue) => {
