@@ -22,24 +22,25 @@ export const userLoginFetch = (data) => {
 //   };
 // }
 
-export const checkLogin = async () => {
-  let checktoken = await AsyncStorage.getItem('userToken');
+export const checkLogin = (data) => {
+  //let checktoken = AsyncStorage.getItem('userToken');
   console.log('check login');
-  if (checktoken !== null) {
-    return (dispatch) => {
-      console.log('check');
-      console.log(typeof checktoken);
-      let object = JSON.parse(checktoken);
-      console.log('dua ve object ');
-      console.log(object.username);
-      dispatch(login(object));
-    };
-  }
+  //if (checktoken !== null) {
+  return (dispatch) => {
+    console.log('check');
+    //console.log(typeof data);
+    let object = JSON.parse(data);
+    // console.log('dua ve object ');
+    console.log('check data ' + object);
+    dispatch(login(object));
+  };
+  //}
 };
 
-export const dataCheckLogin = async (jsonValue) => {
+export const checklogout = () => {
   return (dispatch) => {
     console.log('Huy');
+    dispatch(logout());
   };
 };
 

@@ -17,15 +17,18 @@ import * as actions from '../src/redux/actions/auth';
 import {connect} from 'react-redux';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import {useDispatch} from 'react-redux';
+import {logout} from '../src/redux/actions/auth';
 export function DrawerContent(props) {
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
   // const {signOut} = React.useContext(AuthContext);
 
-  const toggleTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
-  };
+  // const toggleTheme = () => {
+  //   setIsDarkTheme(!isDarkTheme);
+  // };
+  const dispatch = useDispatch();
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -99,8 +102,11 @@ export function DrawerContent(props) {
           label="Sign Out"
           onPress={async () => {
             console.log('logout');
-            await AsyncStorage.removeItem('userToken');
-            return props.navigation.navigate('SignInScreen');
+            await AsyncStorage.clear();
+            // await AsyncStorage.removeItem('userToken');
+            // dispatch({type: 'LOGOUT_USER'});
+            dispatch(logout());
+            // return props.navigation.navigate('SignInScreen');
           }}
         />
       </Drawer.Section>
@@ -108,20 +114,20 @@ export function DrawerContent(props) {
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    currentUser: state.authReducer.currentUser,
-    isLogin: state.authReducer.isLogin,
-  };
-};
+// const mapStateToProps = (state) => {
+//   return {
+//     currentUser: state.authReducer.currentUser,
+//     isLogin: state.authReducer.isLogin,
+//   };
+// };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => dispatch(actions.logout()),
-  };
-};
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     logout: () => dispatch(actions.logout()),
+//   };
+// };
 
-export default connect(mapStateToProps, mapDispatchToProps)(DrawerContent);
+// export default connect(mapStateToProps, mapDispatchToProps)(DrawerContent);
 
 const styles = StyleSheet.create({
   drawerContent: {

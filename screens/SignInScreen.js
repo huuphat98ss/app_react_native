@@ -90,6 +90,7 @@ class SignInScreen extends Component {
       };
       console.log('login ' + data);
       await this.props.userLoginFetch(data);
+
       // await AsyncStorage.setItem('token', JSON.stringify(data));
     } catch (e) {
       console.log(e);
@@ -119,7 +120,15 @@ class SignInScreen extends Component {
       });
     }
   };
+
   render() {
+    // if (this.props.loading) {
+    //   return (
+    //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    //       <ActivityIndicator size="large" />
+    //     </View>
+    //   );
+    // }
     return (
       <View style={styles.container}>
         <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -210,12 +219,12 @@ class SignInScreen extends Component {
 
 //export default SignInScreen;
 
-// const mapStateToProps = (state) => {
-//   console.log(state);
-//   return {
-
-//   }
-// }
+const mapStateToProps = (state) => {
+  console.log(state);
+  return {
+    loading: state.authReducer.loading,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -223,7 +232,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(null, mapDispatchToProps)(SignInScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SignInScreen);
 
 const styles = StyleSheet.create({
   container: {
