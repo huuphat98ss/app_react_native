@@ -100,10 +100,10 @@ export function DrawerContent(props) {
             <Icon name="exit-to-app" color={color} size={size} />;
           }}
           label="Sign Out"
-          onPress={async () => {
+          onPress={() => {
             console.log('logout');
-            await AsyncStorage.clear();
-            // await AsyncStorage.removeItem('userToken');
+            AsyncStorage.clear();
+            //  AsyncStorage.removeItem('userToken');
             // dispatch({type: 'LOGOUT_USER'});
             dispatch(logout());
             // return props.navigation.navigate('SignInScreen');

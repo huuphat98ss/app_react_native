@@ -27,6 +27,7 @@ export const checkLogin = (data) => {
   console.log('check login');
   //if (checktoken !== null) {
   return (dispatch) => {
+    dispatch(setloading());
     console.log('check');
     //console.log(typeof data);
     let object = JSON.parse(data);
@@ -40,10 +41,15 @@ export const checkLogin = (data) => {
 export const checklogout = () => {
   return (dispatch) => {
     console.log('Huy');
+    dispatch(setloading());
     dispatch(logout());
   };
 };
 
 export const logout = () => ({
   type: actionTypes.LOGOUT_USER,
+});
+
+export const setloading = () => ({
+  type: actionTypes.RELOADING,
 });

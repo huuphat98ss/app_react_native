@@ -36,17 +36,11 @@ import {AuthContext} from './components/context';
 //import AsyncStorage from '@react-native-community/async-storage';
 
 import {connect} from 'react-redux';
-import {checkLogin, checklogout} from './src/redux/actions/auth';
+import {checkLogin, setloading} from './src/redux/actions/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class App extends Component {
-  // constructor(props) {
-  //   super(props);
-
-  //   const {dispatch} = props;
-  // }
-
   componentDidMount = async () => {
     //let {dispatch} = this.props;
     console.log('didmount');
@@ -58,11 +52,10 @@ class App extends Component {
       this.props.checkLogin(data);
       // dispatch(checkLogin(data));
     }
-    //  else {
-    //   this.props.checklogout();
-    // }
   };
-
+  setreloading = () => {
+    return this.props.setloading();
+  };
   removeValue = async () => {
     try {
       await AsyncStorage.removeItem('userToken');
@@ -84,14 +77,14 @@ class App extends Component {
   render() {
     console.log('app ' + this.props.isLogin);
     console.log(' login adtion ' + this.props.currentUser);
-    console.log(' user name ' + this.props.currentUser.username);
-    // if (this.props.loading) {
-    //   return (
-    //     <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    //       <ActivityIndicator size="large" />
-    //     </View>
-    //   );
-    // }
+    console.log(' user name ' + this.props.loading);
+    if (this.props.loading) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
     return (
       <NavigationContainer>
         {/* { this.props.isLogin ? ( */}
@@ -103,7 +96,6 @@ class App extends Component {
             <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
             <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
             <Drawer.Screen name="CheckProduct" component={CheckProduct} />
-            <Drawer.Screen name="SignInScreen" component={SignInScreen} />
           </Drawer.Navigator>
         ) : (
           <SignInScreen />
@@ -121,14 +113,14 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
     isLogin: state.authReducer.isLogin,
-    //  loading: state.authReducer.loading,
+    loading: state.authReducer.loading,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     checkLogin: (data) => dispatch(checkLogin(data)),
-    checklogout: () => dispatch(checklogout()),
+    setloading: () => dispatch(setloading()),
   };
 };
 
