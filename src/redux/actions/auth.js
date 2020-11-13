@@ -9,9 +9,16 @@ export const login = (datapayload) => ({
 
 export const userLoginFetch = (data) => {
   AsyncStorage.setItem('userToken', JSON.stringify(data));
-
   return (dispatch) => {
+    dispatch(authStart());
     dispatch(login(data));
+  };
+};
+
+export const authStart = () => {
+  console.log("authStart");
+  return {
+    type: actionTypes.AUTH_START,
   };
 };
 
@@ -27,8 +34,8 @@ export const checkLogin = (data) => {
   console.log('check login');
   //if (checktoken !== null) {
   return (dispatch) => {
-    dispatch(setloading());
     console.log('check');
+    dispatch(authStart());
     //console.log(typeof data);
     let object = JSON.parse(data);
     // console.log('dua ve object ');

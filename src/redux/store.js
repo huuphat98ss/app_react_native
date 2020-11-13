@@ -4,8 +4,7 @@ import thunk from 'redux-thunk';
 const rootReducer = combineReducers({
   authReducer: authReducer,
 });
-// const composeEnhancers = composeWithDevTools({realtime: true, port: 8000});
-const configureStore = () =>
-  createStore(rootReducer, applyMiddleware(thunk));
+
+const configureStore = () => createStore(rootReducer, applyMiddleware(thunk));
 
 export default configureStore;

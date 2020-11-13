@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {View, Text, Button, StyleSheet, StatusBar} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import {connect} from 'react-redux';
-
+import {ActivityIndicator} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // const HomeScreen = ({navigation}) => {
@@ -34,7 +34,13 @@ class HomeScreen extends Component {
     }
   };
   render() {
-    //const {navigation} = this.props;
+    if (this.props.loading) {
+      return (
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <ActivityIndicator size="large" />
+        </View>
+      );
+    }
     return (
       <Animatable.View
         style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
@@ -66,6 +72,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
     isLogin: state.authReducer.isLogin,
+    loading: state.authReducer.loading
   };
 };
 

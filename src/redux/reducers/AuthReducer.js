@@ -1,20 +1,18 @@
-import {LOGIN_USER, LOGOUT_USER, RELOADING} from '../actions/types';
+import * as actionTypes from '../actions/types';
+import {updateObject} from '../utility';
 
 const initialState = {
   currentUser: {},
   isLogin: false,
-  loading: false,
+  loading: true,
 };
 
-export const updateObject = (oldObject, updatedProperties) => {
-  return {
-    ...oldObject,
-    ...updatedProperties,
-  };
+const authStart = (state, action) => {
+  return updateObject(state, {loading: true});
 };
 
 const login = (state, action) => {
-  console.log(action.data);
+  // console.log(action.data);
   return updateObject(state, {
     currentUser: action.data,
     loading: false,
@@ -23,27 +21,21 @@ const login = (state, action) => {
 };
 
 const logout = (state, action) => {
-  console.log('HUy');
   return updateObject(state, {
     currentUser: {},
     loading: false,
     isLogin: false,
   });
 };
-const setloading = (state, action) => {
-  return updateObject(state, {
-    loading: true,
-  });
-};
 
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
-    case LOGIN_USER:
+    case actionTypes.LOGIN_USER:
       return login(state, action);
-    case LOGOUT_USER:
+    case actionTypes.LOGOUT_USER:
       return logout(state, action);
-    case RELOADING:
-      return setloading(state, action);
+    case actionTypes.AUTH_START:
+      return authStart(state, action);
     default:
       return state;
   }

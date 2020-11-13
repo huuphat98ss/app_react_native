@@ -42,10 +42,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class App extends Component {
   componentDidMount = async () => {
-    //let {dispatch} = this.props;
-    console.log('didmount');
-    // await this.props.checkLogin();
-    //   console.log(AsyncStorage.getItem('userToken'));
+    console.log("isLoading"+this.props.loading);
     let data = await AsyncStorage.getItem('userToken');
     if (data !== null) {
       console.log('login did');
@@ -53,9 +50,7 @@ class App extends Component {
       // dispatch(checkLogin(data));
     }
   };
-  setreloading = () => {
-    return this.props.setloading();
-  };
+
   removeValue = async () => {
     try {
       await AsyncStorage.removeItem('userToken');
@@ -75,9 +70,9 @@ class App extends Component {
   };
 
   render() {
-    console.log('app ' + this.props.isLogin);
-    console.log(' login adtion ' + this.props.currentUser);
-    console.log(' user name ' + this.props.loading);
+    console.log('isLogin ' + this.props.loading);
+    console.log(' login adtion ' + JSON.stringify(this.props.authReducer));
+    // console.log(' user name ' + this.props.loading);
     if (this.props.loading) {
       return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -87,7 +82,6 @@ class App extends Component {
     }
     return (
       <NavigationContainer>
-        {/* { this.props.isLogin ? ( */}
         {this.props.isLogin ? (
           <Drawer.Navigator
             drawerContent={(props) => <DrawerContent {...props} />}>
@@ -114,13 +108,13 @@ const mapStateToProps = (state) => {
     currentUser: state.authReducer.currentUser,
     isLogin: state.authReducer.isLogin,
     loading: state.authReducer.loading,
+    authReducer : state.authReducer
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     checkLogin: (data) => dispatch(checkLogin(data)),
-    setloading: () => dispatch(setloading()),
   };
 };
 

@@ -20,13 +20,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import {logout} from '../src/redux/actions/auth';
 export function DrawerContent(props) {
-  const [isDarkTheme, setIsDarkTheme] = React.useState(false);
-
-  // const {signOut} = React.useContext(AuthContext);
-
-  // const toggleTheme = () => {
-  //   setIsDarkTheme(!isDarkTheme);
-  // };
+  
   const dispatch = useDispatch();
 
   return (
@@ -106,28 +100,12 @@ export function DrawerContent(props) {
             //  AsyncStorage.removeItem('userToken');
             // dispatch({type: 'LOGOUT_USER'});
             dispatch(logout());
-            // return props.navigation.navigate('SignInScreen');
           }}
         />
       </Drawer.Section>
     </View>
   );
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     currentUser: state.authReducer.currentUser,
-//     isLogin: state.authReducer.isLogin,
-//   };
-// };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     logout: () => dispatch(actions.logout()),
-//   };
-// };
-
-// export default connect(mapStateToProps, mapDispatchToProps)(DrawerContent);
 
 const styles = StyleSheet.create({
   drawerContent: {
