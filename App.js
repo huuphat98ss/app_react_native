@@ -36,7 +36,7 @@ import {AuthContext} from './components/context';
 //import AsyncStorage from '@react-native-community/async-storage';
 
 import {connect} from 'react-redux';
-import {checkLogin, setloading} from './src/redux/actions/auth';
+import {checkLogin, logout} from './src/redux/actions/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -48,6 +48,8 @@ class App extends Component {
       console.log('login did');
       this.props.checkLogin(data);
       // dispatch(checkLogin(data));
+    }else{
+      this.props.logout();
     }
   };
 
@@ -115,6 +117,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     checkLogin: (data) => dispatch(checkLogin(data)),
+    logout: () => dispatch(logout())
   };
 };
 

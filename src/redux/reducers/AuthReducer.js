@@ -28,6 +28,14 @@ const logout = (state, action) => {
   });
 };
 
+const checkLoginFail = (state, action) => {
+  return updateObject(state, {
+    currentUser: {},
+    loading: false,
+    isLogin: false,
+  });
+};
+
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_USER:
@@ -36,6 +44,8 @@ const authReducer = (state = initialState, action) => {
       return logout(state, action);
     case actionTypes.AUTH_START:
       return authStart(state, action);
+    case actionTypes.CHECK_LOGIN_FAIL:
+      return checkLoginFail(state, action);
     default:
       return state;
   }

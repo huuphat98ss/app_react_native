@@ -30,6 +30,7 @@ export const authStart = () => {
 // }
 
 export const checkLogin = (data) => {
+  console.log("data"+data);
   //let checktoken = AsyncStorage.getItem('userToken');
   console.log('check login');
   //if (checktoken !== null) {
@@ -38,12 +39,20 @@ export const checkLogin = (data) => {
     dispatch(authStart());
     //console.log(typeof data);
     let object = JSON.parse(data);
+    console.log("object" + object);
+    if(object == null){
+      dispatch(checkLoginFail());
+    }
     // console.log('dua ve object ');
     console.log('check data ' + object);
     dispatch(login(object));
   };
   //}
 };
+
+export const checkLoginFail = () => ({
+  type: actionTypes.CHECK_LOGIN_FAIL,
+})
 
 export const checklogout = () => {
   return (dispatch) => {
