@@ -5,12 +5,16 @@ import * as Animatable from 'react-native-animatable';
 import {connect} from 'react-redux';
 import {ActivityIndicator} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Menu from '../model/Menu';
+import styled from 'styled-components/native';
+import HomeScreenComponent from './HomeScreenComponent';
 
 // const HomeScreen = ({navigation}) => {
 class HomeScreen extends Component {
   state = {
     name: '',
   };
+
   componentDidMount = async () => {
     console.log('is home');
     try {
@@ -34,6 +38,47 @@ class HomeScreen extends Component {
     }
   };
   render() {
+    //
+    const VerticalScrollView = styled.ScrollView``;
+    const HorizontalRow = styled.View`
+      flex-direction: row;
+      justify-content: space-evenly;
+    `;
+
+    let menuArray = [];
+    let tempArray = [];
+    let length = Menu.length;
+    let temp = 0;
+    for (let i = 0; i < length; i++) {
+      if (temp <= 1) {
+        tempArray.push(Menu[i]);
+        temp++;
+      } else {
+        menuArray.push(tempArray);
+        temp = 0;
+        tempArray = [];
+        tempArray.push(Menu[i]);
+        temp++;
+      }
+    }
+    menuArray.push(tempArray);
+
+    let menus = menuArray.map((a, index) => (
+      <HorizontalRow key={index}>
+        {a.map((album) => (
+          <HomeScreenComponent
+            key={album.id}
+            name={album.name}
+            caption={album.caption}
+            album={album.album}
+            likes={album.likes}
+            // navigation={navigation}
+          />
+        ))}
+      </HorizontalRow>
+    ));
+    console.log('menus' + menus);
+    //
     if (this.props.loading) {
       return (
         <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
@@ -42,24 +87,29 @@ class HomeScreen extends Component {
       );
     }
     return (
+      // <Animatable.View
+      //   style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+      //   animation="fadeInUpBig">
+      //   {/* <StatusBar backgroundColor="#009387" barStyle="light-content" /> */}
+      //   <Text>Home Screen </Text>
+      //   <Text>{'data redux ' + this.props.currentUser.username}</Text>
+      //   <Text>{'data usertoken ' + this.state.name}</Text>
+      //   <Button
+      //     title="Go to details screen"
+      //     onPress={async () => {
+      //       // this.props.navigation.navigate('Details');
+      //       try {
+      //         await AsyncStorage.clear();
+      //       } catch (e) {
+      //         console.log('logout wtf');
+      //       }
+      //       console.log('logout at home');
+      //     }}></Button>
+      // </Animatable.View>
       <Animatable.View
-        style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+        // style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
         animation="fadeInUpBig">
-        {/* <StatusBar backgroundColor="#009387" barStyle="light-content" /> */}
-        <Text>Home Screen </Text>
-        <Text>{'data redux ' + this.props.currentUser.username}</Text>
-        <Text>{'data usertoken ' + this.state.name}</Text>
-        <Button
-          title="Go to details screen"
-          onPress={async () => {
-            // this.props.navigation.navigate('Details');
-            try {
-              await AsyncStorage.clear();
-            } catch (e) {
-              console.log('logout wtf');
-            }
-            console.log('logout at home');
-          }}></Button>
+        <VerticalScrollView>{menus}</VerticalScrollView>
       </Animatable.View>
     );
   }
@@ -72,7 +122,7 @@ const mapStateToProps = (state) => {
   return {
     currentUser: state.authReducer.currentUser,
     isLogin: state.authReducer.isLogin,
-    loading: state.authReducer.loading
+    loading: state.authReducer.loading,
   };
 };
 
