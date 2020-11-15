@@ -72,7 +72,7 @@ class HomeScreen extends Component {
             caption={album.caption}
             album={album.album}
             likes={album.likes}
-            // navigation={navigation}
+            //navigation={navigation}
           />
         ))}
       </HorizontalRow>

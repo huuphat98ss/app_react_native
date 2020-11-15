@@ -13,6 +13,7 @@ import {
 import * as Animatable from 'react-native-animatable';
 import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 const Container = styled.View``;
 const AlbumArt = styled.Image`
@@ -26,7 +27,7 @@ const Name = styled.Text`
   color: black;
   font-weight: 700;
   font-size: 18px;
-  textAlign: center;
+  text-align: center;
 `;
 const Caption = styled.Text`
   font-size: 14px;
@@ -43,20 +44,30 @@ const CaptionContainer = styled.View`
   align-items: center;
 `;
 
-const HomeScreenComponent = ({
-  navigation,
-  album,
-  name,
-  caption,
-  likes,
-}) => {
+const HomeScreenComponent = ({album, name, caption, likes}) => {
+  const navigation = useNavigation();
+  //console.log('album' + album);
   return (
-    <Animatable.View animation="fadeInUpBig">
+    <Animatable.View
+      animation="fadeInUpBig"
+      // options={{
+      //   title: 'Details',
+      //   headerLeft: () => (
+      //     <Icon.Button
+      //       name="ios-menu"
+      //       size={25}
+      //       backgroundColor="#1f65ff"
+      //       onPress={() => {
+      //         navigation.openDrawer();
+      //       }}></Icon.Button>
+      //   ),
+      // }}
+    >
       <TouchableOpacity onPress={() => navigation.navigate('SupportScreen')}>
         <Container>
-          <AlbumArt source=
-          {{uri: album }} 
-          // {require('../asset/fertilizer.png')}
+          <AlbumArt
+            source={{uri: album}}
+            // {require('../asset/fertilizer.png')}
           ></AlbumArt>
           <Name>{name}</Name>
           {/* <Row>
