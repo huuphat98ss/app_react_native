@@ -59,7 +59,7 @@ const HomeScreenComponent = ({
           // {require('../asset/fertilizer.png')}
           ></AlbumArt>
           <Name>{name}</Name>
-          <Row>
+          {/* <Row>
             <CaptionContainer>
               <Icon name="heart-outline" />
               <Caption>{likes}</Caption>
@@ -68,7 +68,7 @@ const HomeScreenComponent = ({
               <Icon name="airplane-outline" />
               <Caption>{caption}</Caption>
             </CaptionContainer>
-          </Row>
+          </Row> */}
         </Container>
       </TouchableOpacity>
     </Animatable.View>
