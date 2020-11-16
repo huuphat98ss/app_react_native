@@ -13,18 +13,20 @@ import configureStore from './src/redux/store';
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import authReducer from './src/redux/reducers/AuthReducer';
 import thunk from 'redux-thunk';
+import {reducer as network} from 'react-native-offline';
+import {ReduxNetworkProvider} from 'react-native-offline';
 const rootReducer = combineReducers({
-  authReducer: authReducer
+  authReducer: authReducer,
+  network,
 });
-
 
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
-
-
 const ReduxTutorial = () => (
   <Provider store={store}>
-    <App />
+    <ReduxNetworkProvider>
+      <App />
+    </ReduxNetworkProvider>
   </Provider>
 );
 

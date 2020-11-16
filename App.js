@@ -33,13 +33,15 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class App extends Component {
   componentDidMount = async () => {
-    console.log("isLoading"+this.props.loading);
+    console.log('isLoading' + this.props.loading);
     let data = await AsyncStorage.getItem('userToken');
+    console.log('network ' + this.props.network);
     if (data !== null) {
+      // if (!this.props.network) return alert('chua co internet');
       console.log('login did');
       this.props.checkLogin(data);
       // dispatch(checkLogin(data));
-    }else{
+    } else {
       this.props.logout();
     }
   };
@@ -95,20 +97,21 @@ const styles = StyleSheet.create({});
 
 //export default App;
 const mapStateToProps = (state) => {
-  // console.log(state);
+  console.log('alo ' + state.network.isConnected);
   // console.log(AsyncStorage.getItem('userToken'));
   return {
     currentUser: state.authReducer.currentUser,
     isLogin: state.authReducer.isLogin,
     loading: state.authReducer.loading,
-    authReducer : state.authReducer
+    authReducer: state.authReducer,
+    network: state.network.isConnected,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     checkLogin: (data) => dispatch(checkLogin(data)),
-    logout: () => dispatch(logout())
+    logout: () => dispatch(logout()),
   };
 };
 

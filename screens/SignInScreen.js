@@ -89,7 +89,12 @@ class SignInScreen extends Component {
         password: password,
       };
       console.log('login ' + data);
-      await this.props.userLoginFetch(data);
+      if (this.props.network) {
+        await this.props.userLoginFetch(data);
+      } else {
+        alert('chua co internet');
+        console.log('dont connect ');
+      }
 
       // await AsyncStorage.setItem('token', JSON.stringify(data));
     } catch (e) {
@@ -220,9 +225,10 @@ class SignInScreen extends Component {
 //export default SignInScreen;
 
 const mapStateToProps = (state) => {
-  console.log(state);
+  // console.log(state);
   return {
     loading: state.authReducer.loading,
+    network: state.network.isConnected,
   };
 };
 
