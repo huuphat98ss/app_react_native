@@ -3,8 +3,7 @@ const Menu = [
         id: 1,
         name:"Bón phân",
         caption:"my list",
-        // album: 'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605412811/menu/fertilizer_vo99pz.png',
-        album: '../assets/logo.png',
+        album: 'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605412811/menu/fertilizer_vo99pz.png',
         likes:"234",
         navigation: "SupportScreen"
     },

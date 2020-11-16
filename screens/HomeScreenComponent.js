@@ -50,7 +50,6 @@ const HomeScreenComponent = ({
   caption,
   likes,
 }) => {
-  console.log("album" + album);
   return (
     <Animatable.View animation="fadeInUpBig">
       <TouchableOpacity onPress={() => navigation.navigate('SupportScreen')}>
