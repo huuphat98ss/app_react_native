@@ -9,7 +9,6 @@ import Menu from '../model/Menu';
 import styled from 'styled-components/native';
 import HomeScreenComponent from './HomeScreenComponent';
 
-// const HomeScreen = ({navigation}) => {
 class HomeScreen extends Component {
   state = {
     name: '',
@@ -72,7 +71,7 @@ class HomeScreen extends Component {
             caption={album.caption}
             album={album.album}
             likes={album.likes}
-            // navigation={navigation}
+            // navigation={album.navigation}
           />
         ))}
       </HorizontalRow>
@@ -107,7 +106,6 @@ class HomeScreen extends Component {
       //     }}></Button>
       // </Animatable.View>
       <Animatable.View
-        // style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
         animation="fadeInUpBig">
         <VerticalScrollView>{menus}</VerticalScrollView>
       </Animatable.View>

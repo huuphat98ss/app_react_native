@@ -50,13 +50,14 @@ const HomeScreenComponent = ({
   caption,
   likes,
 }) => {
+  console.log("album" + album);
   return (
     <Animatable.View animation="fadeInUpBig">
       <TouchableOpacity onPress={() => navigation.navigate('SupportScreen')}>
         <Container>
           <AlbumArt source=
           {{uri: album }} 
-          // {require('../asset/fertilizer.png')}
+          // {require(album)}
           ></AlbumArt>
           <Name>{name}</Name>
           {/* <Row>
