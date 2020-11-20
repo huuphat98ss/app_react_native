@@ -46,6 +46,7 @@ class CheckProduct1 extends Component {
   changeShowData = () => {
     this.setState({showData: true});
   };
+
   changeCountLink = (data) => {
     if (this.state.linkInfor === data) {
       return this.setState({count: this.state.count + 1});
@@ -53,6 +54,7 @@ class CheckProduct1 extends Component {
       return this.setState({count: 1});
     }
   };
+  
   ifScaned = (e) => {
     this.changeShowData();
     this.changeCountLink(e.data);

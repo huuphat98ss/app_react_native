@@ -210,7 +210,6 @@ const PhunthuocScreen = ({navigation, route}) => {
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
-
               {typeThuoc !== 0 ? (
                 typeThuoc === 'Goi' ? (
                   <View style={styles.action}>
@@ -285,7 +284,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                   </View>
                   {image !== 0 ? <View style={{alignItems: 'center'}}>
                     <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-                      <View
+                      <View 
                         style={{
                           height: 100,
                           width: 100,

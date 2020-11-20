@@ -8,8 +8,8 @@ const TempStack = createStackNavigator();
 import SupportScreen from './SupportScreen';
 import BatdauvuScreen from './BatdauvuScreen';
 import PhunthuocScreen from './PhunthuocScreen';
+import CheckQrScreen from './CheckQrScreen';
 import BookmarkScreen from './BookmarkScreen';
-
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
@@ -92,6 +92,23 @@ const TempScreen = ({route, navigation}) => {
               fontWeight: 'bold',
             },
           }}>
+          <TempStack.Screen
+            name="Check QR"
+            component={CheckQrScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'CheckQR',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}></Icon.Button>
+              ),
+            }}
+          />
           <TempStack.Screen
             name="Chuẩn bị thuốc"
             component={PhunthuocScreen}
