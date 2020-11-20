@@ -18,7 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {useSelector} from 'react-redux';
 
-const SupportScreen = ({navigation, route}) => {
+const BatdauvuScreen = ({navigation, route}) => {
   const [language, setLanguage] = useState('java');
   const album = route.params.initialState;
   console.log('album' + JSON.stringify(album));
@@ -66,27 +66,6 @@ const SupportScreen = ({navigation, route}) => {
               onValueChange={(itemValue, itemIndex) => setLanguage(itemValue)}>
               {menus}
             </Picker>
-            <View style={styles.button}>
-              <TouchableOpacity
-                onPress={() => {
-                  () => navigation.goBack();
-                }}
-                style={styles.signIn}>
-                <LinearGradient
-                  colors={['#08d4c4', '#01ab9d']}
-                  style={styles.signIn}>
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: '#fff',
-                      },
-                    ]}>
-                    Click Here
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
       </View>
@@ -94,7 +73,7 @@ const SupportScreen = ({navigation, route}) => {
   );
 };
 
-export default SupportScreen;
+export default BatdauvuScreen;
 
 const styles = StyleSheet.create({
   container: {

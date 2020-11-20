@@ -13,12 +13,11 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../components/context';
-import * as actions from '../src/redux/actions/auth';
-import {connect} from 'react-redux';
+import { useSelector } from 'react-redux'
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
-import {logout} from '../src/redux/actions/auth';
+import * as actions from '../src/redux/actions/auth';
 export function DrawerContent(props) {
   
   const dispatch = useDispatch();
@@ -99,7 +98,7 @@ export function DrawerContent(props) {
             AsyncStorage.clear();
             //  AsyncStorage.removeItem('userToken');
             // dispatch({type: 'LOGOUT_USER'});
-            dispatch(logout());
+            dispatch(actions.logout());
           }}
         />
       </Drawer.Section>

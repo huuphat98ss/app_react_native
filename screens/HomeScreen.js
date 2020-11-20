@@ -71,7 +71,8 @@ class HomeScreen extends Component {
             caption={album.caption}
             album={album.album}
             likes={album.likes}
-            // navigation={album.navigation}
+            route={album.route}
+            initialState={album}
           />
         ))}
       </HorizontalRow>
@@ -86,48 +87,20 @@ class HomeScreen extends Component {
       );
     }
     return (
-      // <Animatable.View
-      //   style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
-      //   animation="fadeInUpBig">
-      //   {/* <StatusBar backgroundColor="#009387" barStyle="light-content" /> */}
-      //   <Text>Home Screen </Text>
-      //   <Text>{'data redux ' + this.props.currentUser.username}</Text>
-      //   <Text>{'data usertoken ' + this.state.name}</Text>
-      //   <Button
-      //     title="Go to details screen"
-      //     onPress={async () => {
-      //       // this.props.navigation.navigate('Details');
-      //       try {
-      //         await AsyncStorage.clear();
-      //       } catch (e) {
-      //         console.log('logout wtf');
-      //       }
-      //       console.log('logout at home');
-      //     }}></Button>
-      // </Animatable.View>
-      <Animatable.View
-        animation="fadeInUpBig">
+      <Animatable.View animation="fadeInUpBig">
+        <StatusBar backgroundColor="#009387" barStyle="light-content" />
         <VerticalScrollView>{menus}</VerticalScrollView>
       </Animatable.View>
     );
   }
 }
 
-//export default HomeScreen;
 const mapStateToProps = (state) => {
-  // console.log(state);
-  // console.log(AsyncStorage.getItem('userToken'));
   return {
     currentUser: state.authReducer.currentUser,
     isLogin: state.authReducer.isLogin,
     loading: state.authReducer.loading,
   };
 };
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     checkLogin: () => dispatch(checkLogin()),
-//   };
-// };
 
 export default connect(mapStateToProps, null)(HomeScreen);
