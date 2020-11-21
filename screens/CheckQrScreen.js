@@ -20,40 +20,60 @@ const CheckQrScreen = ({navigation}) => {
   const [dataScan, handleData] = useState(0);
   const [dataArray, renderArray] = useState(() => {
     let dataArray = [];
-    for (let i = 1; i <= 5; i++) {
-      dataArray.push(i);
+    let tempArray = [];
+    let length = 50;
+    let temp = 1;
+    for (let i = 1; i <= length; i++) {
+      if (temp <= 5) {
+        tempArray.push(i);
+        temp++;
+      } else {
+        dataArray.push(tempArray);
+        temp = 1;
+        tempArray = [];
+        tempArray.push(i);
+        temp++;
+      }
     }
+    dataArray.push(tempArray);
     return dataArray;
   });
   function ifScaned(e) {
     handleData(e.data);
   }
-  console.log('dataArray: ' + typeof dataArray);
-  //   const temp = () => {
-  //     for (i = 1; i <= 50; i++) {
-  //       <TouchableOpacity
-  //         onPress={() => {
-  //         }}
-  //         style={styles.chonThuaItem}>
-  //         <LinearGradient
-  //           colors={
-  //             ['#08d4c4', '#01ab9d']
-  //           }
-  //           style={styles.chonThuaItem}>
-  //           <Text
-  //             style={[
-  //               styles.textSign,
-  //               {
-  //                 color: '#fff',
-  //               },
-  //             ]}>
-  //             {i}
-  //           </Text>
-  //         </LinearGradient>
-  //       </TouchableOpacity>;
-  //     }
-  //   };
-  console.log('dataScan' + dataScan);
+
+  let chooseButton = dataArray.map((data, index) => 
+    <View key={index} style={styles.chonThua}>
+        {data.map((inData, index) => 
+            <TouchableOpacity
+            key={index}
+            onPress={() => {
+              // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
+            }}
+            style={styles.chonThuaItem}>
+            <LinearGradient
+              colors={
+                //   typeThuoc == 'Chai'
+                //     ? ['#01ab9d', '#008075']
+                // :
+                ['#08d4c4', '#01ab9d']
+              }
+              style={styles.chonThuaItem}>
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: '#fff',
+                  },
+                ]}>
+                {inData}
+              </Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        )}
+    </View>
+  )
+  console.log(chooseButton);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -113,83 +133,7 @@ const CheckQrScreen = ({navigation}) => {
         </View>
       ) : (
         <Animatable.View style={styles.container} animation="fadeInUpBig">
-          <View style={styles.chonThua}>
-            {dataArray.map((index, data) => 
-              <TouchableOpacity
-                onPress={() => {
-                  // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
-                }}
-                style={styles.chonThuaItem}
-                key={index}>
-                <LinearGradient
-                  colors={
-                    //   typeThuoc == 'Chai'
-                    //     ? ['#01ab9d', '#008075']
-                    // :
-                    ['#08d4c4', '#01ab9d']
-                  }
-                  style={styles.chonThuaItem}>
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: '#fff',
-                      },
-                    ]}>
-                    {data}
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            )}
-            {/* <TouchableOpacity
-              onPress={() => {
-                // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
-              }}
-              style={styles.chonThuaItem}>
-              <LinearGradient
-                colors={
-                  //   typeThuoc == 'Chai'
-                  //     ? ['#01ab9d', '#008075']
-                  // :
-                  ['#08d4c4', '#01ab9d']
-                }
-                style={styles.chonThuaItem}>
-                <Text
-                  style={[
-                    styles.textSign,
-                    {
-                      color: '#fff',
-                    },
-                  ]}>
-                  Chai
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
-              }}
-              style={styles.chonThuaItem}>
-              <LinearGradient
-                colors={
-                  //   typeThuoc == 'Chai'
-                  //     ? ['#01ab9d', '#008075']
-                  // :
-                  ['#08d4c4', '#01ab9d']
-                }
-                style={styles.chonThuaItem}>
-                <Text
-                  style={[
-                    styles.textSign,
-                    {
-                      color: '#fff',
-                    },
-                  ]}>
-                  Chai
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity> */}
-          </View>
+          {chooseButton}
         </Animatable.View>
       )}
     </View>
@@ -204,7 +148,9 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#009387',
+    backgroundColor: '#fff',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   header: {
     flex: 3,
@@ -251,19 +197,20 @@ const styles = StyleSheet.create({
   },
   chonThua: {
     flexDirection: 'row',
-    marginBottom: 10,
-    marginTop: 10,
-    borderBottomWidth: 0.5,
+    marginBottom: 5,
+    marginTop: 5,
+    // borderBottomWidth: 0.5,
     borderBottomColor: '#f1f1f1',
     justifyContent: 'center',
   },
   chonThuaItem: {
     flex: 1,
     alignSelf: 'stretch',
-    height: 40,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 1,
+    paddingLeft: 10,
+    paddingRight: 10,
     borderRadius: 10,
   },
   textSign: {
