@@ -30,6 +30,15 @@ const SupportScreen = () => {
       <View style={styles.container}>
         <Text>Support Screen</Text>
         <Button title="Click Here" onPress={() => alert('Button Clicked!')} />
+        <View>
+          <Text>lo</Text>
+        </View>
+        <View>
+          <Text>Thua</Text>
+        </View>
+        <View>
+          <Text>vi tri trong thua</Text>
+        </View>
       </View>
     </View>
   );
