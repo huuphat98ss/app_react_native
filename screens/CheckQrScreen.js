@@ -21,59 +21,110 @@ const CheckQrScreen = ({navigation}) => {
   const [dataArray, renderArray] = useState(() => {
     let dataArray = [];
     let tempArray = [];
-    let length = 50;
+    let length = 17;
     let temp = 1;
     for (let i = 1; i <= length; i++) {
-      if (temp <= 5) {
-        tempArray.push(i);
+      if (temp <= 10) {
+        tempArray.push(temp);
         temp++;
       } else {
         dataArray.push(tempArray);
         temp = 1;
         tempArray = [];
-        tempArray.push(i);
+        tempArray.push(i%10);
         temp++;
       }
     }
     dataArray.push(tempArray);
+    dataArray.unshift(['H1', 'H2', 'H3', 'H4', 'H5', 'H6','H7', 'H8', 'H9', 'H10']);
     return dataArray;
   });
+  const [chooseBy, handleChoose] = useState(0);
   function ifScaned(e) {
     handleData(e.data);
   }
+  function handlePress(){
+    console.log('press');
+  }
 
-  let chooseButton = dataArray.map((data, index) => 
-    <View key={index} style={styles.chonThua}>
-        {data.map((inData, index) => 
-            <TouchableOpacity
-            key={index}
-            onPress={() => {
-              // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
-            }}
-            style={styles.chonThuaItem}>
-            <LinearGradient
-              colors={
-                //   typeThuoc == 'Chai'
-                //     ? ['#01ab9d', '#008075']
-                // :
-                ['#08d4c4', '#01ab9d']
-              }
-              style={styles.chonThuaItem}>
-              <Text
-                style={[
-                  styles.textSign,
-                  {
-                    color: '#fff',
-                  },
-                ]}>
-                {inData}
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        )}
+  const applyArray = ['Cả thửa', 'Chọn theo luống', 'Chọn theo cây'];
+  let applyArrayRender = applyArray.map((arr, index) => (
+    <View
+      key={index}
+      style={[styles.button, {flexDirection: 'row', padding: 30}]}>
+      <TouchableOpacity
+        onPress={() => handleChoose(arr)}
+        style={styles.xitthuoc}>
+        <LinearGradient colors={['#08d4c4', '#01ab9d']} style={styles.xitthuoc}>
+          <Text
+            style={[
+              styles.textSign,
+              {
+                color: '#fff',
+              },
+            ]}>
+            {arr}
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
-  )
-  console.log(chooseButton);
+  ));
+  let chooseButton = dataArray.map((data, index) => (
+    <View key={index} style={styles.chonThua}>
+      <TouchableOpacity
+        key={index}
+        onPress={() => {
+          // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
+        }}
+        style={styles.chonThuaItem}>
+        <LinearGradient
+          colors={
+            //   typeThuoc == 'Chai'
+            //     ? ['#01ab9d', '#008075']
+            // :
+            ['#08d4c4', '#01ab9d']
+          }
+          style={styles.chonThuaItem}>
+          <Text
+            style={[
+              styles.textSign,
+              {
+                color: '#fff',
+              },
+            ]}>
+            C{index}
+          </Text>
+        </LinearGradient>
+      </TouchableOpacity>
+      {data.map((inData, index) => (
+        <TouchableOpacity
+          key={index}
+          onPress={() => handlePress(inData)}
+          style={styles.chonThuaItem}>
+          <LinearGradient
+            colors={
+              //   typeThuoc == 'Chai'
+              //     ? ['#01ab9d', '#008075']
+              // :
+              ['#08d4c4', '#01ab9d']
+            }
+            style={styles.chonThuaItem}>
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: '#fff',
+                },
+              ]}>
+              {inData}
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      ))}
+    </View>
+  ));
+  // console.log(chooseButton);
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -109,7 +160,7 @@ const CheckQrScreen = ({navigation}) => {
               <View style={styles.button}>
                 <TouchableOpacity
                   onPress={() => {
-                    //   this.onPressLink(this.state.linkInfor);
+                      // this.onPressLink(this.state.linkInfor);
                   }}>
                   <LinearGradient
                     colors={['#08d4c4', '#01ab9d']}
@@ -132,8 +183,17 @@ const CheckQrScreen = ({navigation}) => {
           </Animatable.View>
         </View>
       ) : (
-        <Animatable.View style={styles.container} animation="fadeInUpBig">
-          {chooseButton}
+        <Animatable.View
+          style= {chooseBy === 0 ? [
+            styles.container,
+            {justifyContent: 'center', alignItems: 'center'},
+          ] : [
+            styles.container,
+            {justifyContent: 'center', alignItems: 'center', flexDirection: 'row'},
+          ]} 
+          animation="fadeInUpBig">
+          {/* {chooseButton} */}
+          {chooseBy === 0 ? applyArrayRender : chooseButton}
         </Animatable.View>
       )}
     </View>
@@ -149,8 +209,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   header: {
     flex: 3,
@@ -196,7 +254,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   chonThua: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     marginBottom: 5,
     marginTop: 5,
     // borderBottomWidth: 0.5,
@@ -209,12 +267,20 @@ const styles = StyleSheet.create({
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingLeft: 10,
-    paddingRight: 10,
+    padding: 5,
     borderRadius: 10,
   },
   textSign: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  xitthuoc: {
+    flex: 1,
+    alignSelf: 'stretch',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 1,
+    borderRadius: 10,
   },
 });
