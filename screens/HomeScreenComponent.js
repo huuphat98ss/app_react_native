@@ -15,6 +15,10 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
+import {createStackNavigator} from '@react-navigation/stack';
+
+const Stack = createStackNavigator();
+
 const Container = styled.View``;
 const AlbumArt = styled.Image`
   margin-top: 16px;
@@ -44,42 +48,20 @@ const CaptionContainer = styled.View`
   align-items: center;
 `;
 
-const HomeScreenComponent = ({album, name, caption, likes}) => {
+const HomeScreenComponent = ({album, name, route, initialState}) => {
   const navigation = useNavigation();
-  //console.log('album' + album);
   return (
-    <Animatable.View
-      animation="fadeInUpBig"
-      // options={{
-      //   title: 'Details',
-      //   headerLeft: () => (
-      //     <Icon.Button
-      //       name="ios-menu"
-      //       size={25}
-      //       backgroundColor="#1f65ff"
-      //       onPress={() => {
-      //         navigation.openDrawer();
-      //       }}></Icon.Button>
-      //   ),
-      // }}
-    >
-      <TouchableOpacity onPress={() => navigation.navigate('SupportScreen')}>
+    <Animatable.View animation="fadeInUpBig">
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(route, {
+            initialState: initialState,
+            name: name,
+          })
+        }>
         <Container>
-          <AlbumArt
-            source={{uri: album}}
-            // {require('../asset/fertilizer.png')}
-          ></AlbumArt>
+          <AlbumArt source={{uri: album}}></AlbumArt>
           <Name>{name}</Name>
-          {/* <Row>
-            <CaptionContainer>
-              <Icon name="heart-outline" />
-              <Caption>{likes}</Caption>
-            </CaptionContainer>
-            <CaptionContainer>
-              <Icon name="airplane-outline" />
-              <Caption>{caption}</Caption>
-            </CaptionContainer>
-          </Row> */}
         </Container>
       </TouchableOpacity>
     </Animatable.View>

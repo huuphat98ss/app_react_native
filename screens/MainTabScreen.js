@@ -2,19 +2,19 @@ import React from 'react';
 
 import HomeScreen from './HomeScreen';
 import DetailsScreen from './DetailsScreen';
-import ProfileScreen from './ProfileScreen';
-import ExploreScreen from './ExploreScreen';
-
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const HomeStack = createStackNavigator();
 const DetailsStack = createStackNavigator();
 
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 
-const Tab = createMaterialBottomTabNavigator();
+// const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
+//Render Tab Footer
 const MainTabScreen = () => {
   return (
     <Tab.Navigator initialRouteName="Home" activeColor="#fff">
@@ -40,32 +40,11 @@ const MainTabScreen = () => {
           ),
         }}
       />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarLabel: 'Profile',
-          tabBarColor: '#694fad',
-          tabBarIcon: ({color}) => (
-            <Icon name="ios-person" color={color} size={26} />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Explore"
-        component={ExploreScreen}
-        options={{
-          tabBarLabel: 'Explore',
-          tabBarColor: '#d02860',
-          tabBarIcon: ({color}) => (
-            <Icon name="ios-aperture" color={color} size={26} />
-          ),
-        }}
-      />
     </Tab.Navigator>
   );
 };
 
+//Render tab header
 const HomeStackScreen = ({navigation}) => {
   return (
     <HomeStack.Navigator
@@ -127,6 +106,21 @@ const DetailsStackScreen = ({navigation}) => {
         }}
       />
     </DetailsStack.Navigator>
+  );
+};
+
+const TempStackScreen = ({navigation}) => {
+  return (
+    <DetailsStack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#1f65ff',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: 'bold',
+        },
+      }}></DetailsStack.Navigator>
   );
 };
 

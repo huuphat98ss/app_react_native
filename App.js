@@ -19,25 +19,21 @@ import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
 import CheckProduct from './screens/CheckProduct';
-import RootStackScreen from './screens/RootStackScreen';
 import SignInScreen from './screens/SignInScreen';
+import TempScreen from './screens/TempScreen';
 import {ActivityIndicator} from 'react-native-paper';
-//import Login from './screens/Login';
-import {AuthContext} from './components/context';
-//import AsyncStorage from '@react-native-community/async-storage';
 
 import {connect} from 'react-redux';
 import {checkLogin, logout} from './src/redux/actions/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import RootStackScreen from './screens/RootStackScreen';
 class App extends Component {
   componentDidMount = async () => {
     console.log('isLoading' + this.props.loading);
     let data = await AsyncStorage.getItem('userToken');
     console.log('network ' + this.props.network);
     if (data !== null) {
-      // if (!this.props.network) return alert('chua co internet');
       console.log('login did');
       this.props.checkLogin(data);
       // dispatch(checkLogin(data));
@@ -55,9 +51,9 @@ class App extends Component {
     console.log('Done.');
   };
 
-  storeData = async () => {
-    await AsyncStorage.setItem('userToken', 'phat');
-  };
+  // storeData = async () => {
+  //   await AsyncStorage.setItem('userToken', 'phat');
+  // };
 
   getData = async () => {
     const data = await AsyncStorage.getItem('userToken');
@@ -84,10 +80,11 @@ class App extends Component {
             <Drawer.Screen name="SupportScreen" component={SupportScreen} />
             <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
             <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+            <Drawer.Screen name="TempScreen" component={TempScreen} />
             <Drawer.Screen name="CheckProduct" component={CheckProduct} />
           </Drawer.Navigator>
         ) : (
-          <SignInScreen />
+          <RootStackScreen />
         )}
       </NavigationContainer>
     );

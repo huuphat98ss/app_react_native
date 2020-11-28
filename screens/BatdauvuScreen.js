@@ -18,7 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {useSelector} from 'react-redux';
 
-const SupportScreen = ({navigation, route}) => {
+const BatdauvuScreen = ({navigation, route}) => {
   const [language, setLanguage] = useState('java');
   const album = route.params.initialState;
   console.log('album' + JSON.stringify(album));
@@ -31,35 +31,6 @@ const SupportScreen = ({navigation, route}) => {
 
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   return (
-    // <View>
-    //   <Header
-    //     leftComponent={
-    //       <Icon
-    //         name="chevron-back-outline"
-    //         color="#fff"
-    //         size={26}
-    //         onPress={() => navigation.goBack()}
-    //       />
-    //     }
-    //     centerComponent={{text: 'SUPPORT', style: {color: '#fff'}}}
-    //     // rightComponent={{icon: 'home', color: '#fff'}}
-    //     containerStyle={{
-    //       backgroundColor: '#009387',
-    //       // justifyContent: 'space-around',
-    //     }}
-    //   />
-    //   <View style={styles.container}>
-    //     <Text>Support Screen</Text>
-    //     <Button title="Click Here" onPress={() => alert('Button Clicked!')} />
-    //     <View>
-    //       <Text>lo</Text>
-    //     </View>
-    //     <View>
-    //       <Text>Thua</Text>
-    //     </View>
-    //     <View>
-    //       <Text>vi tri trong thua</Text>
-
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
@@ -95,27 +66,6 @@ const SupportScreen = ({navigation, route}) => {
               onValueChange={(itemValue, itemIndex) => setLanguage(itemValue)}>
               {menus}
             </Picker>
-            <View style={styles.button}>
-              <TouchableOpacity
-                onPress={() => {
-                  () => navigation.goBack();
-                }}
-                style={styles.signIn}>
-                <LinearGradient
-                  colors={['#08d4c4', '#01ab9d']}
-                  style={styles.signIn}>
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: '#fff',
-                      },
-                    ]}>
-                    Click Here
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
       </View>
@@ -123,7 +73,7 @@ const SupportScreen = ({navigation, route}) => {
   );
 };
 
-export default SupportScreen;
+export default BatdauvuScreen;
 
 const styles = StyleSheet.create({
   container: {

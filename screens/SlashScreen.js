@@ -17,31 +17,37 @@ import * as Animatable from 'react-native-animatable';
 const SlashScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
+      <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
         <Animatable.Image
-          source={require('../assets/logo.png')}
+          source={require('../assets/vietGAP.png')}
           style={styles.logo}
           resizeMode="stretch"
           animation="bounceIn"
           duration={1500}
         />
       </View>
-      <Animatable.View
-      style={styles.footer}
-      animation="fadeInUpBig"
-      >
-        <Text style={styles.title}>Stay connected with everyone!</Text>
-        <Text style={styles.text}>Sign In with Account</Text>
+      <Animatable.View style={styles.footer} animation="fadeInUpBig">
+        <Text style={styles.title}>
+          kiểm tra nguồn góc và ghi nhật ký sản xuất
+        </Text>
+        <Text style={styles.text}>đăng nhập khi bạn là thành viên htx</Text>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.signIn}>
-              <Text style={styles.textSign}>Get Started</Text>
-              <MaterialIcons 
-              name="navigate-next" 
-              color="#fff" 
-              size={20} />
+              <Text style={styles.textSign}>Đăng nhập</Text>
+              <MaterialIcons name="navigate-next" color="#fff" size={20} />
+            </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => navigation.navigate('checkProduct')}>
+            <LinearGradient
+              colors={['#08d4c4', '#01ab9d']}
+              style={styles.checkQr}>
+              <Text style={styles.textSign}>Check QR</Text>
+              <MaterialIcons name="navigate-next" color="#fff" size={20} />
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -76,6 +82,7 @@ const styles = StyleSheet.create({
   logo: {
     width: height_logo,
     height: height_logo,
+    borderRadius: 100,
   },
   title: {
     color: '#05375a',
@@ -87,11 +94,21 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   button: {
-    alignItems: 'flex-end',
-    marginTop: 30,
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 10,
   },
   signIn: {
-    width: 150,
+    width: 120,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 50,
+    flexDirection: 'row',
+  },
+  checkQr: {
+    width: 120,
     height: 40,
     justifyContent: 'center',
     alignItems: 'center',

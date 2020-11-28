@@ -17,9 +17,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import {connect} from 'react-redux';
 import {userLoginFetch} from '../src/redux/actions/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-//import {AuthContext} from '../components/context';
-
-//import Users from '../model/Users';
 
 class SignInScreen extends Component {
   state = {
@@ -49,7 +46,6 @@ class SignInScreen extends Component {
   };
 
   handleValidUser = (val) => {
-    //console.log(val);
     if (val.trim().length >= 4) {
       this.setState({
         isValidUser: true,
@@ -62,7 +58,6 @@ class SignInScreen extends Component {
   };
 
   handlePasswordChange = (val) => {
-    //  console.log(val);
     if (val.trim().length >= 8) {
       this.setState({
         password: val,
@@ -95,23 +90,9 @@ class SignInScreen extends Component {
         alert('chua co internet');
         console.log('dont connect ');
       }
-
-      // await AsyncStorage.setItem('token', JSON.stringify(data));
     } catch (e) {
       console.log(e);
     }
-    // console.log(userName, password);
-    // foundUser = Users.filter((item) => {
-    //   return userName == item.username && password == item.password;
-    // });
-    // if (foundUser.length == 0) {
-    //   Alert.alert('Invalid User', 'Username or password is incorrect', [
-    //     {text: 'Okay'},
-    //   ]);
-    //   return;
-    // }
-    // console.log(foundUser);
-    // signIn(foundUser);
   };
 
   handleValidPassword = (val) => {
@@ -253,7 +234,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flex: 4,
-    // backgroundColor: '#fff',
+    backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
