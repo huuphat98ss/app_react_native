@@ -8,8 +8,11 @@ const TempStack = createStackNavigator();
 import SupportScreen from './SupportScreen';
 import BatdauvuScreen from './BatdauvuScreen';
 import PhunthuocScreen from './PhunthuocScreen';
-import CheckQrScreen from './CheckQrScreen';
+import CheckQrScreen from './QR/CheckQrScreen';
+import ChooseTypeQrScreen from './QR/ChooseTypeQrScreen';
 import BookmarkScreen from './BookmarkScreen';
+import SauhaiScreen from './Sauhai/SauhaiScreen';
+import DietsauScreen from './Sauhai/DietsauScreen';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
@@ -110,6 +113,23 @@ const TempScreen = ({route, navigation}) => {
             }}
           />
           <TempStack.Screen
+            name="Choose QR"
+            component={ChooseTypeQrScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'ChooseQR',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Check QR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
             name="Chuẩn bị thuốc"
             component={PhunthuocScreen}
             initialParams={{initialState: initialState}}
@@ -139,6 +159,55 @@ const TempScreen = ({route, navigation}) => {
                   backgroundColor="#009387"
                   onPress={() => {
                     navigation.navigate('Chuẩn bị thuốc');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Sâu hại':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="Sâu hại"
+            component={SauhaiScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Sâu hại',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Diệt sâu"
+            component={DietsauScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Diệt sâu',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
                   }}></Icon.Button>
               ),
             }}
