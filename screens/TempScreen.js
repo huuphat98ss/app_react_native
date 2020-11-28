@@ -13,10 +13,14 @@ import ChooseTypeQrScreen from './QR/ChooseTypeQrScreen';
 import BookmarkScreen from './BookmarkScreen';
 import SauhaiScreen from './Sauhai/SauhaiScreen';
 import DietsauScreen from './Sauhai/DietsauScreen';
+import CheckQrScreen from './CheckQrScreen';
+import DemoCheckScreenQR from './DemoCheckScreenQR';
+import BookmarkScreen from './BookmarkScreen';
+import ShowMap from './ShowMap';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
-  console.log(name);
+  console.log('temsreen ');
   let navTo = null;
   switch (name) {
     case 'Bón phân':
@@ -33,7 +37,7 @@ const TempScreen = ({route, navigation}) => {
           }}>
           <TempStack.Screen
             name="Support"
-            component={SupportScreen}
+            component={PhunthuocScreen}
             initialParams={{initialState: initialState}}
             options={{
               title: 'Bón phân',
@@ -97,7 +101,7 @@ const TempScreen = ({route, navigation}) => {
           }}>
           <TempStack.Screen
             name="Check QR"
-            component={CheckQrScreen}
+            component={DemoCheckScreenQR}
             initialParams={{initialState: initialState}}
             options={{
               title: 'CheckQR',
@@ -113,11 +117,11 @@ const TempScreen = ({route, navigation}) => {
             }}
           />
           <TempStack.Screen
-            name="Choose QR"
-            component={ChooseTypeQrScreen}
+            name="Show Map"
+            component={ShowMap}
             initialParams={{initialState: initialState}}
             options={{
-              title: 'ChooseQR',
+              title: 'Show Map',
               headerLeft: () => (
                 <Icon.Button
                   name="chevron-back-outline"

@@ -27,7 +27,7 @@ import {connect} from 'react-redux';
 import {checkLogin, logout} from './src/redux/actions/auth';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import RootStackScreen from './screens/RootStackScreen';
 class App extends Component {
   componentDidMount = async () => {
     console.log('isLoading' + this.props.loading);
@@ -51,9 +51,9 @@ class App extends Component {
     console.log('Done.');
   };
 
-  storeData = async () => {
-    await AsyncStorage.setItem('userToken', 'phat');
-  };
+  // storeData = async () => {
+  //   await AsyncStorage.setItem('userToken', 'phat');
+  // };
 
   getData = async () => {
     const data = await AsyncStorage.getItem('userToken');
@@ -84,7 +84,7 @@ class App extends Component {
             <Drawer.Screen name="CheckProduct" component={CheckProduct} />
           </Drawer.Navigator>
         ) : (
-          <SignInScreen />
+          <RootStackScreen />
         )}
       </NavigationContainer>
     );

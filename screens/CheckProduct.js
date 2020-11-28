@@ -16,7 +16,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-const localhost = '192.168.1.4';
+const localhost = '192.168.0.67';
 
 class CheckProduct1 extends Component {
   constructor(props) {
@@ -54,19 +54,20 @@ class CheckProduct1 extends Component {
       return this.setState({count: 1});
     }
   };
-  
+
   ifScaned = (e) => {
     this.changeShowData();
     this.changeCountLink(e.data);
     this.setState({linkInfor: e.data});
     fetch(`http://${localhost}:3456/search/${e.data}`)
       .then((response) => response.json())
-      .then((data) =>
+      .then((data) => {
+        // console.log(data);
         this.setState({
           nameOfCooperative: data[0].nameOfCooperative,
-          farmOwner: data[1].farmOwner,
-        }),
-      );
+          farmOwner: data[0].Owner,
+        });
+      });
   };
   onPressLink = async (data) => {
     console.log(data);

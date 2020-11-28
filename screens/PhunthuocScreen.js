@@ -30,8 +30,10 @@ const PhunthuocScreen = ({navigation, route}) => {
   const [typeThuoc, handleFerType] = useState(0);
   const [image, setImage] = useState(0);
   const album = route.params.initialState;
-  console.log('album' + JSON.stringify(album));
-  console.log(navigation);
+  console.log('albums' + JSON.stringify(album));
+  console.log('alo');
+  console.log(route.params.stayhere);
+  console.log(route.params.colhere);
 
   function handleValidUser(val) {
     if (val.trim().length >= 4) {
@@ -282,47 +284,48 @@ const PhunthuocScreen = ({navigation, route}) => {
                       <Feather name="video" color="green" size={20} />
                     </TouchableOpacity>
                   </View>
-                  {image !== 0 ? <View style={{alignItems: 'center'}}>
-                    <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-                      <View 
-                        style={{
-                          height: 100,
-                          width: 100,
-                          borderRadius: 15,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                        }}>
-                        <ImageBackground
-                          source={{
-                            uri: image,
-                          }}
-                          style={{height: 100, width: 300}}
-                          imageStyle={{borderRadius: 15}}>
-                          <View
-                            style={{
-                              flex: 1,
-                              justifyContent: 'center',
-                              alignItems: 'center',
-                            }}>
-                            <Icon
-                              name="camera"
-                              size={35}
-                              color="#fff"
+                  {image !== 0 ? (
+                    <View style={{alignItems: 'center'}}>
+                      <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+                        <View
+                          style={{
+                            height: 100,
+                            width: 100,
+                            borderRadius: 15,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                          }}>
+                          <ImageBackground
+                            source={{
+                              uri: image,
+                            }}
+                            style={{height: 100, width: 300}}
+                            imageStyle={{borderRadius: 15}}>
+                            <View
                               style={{
-                                opacity: 0.7,
-                                alignItems: 'center',
+                                flex: 1,
                                 justifyContent: 'center',
-                                borderWidth: 1,
-                                borderColor: '#fff',
-                                borderRadius: 10,
-                              }}
-                            />
-                          </View>
-                        </ImageBackground>
-                      </View>
-                    </TouchableOpacity>
-                  </View>: null}
-                  
+                                alignItems: 'center',
+                              }}>
+                              <Icon
+                                name="camera"
+                                size={35}
+                                color="#fff"
+                                style={{
+                                  opacity: 0.7,
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  borderWidth: 1,
+                                  borderColor: '#fff',
+                                  borderRadius: 10,
+                                }}
+                              />
+                            </View>
+                          </ImageBackground>
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  ) : null}
                 </View>
               ) : null}
               <View style={styles.button}>

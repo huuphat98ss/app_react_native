@@ -15,7 +15,7 @@ import styled from 'styled-components/native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
@@ -52,14 +52,15 @@ const HomeScreenComponent = ({album, name, route, initialState}) => {
   const navigation = useNavigation();
   return (
     <Animatable.View animation="fadeInUpBig">
-      <TouchableOpacity onPress={() => navigation.navigate(route, {
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate(route, {
             initialState: initialState,
-            name: name
-          })}>
+            name: name,
+          })
+        }>
         <Container>
-          <AlbumArt
-            source={{uri: album}}
-          ></AlbumArt>
+          <AlbumArt source={{uri: album}}></AlbumArt>
           <Name>{name}</Name>
         </Container>
       </TouchableOpacity>

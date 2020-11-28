@@ -33,8 +33,7 @@ const CheckQrScreen = ({navigation}) => {
         dataArray.push(tempArray);
         temp = 1;
         tempArray = [];
-        // tempArray.push(i%10);
-        tempArray.push(i);
+        tempArray.push(i % 10);
         temp++;
       }
     }
