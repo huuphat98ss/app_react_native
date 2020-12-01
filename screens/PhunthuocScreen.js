@@ -23,23 +23,45 @@ import {useSelector} from 'react-redux';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import {useDispatch} from 'react-redux';
+import * as actions from '../src/redux/actions/diary';
 const PhunthuocScreen = ({navigation, route}) => {
   const [language, setLanguage] = useState('java');
   const [isValidUser, handleUser] = useState(false);
   const [typeThuoc, handleFerType] = useState(0);
   const [image, setImage] = useState(0);
+  const [dataSendServer, dataSend] = useState({});
   const album = route.params.initialState;
-  console.log('albums' + JSON.stringify(album));
-  console.log('alo');
-  console.log(route.params.stayhere);
-  console.log(route.params.colhere);
+  const dispatch = useDispatch();
 
-  function handleValidUser(val) {
+  // console.log('albums' + JSON.stringify(album));
+  console.log('alo phun thuoc');
+  console.log(route.params.title);
+  console.log(route.params.idBatch);
+  // console.log(route.params.arrayStumps);
+  // console.log(dataSendServer);
+  function handleValidUser(val, titlebutton) {
+    // console.log('handle ' + titlebutton + val);
     if (val.trim().length >= 4) {
       handleUser(true);
     } else {
       handleUser(false);
+    }
+    switch (titlebutton) {
+      case 'thuoc':
+        dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        break;
+      case 'soluong':
+        dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
+        break;
+      case 'dungtich':
+        dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
+        break;
+      case 'luongnuoc':
+        dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
+        break;
+      default:
+        break;
     }
   }
 
@@ -59,6 +81,7 @@ const PhunthuocScreen = ({navigation, route}) => {
       compressImageQuality: 0.7,
     }).then((image) => {
       console.log(image);
+
       setImage(image.path);
       bs.current.snapTo(1);
     });
@@ -72,6 +95,7 @@ const PhunthuocScreen = ({navigation, route}) => {
       compressImageQuality: 0.7,
     }).then((image) => {
       console.log(image);
+
       setImage(image.path);
       bs.current.snapTo(1);
     });
@@ -130,10 +154,10 @@ const PhunthuocScreen = ({navigation, route}) => {
         }}>
         <View style={styles.header}>
           <Text style={styles.text_header}>
-            Hợp tác xã: {currentUser.username}
+            Hợp tác xã: {currentUser.data.username}
           </Text>
           <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
-            Nông dân: {currentUser.username}
+            Nông dân: {currentUser.data.username}
           </Text>
         </View>
         <View style={styles.footer}>
@@ -153,7 +177,10 @@ const PhunthuocScreen = ({navigation, route}) => {
                   style={styles.textInput}
                   autoCapitalize="none"
                   // secureTextEntry={this.state.secureTextEntry ? true : false}
-                  onChangeText={(val) => handleValidUser(val)}
+                  onChangeText={(val) => {
+                    handleValidUser(val, 'thuoc');
+                    //  console.log(val);
+                  }}
                   // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
                 />
                 <TouchableOpacity onPress={() => {}}>
@@ -220,7 +247,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                       style={styles.textInput}
                       autoCapitalize="none"
                       // secureTextEntry={this.state.secureTextEntry ? true : false}
-                      // onChangeText={(val) => handleValidUser(val)}
+                      onChangeText={(val) => handleValidUser(val, 'soluong')}
                       // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
                     />
                     <TouchableOpacity onPress={() => {}}>
@@ -231,7 +258,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                       style={styles.textInput}
                       autoCapitalize="none"
                       // secureTextEntry={this.state.secureTextEntry ? true : false}
-                      // onChangeText={(val) => handleValidUser(val)}
+                      onChangeText={(val) => handleValidUser(val, 'dungtich')}
                       // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
                     />
                     <Text>ml</Text>
@@ -243,7 +270,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                       style={styles.textInput}
                       autoCapitalize="none"
                       // secureTextEntry={this.state.secureTextEntry ? true : false}
-                      onChangeText={(val) => handleValidUser(val)}
+                      onChangeText={(val) => handleValidUser(val, 'soluong')}
                       // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
                     />
                     <TouchableOpacity onPress={() => {}}>
@@ -253,6 +280,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                       placeholder="Dung tích"
                       style={styles.textInput}
                       autoCapitalize="none"
+                      onChangeText={(val) => handleValidUser(val, 'dungtich')}
                     />
                     <Text>ml</Text>
                   </View>
@@ -265,8 +293,11 @@ const PhunthuocScreen = ({navigation, route}) => {
                       placeholder="Lượng nước dùng để pha"
                       style={styles.textInput}
                       autoCapitalize="none"
+                      onChangeText={(val) => handleValidUser(val, 'luongnuoc')}
                     />
-                    <TouchableOpacity onPress={() => {}}>
+                    <TouchableOpacity
+                    //onPress={(val) => handleValidUser(val, 'luongnuoc')}
+                    >
                       <Text style={{justifyContent: 'center'}}>Lít</Text>
                     </TouchableOpacity>
                   </View>
@@ -330,7 +361,48 @@ const PhunthuocScreen = ({navigation, route}) => {
               ) : null}
               <View style={styles.button}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('BookmarkScreen')}
+                  onPress={
+                    () =>
+                      //navigation.navigate('BookmarkScreen')
+                      {
+                        console.log(route.params.title);
+                        console.log(dataSendServer);
+                        let postDataServer = {
+                          work: 'phunthuoc',
+                          title: route.params.title,
+                          //isBatch:route.params.idBatch,
+                          isFarmer: currentUser.data._id,
+                          deTailVal: dataSendServer,
+                        };
+                        switch (route.params.title) {
+                          case 'allbatch':
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          case 'allStumpinBatch':
+                            postDataServer.isBatch = route.params.idBatch;
+                            console.log(route.params.idBatch);
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          case 'Stumps':
+                            postDataServer.arrayStumps =
+                              route.params.arrayStumps;
+                            postDataServer.isBatch = route.params.idBatch;
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          case 'detailStump':
+                            postDataServer.arrayChecked =
+                              route.params.arrayChecked;
+                            postDataServer.isBatch = route.params.idBatch;
+                            postDataServer.isStump = route.params.isStump;
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          default:
+                            break;
+                        }
+                        navigation.navigate('Home');
+                      }
+                    // alert(typeThuoc)
+                  }
                   style={styles.xitthuoc}>
                   <LinearGradient
                     colors={['#08d4c4', '#01ab9d']}
@@ -342,7 +414,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                           color: '#fff',
                         },
                       ]}>
-                      Xịt thuốc
+                      hoàng tất nhật ký
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>

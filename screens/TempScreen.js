@@ -106,7 +106,8 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.goBack();
+                    //navigation.goBack();
+                    navigation.navigate('Home');
                   }}></Icon.Button>
               ),
             }}
@@ -140,7 +141,8 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.goBack();
+                    // navigation.goBack();
+                    navigation.navigate('Check QR');
                   }}></Icon.Button>
               ),
             }}

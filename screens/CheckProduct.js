@@ -15,9 +15,9 @@ import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
 import QRCodeScanner from 'react-native-qrcode-scanner';
-
-const localhost = '192.168.0.67';
-
+import * as actionTypes from '../src/redux/actions/types';
+const localhost = actionTypes.LOCALHOST;
+//const localhost = '192.168.0.153';
 class CheckProduct1 extends Component {
   constructor(props) {
     super(props);
@@ -129,7 +129,7 @@ class CheckProduct1 extends Component {
             </Animatable.View>
           ) : (
             <View>
-              <Text style={styles.title}>Searching...</Text>
+              <Text style={styles.title}>Searching...{this.state.resdata}</Text>
             </View>
           )}
         </Animatable.View>
