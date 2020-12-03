@@ -5,6 +5,7 @@ const initialState = {
   currentUser: {},
   isLogin: false,
   loading: true,
+  arrayMap: [],
 };
 
 const authStart = (state, action) => {
@@ -36,6 +37,11 @@ const checkLoginFail = (state, action) => {
   });
 };
 
+export const dataMap = (state, action) => {
+  return updateObject(state, {
+    arrayMap: action.data,
+  });
+};
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_USER:
@@ -46,6 +52,8 @@ const authReducer = (state = initialState, action) => {
       return authStart(state, action);
     case actionTypes.CHECK_LOGIN_FAIL:
       return checkLoginFail(state, action);
+    case actionTypes.MAP_FARMER:
+      return dataMap(state, action);
     default:
       return state;
   }

@@ -11,21 +11,46 @@ import {
   Image,
   Linking,
   ScrollView,
+  Modal,
+  TouchableHighlight,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
 import QRCodeScanner from 'react-native-qrcode-scanner';
+import {useSelector} from 'react-redux';
 
 const DemoCheckScreenQR = ({navigation, route}) => {
+  const arrayMapFarmer = useSelector((state) => state.authReducer.arrayMap);
+
+  const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [dataScan, handleData] = useState(0);
   const [chooseBy, handleChoose] = useState(0);
-  const [passdata, handlePassdata] = useState(false);
-  console.log('press ' + route.params.data);
-  console.log('get data tem ' + route.params.initialState);
-  console.log('get data temppppppppppppppppppppp ' + route.params.temp);
+  const [showModal, handleModal] = useState(false);
+  const [arrayMapQR, handleMap] = useState([]);
+  // array chon theo thua
+  const [arrayStumps, handleStump] = useState([]);
+  // getdataStumps
+  const [getarrayStump, getStump] = useState([]);
+  //console.log(arrayMapFarmer);
+  //console.log('get data tem ' + route.params.initialState);
   function ifScaned(e) {
+    console.log(e.data);
+    let arrayString = e.data.split('.');
+    console.log(arrayString);
+    handleMap(arrayString);
+    if (arrayString[0] !== currentUser.data._id) {
+      alert('QR ko dung');
+      return;
+    }
+
     handleData(e.data);
+    console.log('goi array stumps tu server');
+    arrayMapFarmer.filter((ele) => {
+      if (arrayString[1] === ele._id) {
+        return getStump(ele.stumps);
+      }
+    });
   }
   const applyArray = [
     'tất cả các lô',
@@ -37,9 +62,45 @@ const DemoCheckScreenQR = ({navigation, route}) => {
     <View key={index} style={styles.button}>
       <TouchableOpacity
         onPress={() => {
-          handleData(0);
-          navigation.navigate('Show Map');
+          // if (index === 3) {
+          //   handleData(0);
+          //   navigation.navigate('Show Map');
           handleChoose(arr);
+          // }
+          switch (index) {
+            case 3:
+              handleData(0);
+              let dataStumpMap = getarrayStump.filter((ele) => {
+                if (arrayMapQR[2] == ele.numberStumps) {
+                  return ele;
+                }
+              });
+              // console.log('33333');
+              // console.log(dataStumpMap);
+              navigation.navigate('Show Map', {
+                dataStumpMap: dataStumpMap,
+                arrayMapQR: arrayMapQR,
+              });
+              //handleChoose(arr);
+              break;
+            case 2:
+              // handleChoose(arr);
+              handleModal(true);
+              break;
+            case 1:
+              // handleChoose(arr);
+              console.log('call batch ' + arrayMapQR[1]);
+              handleData(0);
+              navigation.navigate('Chuẩn bị thuốc', {
+                title: 'allStumpinBatch',
+                idBatch: arrayMapQR[1],
+              });
+              break;
+            default:
+              handleData(0);
+              navigation.navigate('Chuẩn bị thuốc', {title: 'allbatch'});
+              break;
+          }
         }}
         style={styles.xitthuoc}>
         <LinearGradient colors={['#08d4c4', '#01ab9d']} style={styles.xitthuoc}>
@@ -56,25 +117,136 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       </TouchableOpacity>
     </View>
   ));
-  console.log("ChooseBy: "+ chooseBy, "DataScan" + dataScan);
+
+  //let arrayStump = [1, 2, 3, 4, 5, 6, 7, 8];
+  // let arrayStump = arrayMapFarmer.filter((ele) => {
+  //   if (arrayMapQR[1] === ele._id) {
+  //     return ele.stumps;
+  //   }
+  // });
+  // console.log('chon thua');
+  // console.log(getarrayStump);
+  // button chon thua
+  let SettingStump = getarrayStump.map((ele, index) => {
+    return (
+      //<View style={{flexDirection: 'column'}}>
+      <View key={index} style={styles.modalText}>
+        <TouchableOpacity
+          onPress={() => {
+            //handleSendScreen();
+            if (arrayStumps.length !== 0) {
+              let check = false;
+              handleStump(
+                arrayStumps.filter((e, index) => {
+                  if (e.numberStumps === ele.numberStumps) {
+                    check = true;
+                  }
+                  if (e.numberStumps !== ele.numberStumps) {
+                    return e;
+                  }
+                }),
+              );
+              if (check) return;
+            }
+            handleStump((dataArray) => [
+              ...dataArray,
+              {numberStumps: ele.numberStumps},
+            ]);
+          }}>
+          <LinearGradient
+            //colors={['#08d4c4', '#01ab9d']}
+            colors={
+              checkPresskey(ele.numberStumps)
+                ? ['#01ab9d', '#008075']
+                : ['#08d4c4', '#01ab9d']
+            }
+            style={{borderRadius: 10, padding: 10}}>
+            <Text style={styles.textStyle}>Thửa {ele.numberStumps}</Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+      //</View>
+    );
+  });
+  // event check stump
+  function checkPresskey(data) {
+    // console.log(checkPress);
+    let check = false;
+    arrayStumps.forEach((e) => {
+      if (data === e.numberStumps) {
+        check = true;
+      }
+    });
+    return check;
+  }
+
+  // show model chon theo lo
+  let modalConform = (
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={showModal}
+      onRequestClose={() => {
+        Alert.alert('Modal has been closed.');
+      }}>
+      <View style={styles.centeredView}>
+        <View style={styles.modalView}>
+          {/* <Text style={styles.modalText}>Hello World!</Text> */}
+          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+            {SettingStump}
+          </View>
+          <View style={{flexDirection: 'row'}}>
+            <TouchableHighlight
+              style={{
+                ...styles.openButton,
+                backgroundColor: '#2196F3',
+              }}
+              onPress={() => {
+                handleModal(false);
+              }}>
+              <Text style={styles.textStyle}>hủy</Text>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{...styles.openButton, backgroundColor: '#2196F3'}}
+              onPress={() => {
+                if (arrayStumps.length !== 0) {
+                  handleModal(false);
+                  //console.log(arrayStumps);
+                  navigation.navigate('Chuẩn bị thuốc', {
+                    arrayStumps: arrayStumps,
+                    title: 'Stumps',
+                    idBatch: arrayMapQR[1],
+                  });
+                }
+                //console.log(arrayStumps);
+              }}>
+              <Text style={styles.textStyle}>tiếp</Text>
+            </TouchableHighlight>
+          </View>
+        </View>
+      </View>
+    </Modal>
+  );
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.container}>
         <View style={styles.header}>
-          <QRCodeScanner
-            containerStyle={{
-              backgroundColor: '#FFF',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-            onRead={ifScaned}
-            reactivate={true} // first time true
-            permissionDialogMessage="need premission to Access Camera"
-            reactivateTimeout={2000}
-            showMarker={true}
-            markerStyle={{borderColor: '#FFF', borderRadius: 10}}
-          />
+          {showModal ? null : (
+            <QRCodeScanner
+              containerStyle={{
+                backgroundColor: '#FFF',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onRead={ifScaned}
+              reactivate={true} // first time true
+              permissionDialogMessage="need premission to Access Camera"
+              reactivateTimeout={2000}
+              showMarker={true}
+              markerStyle={{borderColor: '#FFF', borderRadius: 10}}
+            />
+          )}
         </View>
         {dataScan !== 0 ? (
           <Animatable.View style={styles.footer} animation="fadeInUpBig">
@@ -87,6 +259,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
           </Animatable.View>
         ) : null}
       </View>
+      {modalConform}
     </View>
   );
 };
@@ -133,7 +306,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 30,
     flexDirection: 'row',
-    padding: 15,
+    padding: 25,
   },
   signIn: {
     width: 150,
@@ -194,5 +367,43 @@ const styles = StyleSheet.create({
   textSign: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  // modal
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: '#F194FF',
+    borderRadius: 20,
+    padding: 10,
+    margin: 10,
+    elevation: 2,
+  },
+  textStyle: {
+    color: 'white',
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
+  modalText: {
+    margin: 10,
+    textAlign: 'center',
   },
 });

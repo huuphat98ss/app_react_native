@@ -17,20 +17,27 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
 
 const ShowMap = ({navigation, route}) => {
+  console.log('alo');
+  console.log(route.params.dataStumpMap);
+  const dataMap = route.params.dataStumpMap[0];
+  console.log(dataMap);
+  // const row = dataMap.row;
+  // const col =dataMap.col;
+  // const total = dataMap.totalTree;
   const [dataArray, renderArray] = useState(() => {
     let dataArray = [];
     let tempArray = [];
-    let length = 50;
+    let length = dataMap.totalTree;
     let temp = 1;
     for (let i = 1; i <= length; i++) {
-      if (temp <= 10) {
+      if (temp <= dataMap.row) {
         tempArray.push(temp);
         temp++;
       } else {
         dataArray.push(tempArray);
         temp = 1;
         tempArray = [];
-        tempArray.push(i % 10);
+        tempArray.push(i % dataMap.row);
         temp++;
       }
     }
@@ -51,6 +58,9 @@ const ShowMap = ({navigation, route}) => {
   });
   //const [chooseBy, handleChoose] = useState(0);
   const [checkPress, handleCheck] = useState([]);
+  // useEffect(() => {
+  //   renderArray(dataMap.row, dataMap.col, dataMap.totalTree);
+  // });
   // one press
   function handlePress(stay, col) {
     console.log('press stt ' + stay + ' + cot ' + col);
@@ -176,13 +186,29 @@ const ShowMap = ({navigation, route}) => {
   }
   function handleSendScreen() {
     console.log('submit');
-    //let newArray = Array.from(new Set(checkPress));
-    //const newArray = new Set(checkPress);
     const newArray = checkPress.filter((item, index) => {
-      return checkPress.indexOf(item.default) === index;
+      if (item.col !== 0) {
+        //console.log(item);
+        return item;
+      }
     });
-
-    console.log(newArray);
+    const seen = new Set();
+    const LastArray = newArray.filter((el) => {
+      const duplicate = seen.has(el.default);
+      seen.add(el.default);
+      return !duplicate;
+    });
+    const dataRusult = LastArray.filter((ele) => {
+      delete ele.default;
+      return ele;
+    });
+    console.log(LastArray);
+    navigation.navigate('Chuẩn bị thuốc', {
+      arrayChecked: dataRusult,
+      title: 'detailStump',
+      idBatch: route.params.arrayMapQR[1],
+      isStump: route.params.arrayMapQR[2],
+    });
   }
   console.log('data create');
   console.log(checkPress);
