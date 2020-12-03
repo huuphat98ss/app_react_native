@@ -23,6 +23,7 @@ import {useSelector} from 'react-redux';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
+//import ImagePicker from 'react-native-image-picker';
 import {useDispatch} from 'react-redux';
 import * as actions from '../src/redux/actions/diary';
 const PhunthuocScreen = ({navigation, route}) => {
@@ -30,6 +31,8 @@ const PhunthuocScreen = ({navigation, route}) => {
   const [isValidUser, handleUser] = useState(false);
   const [typeThuoc, handleFerType] = useState(0);
   const [image, setImage] = useState(0);
+  // data image send server
+  const [imageSend, setImageSend] = useState(0);
   const [dataSendServer, dataSend] = useState({});
   const album = route.params.initialState;
   const dispatch = useDispatch();
@@ -80,8 +83,14 @@ const PhunthuocScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
-
+      console.log('image nes');
+      const img = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      console.log(img);
+      setImageSend(img);
       setImage(image.path);
       bs.current.snapTo(1);
     });
@@ -94,12 +103,53 @@ const PhunthuocScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
+      console.log('tai choose image');
+      // console.log(image.mime);
+      // console.log(image.data);
+      // console.log(image.path.lastIndexOf('/') + 1);
 
+      // setImageSend(image.path);
+      // setImage(image.path);
+
+      const img = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      console.log(img);
+      setImageSend(img);
       setImage(image.path);
       bs.current.snapTo(1);
     });
   };
+
+  // const choosePhotoFromLibrary = () => {
+  //   ImagePicker.showImagePicker(
+  //     {
+  //       width: 300,
+  //       height: 500,
+  //       cropping: true,
+  //       compressImageQuality: 0.7,
+  //     },
+  //     (response) => {
+  //       console.log('show anhr');
+  //       if (response.didCancel) {
+  //         return;
+  //       }
+  //       console.log(response.uri);
+  //       const img = {
+  //         uri: response.uri,
+  //         type: response.type,
+  //         name:
+  //           response.fileName ||
+  //           response.uri.substr(response.uri.lastIndexOf('/') + 1),
+  //       };
+  //       console.log(img);
+  //       setImageSend(img);
+  //       setImage(response.uri);
+  //     },
+  //   );
+  // };
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -373,10 +423,12 @@ const PhunthuocScreen = ({navigation, route}) => {
                           //isBatch:route.params.idBatch,
                           isFarmer: currentUser.data._id,
                           deTailVal: dataSendServer,
+                          imageData: imageSend,
                         };
                         switch (route.params.title) {
                           case 'allbatch':
                             dispatch(actions.pushDiaryToServer(postDataServer));
+                            //dispatch(actions.pushDiaryToServer(imageSend));
                             break;
                           case 'allStumpinBatch':
                             postDataServer.isBatch = route.params.idBatch;
