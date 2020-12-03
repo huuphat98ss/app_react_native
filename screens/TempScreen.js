@@ -5,7 +5,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const TempStack = createStackNavigator();
 
-import SupportScreen from './SupportScreen';
+//import SupportScreen from './SupportScreen';
 import BatdauvuScreen from './BatdauvuScreen';
 import PhunthuocScreen from './PhunthuocScreen';
 import CheckQrScreen from './CheckQrScreen';
