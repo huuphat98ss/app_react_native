@@ -35,9 +35,10 @@ const SauhaiScreen = ({navigation, route}) => {
       ]}>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate('Diệt sâu', {
+          navigation.navigate(arr, {
             info: nguyennhanArray[index],
             loaisau: arr,
+            cachtri : cachtriArray[index]
           })
         }
         style={styles.xitthuoc}>

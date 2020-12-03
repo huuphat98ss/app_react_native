@@ -20,12 +20,13 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 const DemoCheckScreenQR = ({navigation, route}) => {
   const [dataScan, handleData] = useState(0);
   const [chooseBy, handleChoose] = useState(0);
+  const [passdata, handlePassdata] = useState(false);
   console.log('press ' + route.params.data);
   console.log('get data tem ' + route.params.initialState);
+  console.log('get data temppppppppppppppppppppp ' + route.params.temp);
   function ifScaned(e) {
     handleData(e.data);
   }
-
   const applyArray = [
     'tất cả các lô',
     'hết lô này',
@@ -55,11 +56,10 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       </TouchableOpacity>
     </View>
   ));
-
+  console.log("ChooseBy: "+ chooseBy, "DataScan" + dataScan);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
-
       <View style={styles.container}>
         <View style={styles.header}>
           <QRCodeScanner

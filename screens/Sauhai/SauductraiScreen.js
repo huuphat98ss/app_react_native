@@ -22,15 +22,16 @@ import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 
-const DietsauScreen = ({navigation, route}) => {
+const SauductraiScreen = ({navigation, route}) => {
   const {info, loaisau, cachtri} = route.params;
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [image, setImage] = useState(0);
+  const [imageArr, setImage] = useState([]);
+  const [img, chosenImage] = useState(0);
+  console.log('img' + img);
 
   // Usestate
   // Sâu đục trái
-  const [imageSauductrai, setImageSauductrai] = useState(0);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -46,8 +47,18 @@ const DietsauScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
-      setImage(image.path);
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      console.log(found1);
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
       bs.current.snapTo(1);
     });
   };
@@ -59,11 +70,22 @@ const DietsauScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
-      setImage(image.path);
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      console.log(found1);
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
       bs.current.snapTo(1);
     });
   };
+  console.log('imageArr' + imageArr);
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -73,7 +95,7 @@ const DietsauScreen = ({navigation, route}) => {
       </View>
       <TouchableOpacity
         style={styles.panelButton}
-        onPress={() => takePhotoFromCamera("setImageSauductrai")}>
+        onPress={() => takePhotoFromCamera()}>
         <Text style={styles.panelButtonTitle}>Take Photo</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -101,7 +123,12 @@ const DietsauScreen = ({navigation, route}) => {
     let image = props.image;
     return (
       <View style={{alignItems: 'center'}}>
-        <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+        <TouchableOpacity
+          onPress={(e) => {
+            bs.current.snapTo(0);
+            chosenImage(image);
+            e.persist();
+          }}>
           <View
             style={{
               height: 100,
@@ -147,19 +174,22 @@ const DietsauScreen = ({navigation, route}) => {
   switch (loaisau) {
     case 'Sâu đục trái':
       phuongphaptri = (
-        <View style={styles.action}>
-          <Text
-            style={{
-              flex: 1,
-              // paddingLeft: 10,
-              color: '#01ab9d',
-              fontSize: 16,
-            }}>
-            {cachtri}
-          </Text>
-          <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-            <Feather name="camera" color="green" size={20} />
-          </TouchableOpacity>
+        <View>
+          <View style={styles.action}>
+            <Text
+              style={{
+                flex: 1,
+                // paddingLeft: 10,
+                color: '#01ab9d',
+                fontSize: 16,
+              }}>
+              {cachtri}
+            </Text>
+            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+              <Feather name="camera" color="green" size={20} />
+            </TouchableOpacity>
+          </View>
+          {imageArr[1] ? <OpenCam image={imageArr[1]} /> : null}
         </View>
       );
       break;
@@ -210,7 +240,7 @@ const DietsauScreen = ({navigation, route}) => {
       <BottomSheet
         ref={bs}
         snapPoints={[330, 0]}
-        renderContent={renderInner}
+        renderContent={(image) => renderInner(image)}
         renderHeader={renderHeader}
         initialSnap={1}
         callbackNode={fall}
@@ -274,7 +304,7 @@ const DietsauScreen = ({navigation, route}) => {
                 <Feather name="camera" color="green" size={20} />
               </TouchableOpacity>
             </View>
-            {image !== 0 ? <OpenCam image={image} /> : null}
+            {imageArr[0] ? <OpenCam image={imageArr[0]} /> : null}
             <View style={styles.action}>
               <Text style={{color: 'red', fontSize: 18, flex: 1}}>
                 *Cách phòng trị
@@ -288,7 +318,7 @@ const DietsauScreen = ({navigation, route}) => {
   );
 };
 
-export default DietsauScreen;
+export default SauductraiScreen;
 
 const styles = StyleSheet.create({
   container: {
