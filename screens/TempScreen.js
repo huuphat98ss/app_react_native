@@ -8,14 +8,20 @@ const TempStack = createStackNavigator();
 //import SupportScreen from './SupportScreen';
 import BatdauvuScreen from './BatdauvuScreen';
 import PhunthuocScreen from './PhunthuocScreen';
-import CheckQrScreen from './CheckQrScreen';
-import DemoCheckScreenQR from './DemoCheckScreenQR';
 import BookmarkScreen from './BookmarkScreen';
-import ShowMap from './ShowMap';
+import SauhaiScreen from './Sauhai/SauhaiScreen';
+import PhunthuocsauScreen from './Sauhai/PhunthuocsauScreen';
+import DietsauScreen from './Sauhai/DietsauScreen';
+import DemoCheckScreenQR from './QR/DemoCheckScreenQR';
+import SauductraiScreen from './Sauhai/SauductraiScreen';
+import RaybongxoaiScreen from './Sauhai/RaybongxoaiScreen';
+import RepsapScreen from './Sauhai/RepsapScreen';
+import ShowMap from './QR/ShowMap';
+import RuiducquaScreen from './Sauhai/RuiducquaScreen';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
-  console.log('temsreen ');
+  console.log('navigation' + JSON.stringify(navigation));
   let navTo = null;
   switch (name) {
     case 'Bón phân':
@@ -106,8 +112,10 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    //navigation.goBack();
-                    navigation.navigate('Home');
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
                   }}></Icon.Button>
               ),
             }}
@@ -160,6 +168,140 @@ const TempScreen = ({route, navigation}) => {
                   backgroundColor="#009387"
                   onPress={() => {
                     navigation.navigate('Chuẩn bị thuốc');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Sâu hại':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="Sâu hại"
+            component={SauhaiScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Sâu hại',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.goBack();
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Sâu đục trái"
+            component={SauductraiScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Sâu đục trái',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Rầy bông xoài"
+            component={RaybongxoaiScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Rầy bông xoài',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Rệp sáp"
+            component={RepsapScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Rệp sáp',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Ruồi đục quả xoài"
+            component={RuiducquaScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Rùi đục quả',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Phun thuốc sâu"
+            component={PhunthuocsauScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Phun thuốc sâu',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Diệt sâu"
+            component={DietsauScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Diệt sâu',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
                   }}></Icon.Button>
               ),
             }}

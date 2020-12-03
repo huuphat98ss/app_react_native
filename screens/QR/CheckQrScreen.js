@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import {
   View,
@@ -18,14 +18,16 @@ import QRCodeScanner from 'react-native-qrcode-scanner';
 
 const CheckQrScreen = ({navigation}) => {
   const [dataScan, handleData] = useState(0);
+  const [choosenArray, handleChoosenArray] = useState([]);
+  // const [isChoose , handleIsChoose] = useState(0);
   const [dataArray, renderArray] = useState(() => {
     let dataArray = [];
     let tempArray = [];
-    let length = 17;
+    let length = 50;
     let temp = 1;
     for (let i = 1; i <= length; i++) {
       if (temp <= 10) {
-        tempArray.push(temp);
+        tempArray.push(i);
         temp++;
       } else {
         dataArray.push(tempArray);
@@ -50,43 +52,34 @@ const CheckQrScreen = ({navigation}) => {
     ]);
     return dataArray;
   });
-  const [chooseBy, handleChoose] = useState(0);
   function ifScaned(e) {
     handleData(e.data);
+    navigation.navigate('Choose QR');
+    handleData(0);
   }
-  function handlePress() {
-    console.log('press');
+  console.log(dataArray);
+  function handlePress(inData, index) {
+    let tempArray = choosenArray;
+    let column = inData % 10 === 0
+    ? Math.floor(inData / 10)
+    : Math.floor(inData / 10) + 1;
+    let row = `${index + 1}`
+    console.log(column, row);
+    tempArray.push([column, row]);
+    handleChoosenArray(tempArray);
   }
 
-  const applyArray = ['Cả thửa', 'Chọn theo luống', 'Chọn theo cây'];
-  let applyArrayRender = applyArray.map((arr, index) => (
-    <View
-      key={index}
-      style={[styles.button, {flexDirection: 'row', padding: 30}]}>
-      <TouchableOpacity
-        onPress={() => handleChoose(arr)}
-        style={styles.xitthuoc}>
-        <LinearGradient colors={['#08d4c4', '#01ab9d']} style={styles.xitthuoc}>
-          <Text
-            style={[
-              styles.textSign,
-              {
-                color: '#fff',
-              },
-            ]}>
-            {arr}
-          </Text>
-        </LinearGradient>
-      </TouchableOpacity>
-    </View>
-  ));
+  function handlePress1(index) {
+    let tempArr = choosenArray;
+    tempArr.push([dataArray[index]])
+    handleChoosenArray("tempArr"+tempArr);
+  }
+
   let chooseButton = dataArray.map((data, index) => (
     <View key={index} style={styles.chonThua}>
       <TouchableOpacity
         key={index}
-        onPress={() => {
-          // typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
-        }}
+        onPress={() => handlePress1(index)}
         style={styles.chonThuaItem}>
         <LinearGradient
           colors={
@@ -110,7 +103,7 @@ const CheckQrScreen = ({navigation}) => {
       {data.map((inData, index) => (
         <TouchableOpacity
           key={index}
-          onPress={() => handlePress(inData)}
+          onPress={() => {handlePress(inData, index), handleIsChoose(1)}}
           style={styles.chonThuaItem}>
           <LinearGradient
             colors={
@@ -127,14 +120,17 @@ const CheckQrScreen = ({navigation}) => {
                   color: '#fff',
                 },
               ]}>
-              {inData}
+              {inData % 10 == 0
+                ? 10
+                : typeof inData !== 'number'
+                ? inData
+                : inData % 10}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
       ))}
     </View>
   ));
-  // console.log(chooseButton);
 
   return (
     <View style={styles.container}>
@@ -196,12 +192,13 @@ const CheckQrScreen = ({navigation}) => {
       ) : (
         <Animatable.View
           style={
-            chooseBy === 0
-              ? [
-                  styles.container,
-                  {justifyContent: 'center', alignItems: 'center'},
-                ]
-              : [
+            // chooseBy === 0
+            //   ? [
+            //       styles.container,
+            //       {justifyContent: 'center', alignItems: 'center'},
+            //     ]
+            //   : 
+              [
                   styles.container,
                   {
                     justifyContent: 'center',
@@ -212,7 +209,7 @@ const CheckQrScreen = ({navigation}) => {
           }
           animation="fadeInUpBig">
           {/* {chooseButton} */}
-          {chooseBy === 0 ? applyArrayRender : chooseButton}
+          {chooseButton}
         </Animatable.View>
       )}
     </View>

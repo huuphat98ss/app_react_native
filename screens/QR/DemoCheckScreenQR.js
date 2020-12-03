@@ -52,7 +52,6 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       }
     });
   }
-
   const applyArray = [
     'tất cả các lô',
     'hết lô này',
@@ -228,11 +227,9 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       </View>
     </Modal>
   );
-
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
-
       <View style={styles.container}>
         <View style={styles.header}>
           {showModal ? null : (
