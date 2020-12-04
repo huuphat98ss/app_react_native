@@ -3,10 +3,19 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const localhost = actionTypes.LOCALHOST;
 export const pushDiaryToServer = (data) => {
-  console.log(data);
+  console.log(data.imageData);
+  imageData = data.imageData;
   const formData = new FormData();
-  if (data.imageData !== 0) {
-    formData.append('dataImage', data.imageData);
+  if (imageData.length !== 0) {
+    // formData.append(
+    //   'dataImage',
+    //   JSON.stringify({
+    //     imageData,
+    //   }),
+    // );
+    for (let image in imageData) {
+      formData.append('dataImage', imageData[image]);
+    }
   }
   delete data['imageData'];
   formData.append(
@@ -24,7 +33,7 @@ export const pushDiaryToServer = (data) => {
   // formData.append(
   //   'datadiary',
   //   JSON.stringify({
-  //     dataset,
+  //     data.imageData,
   //   }),
   // );
   return (dispatch) => {

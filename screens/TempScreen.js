@@ -103,7 +103,7 @@ const TempScreen = ({route, navigation}) => {
           <TempStack.Screen
             name="Check QR"
             component={DemoCheckScreenQR}
-            initialParams={{initialState: initialState}}
+            initialParams={{initialState: initialState, name: name}}
             options={{
               title: 'CheckQR',
               headerLeft: () => (
@@ -123,7 +123,7 @@ const TempScreen = ({route, navigation}) => {
           <TempStack.Screen
             name="Show Map"
             component={ShowMap}
-            initialParams={{initialState: initialState}}
+            initialParams={{initialState: initialState, name: name}}
             options={{
               title: 'Show Map',
               headerLeft: () => (
@@ -140,7 +140,7 @@ const TempScreen = ({route, navigation}) => {
           <TempStack.Screen
             name="Chuẩn bị thuốc"
             component={PhunthuocScreen}
-            initialParams={{initialState: initialState}}
+            initialParams={{initialState: initialState, name: name}}
             options={{
               title: 'Chuẩn bị thuốc',
               headerLeft: () => (
@@ -187,6 +187,43 @@ const TempScreen = ({route, navigation}) => {
               fontWeight: 'bold',
             },
           }}>
+          <TempStack.Screen
+            name="Check QR"
+            component={DemoCheckScreenQR}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'CheckQR',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Show Map"
+            component={ShowMap}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'Show Map',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Check QR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
           <TempStack.Screen
             name="Sâu hại"
             component={SauhaiScreen}

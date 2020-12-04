@@ -11,6 +11,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 const SauhaiScreen = ({navigation, route}) => {
   const album = route.params.initialState;
+  // console.log(route.params);
   let loaiSauArray = [];
   let nguyennhanArray = [];
   let cachtriArray = [];
@@ -38,7 +39,12 @@ const SauhaiScreen = ({navigation, route}) => {
           navigation.navigate(arr, {
             info: nguyennhanArray[index],
             loaisau: arr,
-            cachtri : cachtriArray[index]
+            cachtri: cachtriArray[index],
+            title: route.params.title,
+            idBatch: route.params.idBatch,
+            arrayStumps: route.params.arrayStumps,
+            isStump: route.params.isStump,
+            arrayChecked: route.params.arrayChecked,
           })
         }
         style={styles.xitthuoc}>

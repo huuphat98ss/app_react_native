@@ -32,7 +32,7 @@ const PhunthuocScreen = ({navigation, route}) => {
   const [typeThuoc, handleFerType] = useState(0);
   const [image, setImage] = useState(0);
   // data image send server
-  const [imageSend, setImageSend] = useState(0);
+  const [imageSend, setImageSend] = useState([]);
   const [dataSendServer, dataSend] = useState({});
   const album = route.params.initialState;
   const dispatch = useDispatch();
@@ -90,7 +90,8 @@ const PhunthuocScreen = ({navigation, route}) => {
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
       console.log(img);
-      setImageSend(img);
+      // setImageSend(img);
+      setImageSend((dataArr) => [...dataArr, img]);
       setImage(image.path);
       bs.current.snapTo(1);
     });
@@ -104,12 +105,6 @@ const PhunthuocScreen = ({navigation, route}) => {
       compressImageQuality: 0.7,
     }).then((image) => {
       console.log('tai choose image');
-      // console.log(image.mime);
-      // console.log(image.data);
-      // console.log(image.path.lastIndexOf('/') + 1);
-
-      // setImageSend(image.path);
-      // setImage(image.path);
 
       const img = {
         uri: image.path,
@@ -117,7 +112,8 @@ const PhunthuocScreen = ({navigation, route}) => {
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
       console.log(img);
-      setImageSend(img);
+      // setImageSend(img);
+      setImageSend((dataArr) => [...dataArr, img]);
       setImage(image.path);
       bs.current.snapTo(1);
     });

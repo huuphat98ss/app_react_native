@@ -35,6 +35,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
   //console.log(arrayMapFarmer);
   //console.log('get data tem ' + route.params.initialState);
   function ifScaned(e) {
+    //console.log('alalalalsdld ldlds');
     console.log(e.data);
     let arrayString = e.data.split('.');
     console.log(arrayString);
@@ -91,14 +92,14 @@ const DemoCheckScreenQR = ({navigation, route}) => {
               // handleChoose(arr);
               console.log('call batch ' + arrayMapQR[1]);
               handleData(0);
-              navigation.navigate('Chuẩn bị thuốc', {
+              navigation.navigate(route.params.name, {
                 title: 'allStumpinBatch',
                 idBatch: arrayMapQR[1],
               });
               break;
             default:
               handleData(0);
-              navigation.navigate('Chuẩn bị thuốc', {title: 'allbatch'});
+              navigation.navigate(route.params.name, {title: 'allbatch'});
               break;
           }
         }}
@@ -212,7 +213,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
                 if (arrayStumps.length !== 0) {
                   handleModal(false);
                   //console.log(arrayStumps);
-                  navigation.navigate('Chuẩn bị thuốc', {
+                  navigation.navigate(route.params.name, {
                     arrayStumps: arrayStumps,
                     title: 'Stumps',
                     idBatch: arrayMapQR[1],

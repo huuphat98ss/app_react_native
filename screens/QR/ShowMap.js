@@ -203,7 +203,7 @@ const ShowMap = ({navigation, route}) => {
       return ele;
     });
     console.log(LastArray);
-    navigation.navigate('Chuẩn bị thuốc', {
+    navigation.navigate(route.params.name, {
       arrayChecked: dataRusult,
       title: 'detailStump',
       idBatch: route.params.arrayMapQR[1],
