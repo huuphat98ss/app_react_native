@@ -23,32 +23,51 @@ import {useSelector} from 'react-redux';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import {useDispatch} from 'react-redux';
+import * as actions from '../../src/redux/actions/diary';
 const PhunthuocsauScreen = ({navigation, route}) => {
+  const [language, setLanguage] = useState('java');
   const [isValidUser, handleUser] = useState(false);
+  const [typeThuoc, handleFerType] = useState(0);
+  const dispatch = useDispatch();
   const [image, setImage] = useState(0);
-  const [validNumber, handleValidNumber] = useState(false);
-  const [loaiThuocArray, handleLoaiThuocArray] = useState([
-    {ten: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0, hinhanh: 0},
+  const [loaithuocArray, handleloaithuocArray] = useState([
+    {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
   ]);
   const album = route.params.initialState;
-  console.log(route.params.stayhere);
-  console.log(route.params.colhere);
-  function handleValidUser(val) {
-    console.log(val)
+  const [dataSendServer, dataSend] = useState({});
+  // console.log('albums' + JSON.stringify(album));
+  // console.log('alo');
+  // console.log(route.params.stayhere);
+  // console.log(route.params.colhere);
+  console.log(route.params);
+  function handleValidUser(val, titlebutton) {
+    // console.log('handle ' + titlebutton + val);
     if (val.trim().length >= 4) {
       handleUser(true);
     } else {
       handleUser(false);
     }
+    switch (titlebutton) {
+      case 'thuoc':
+        dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        break;
+      case 'soluong':
+        dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
+        break;
+      case 'dungtich':
+        dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
+        break;
+      case 'luongnuoc':
+        dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
+        break;
+      default:
+        break;
+    }
   }
-
-  function checkValidNumber (val) {
-    console.log("val"+val)
-    // var reg = new RegExp('^[0-9]+$');
-    // reg.test(val) ? handleValidNumber(true) : handleValidNumber(false) ;
-    // console.log(reg.test(val) ? true : false);
-  };
+  function handleType(val) {
+    handleFerType(val);
+  }
 
   // Bottom Sheet khai báo
   bs = React.createRef();
@@ -80,8 +99,42 @@ const PhunthuocsauScreen = ({navigation, route}) => {
     });
   };
 
-  const thuocArray = loaiThuocArray.map((element, index) => (
-    <View key={index}>
+  renderInner = () => (
+    <View style={styles.panel}>
+      <View style={{alignItems: 'center'}}>
+        <Text style={styles.panelTitle}>Upload Photo</Text>
+        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
+      </View>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={takePhotoFromCamera}>
+        <Text style={styles.panelButtonTitle}>Take Photo</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={choosePhotoFromLibrary}>
+        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.panelButton}
+        onPress={() => bs.current.snapTo(1)}>
+        <Text style={styles.panelButtonTitle}>Cancel</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  renderHeader = () => (
+    <View style={styles.pheader}>
+      <View style={styles.panelHeader}>
+        <View style={styles.panelHandle} />
+      </View>
+    </View>
+  );
+
+  const currentUser = useSelector((state) => state.authReducer.currentUser);
+
+  let thuocArray = loaithuocArray.map((element, index) => (
+    <View>
       <Text style={{color: '#009387', fontSize: 16, marginBottom: 5}}>
         Tên thuốc
       </Text>
@@ -92,7 +145,16 @@ const PhunthuocsauScreen = ({navigation, route}) => {
           style={styles.textInput}
           autoCapitalize="none"
           // secureTextEntry={this.state.secureTextEntry ? true : false}
-          onChangeText={(val) => handleValidUser(val)}
+          // onChangeText={(val) => handleValidUser(val, 'thuoc')}
+          onChangeText={(val) =>
+            // handleValidUser(val, 'luongnuoc')
+            {
+              element['thuoc'] = val;
+              handleloaithuocArray((dataArr) => [...dataArr]);
+              console.log(loaithuocArray);
+            }
+          }
+          // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
         />
         <TouchableOpacity onPress={() => {}}>
           {isValidUser ? (
@@ -105,10 +167,10 @@ const PhunthuocsauScreen = ({navigation, route}) => {
       <View style={styles.action}>
         <TouchableOpacity
           onPress={() => {
-            element['loai'] == 'Chai'
+            element['loai'] === 'Chai'
               ? (element['loai'] = 0)
               : (element['loai'] = 'Chai');
-            handleLoaiThuocArray((dataArr) => [...dataArr]);
+            handleloaithuocArray((dataArr) => [...dataArr]);
           }}
           style={styles.signIn}>
           <LinearGradient
@@ -131,10 +193,10 @@ const PhunthuocsauScreen = ({navigation, route}) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            element['loai'] == 'Goi'
+            element['loai'] === 'Goi'
               ? (element['loai'] = 0)
               : (element['loai'] = 'Goi');
-            handleLoaiThuocArray((dataArr) => [...dataArr]);
+            handleloaithuocArray((dataArr) => [...dataArr]);
           }}
           style={styles.signIn}>
           <LinearGradient
@@ -156,34 +218,43 @@ const PhunthuocsauScreen = ({navigation, route}) => {
           </LinearGradient>
         </TouchableOpacity>
       </View>
-      {element['loai'] != 0 ? (
-        element['loai'] == 'Goi' ? (
-          <View>
-            <View style={styles.action}>
-              <TextInput
-                placeholder="Số lượng"
-                style={styles.textInput}
-                autoCapitalize="none"
-                // secureTextEntry={this.state.secureTextEntry ? true : false}
-                onChangeText={(val) => checkValidNumber(val)}
-                // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-              />
-              <TouchableOpacity onPress={() => {}}>
-                <Text>Gói</Text>
-              </TouchableOpacity>
-              <TextInput
-                placeholder="Dung tích"
-                style={styles.textInput}
-                autoCapitalize="none"
-                // secureTextEntry={this.state.secureTextEntry ? true : false}
-                onChangeText={(val) => checkValidNumber(val)}
-                // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-              />
-              <Text>ml</Text>
-            </View>
-            <View style={styles.action}>
-              {}
-            </View>
+      {element['loai'] !== 0 ? (
+        element['loai'] === 'Goi' ? (
+          <View style={styles.action}>
+            <TextInput
+              placeholder="Số lượng"
+              style={styles.textInput}
+              autoCapitalize="none"
+              // secureTextEntry={this.state.secureTextEntry ? true : false}
+              onChangeText={(val) =>
+                // handleValidUser(val, 'luongnuoc')
+                {
+                  element['loai'] = val;
+                  handleloaithuocArray((dataArr) => [...dataArr]);
+                  console.log(loaithuocArray);
+                }
+              }
+              // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
+            />
+            <TouchableOpacity onPress={() => {}}>
+              <Text>Gói</Text>
+            </TouchableOpacity>
+            <TextInput
+              placeholder="Dung tích"
+              style={styles.textInput}
+              autoCapitalize="none"
+              // secureTextEntry={this.state.secureTextEntry ? true : false}
+              onChangeText={(val) =>
+                // handleValidUser(val, 'luongnuoc')
+                {
+                  element['loai'] = val;
+                  handleloaithuocArray((dataArr) => [...dataArr]);
+                  console.log(loaithuocArray);
+                }
+              }
+              // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
+            />
+            <Text>ml</Text>
           </View>
         ) : (
           <View style={styles.action}>
@@ -192,7 +263,15 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               style={styles.textInput}
               autoCapitalize="none"
               // secureTextEntry={this.state.secureTextEntry ? true : false}
-              onChangeText={(val) => handleValidUser(val)}
+              // onChangeText={(val) => handleValidUser(val, 'soluong')}
+              onChangeText={(val) =>
+                // handleValidUser(val, 'luongnuoc')
+                {
+                  element['soluong'] = val;
+                  handleloaithuocArray((dataArr) => [...dataArr]);
+                  console.log(loaithuocArray);
+                }
+              }
               // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
             />
             <TouchableOpacity onPress={() => {}}>
@@ -202,18 +281,35 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               placeholder="Dung tích"
               style={styles.textInput}
               autoCapitalize="none"
+              // onChangeText={(val) => handleValidUser(val, 'dungdich')}
+              onChangeText={(val) =>
+                // handleValidUser(val, 'luongnuoc')
+                {
+                  element['dungtich'] = val;
+                  handleloaithuocArray((dataArr) => [...dataArr]);
+                  console.log(loaithuocArray);
+                }
+              }
             />
             <Text>ml</Text>
           </View>
         )
       ) : null}
-      {element['loai'] != 0 ? (
+      {element['loai'] !== 0 ? (
         <View>
           <View style={styles.action}>
             <TextInput
               placeholder="Lượng nước dùng để pha"
               style={styles.textInput}
               autoCapitalize="none"
+              onChangeText={(val) =>
+                // handleValidUser(val, 'luongnuoc')
+                {
+                  element['luongnuoc'] = val;
+                  handleloaithuocArray((dataArr) => [...dataArr]);
+                  console.log(loaithuocArray);
+                }
+              }
             />
             <TouchableOpacity onPress={() => {}}>
               <Text style={{justifyContent: 'center'}}>Lít</Text>
@@ -280,39 +376,6 @@ const PhunthuocsauScreen = ({navigation, route}) => {
     </View>
   ));
 
-  renderInner = () => (
-    <View style={styles.panel}>
-      <View style={{alignItems: 'center'}}>
-        <Text style={styles.panelTitle}>Upload Photo</Text>
-        <Text style={styles.panelSubtitle}>Choose Your Profile Picture</Text>
-      </View>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={takePhotoFromCamera}>
-        <Text style={styles.panelButtonTitle}>Take Photo</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={choosePhotoFromLibrary}>
-        <Text style={styles.panelButtonTitle}>Choose From Library</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.panelButton}
-        onPress={() => bs.current.snapTo(1)}>
-        <Text style={styles.panelButtonTitle}>Cancel</Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  renderHeader = () => (
-    <View style={styles.pheader}>
-      <View style={styles.panelHeader}>
-        <View style={styles.panelHandle} />
-      </View>
-    </View>
-  );
-
-  const currentUser = useSelector((state) => state.authReducer.currentUser);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -349,15 +412,14 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               <View style={styles.action}>
                 <TouchableOpacity
                   onPress={() =>
-                    handleLoaiThuocArray((dataArr) => [
+                    handleloaithuocArray((dataArr) => [
                       ...dataArr,
                       {
-                        ten: '',
+                        thuoc: '',
                         loai: 0,
                         soluong: 0,
                         dungtich: 0,
                         luongnuoc: 0,
-                        hinhanh: 0,
                       },
                     ])
                   }>
@@ -368,10 +430,10 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                     style={{alignSelf: 'center'}}
                   />
                 </TouchableOpacity>
-                {loaiThuocArray.length > 1 ? <TouchableOpacity
+                <TouchableOpacity
                   onPress={() => {
-                    loaiThuocArray.pop(),
-                      handleLoaiThuocArray((dataArr) => [...dataArr]);
+                    loaithuocArray.pop(),
+                      handleloaithuocArray((dataArr) => [...dataArr]);
                   }}>
                   <Feather
                     name="minus-circle"
@@ -379,20 +441,62 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                     size={30}
                     style={{alignSelf: 'center'}}
                   />
-                </TouchableOpacity> : <TouchableOpacity
-                  onPress={() => {
-                  }}>
-                  <Feather
-                    name="minus-circle"
-                    color="gray"
-                    size={30}
-                    style={{alignSelf: 'center'}}
-                  />
-                </TouchableOpacity>}
+                </TouchableOpacity>
               </View>
+              {/* <Temp /> */}
               <View style={styles.button}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate('BookmarkScreen')}
+                  onPress={
+                    () =>
+                      //navigation.navigate('BookmarkScreen')
+                      {
+                        //console.log(route.params);
+                        // console.log(dataSendServer);
+                        //let dataSendServer = {
+                        // dataSendServer.cachtri = route.params.cachtri;
+                        // };
+                        // let dataSendServer = dataSendServer
+                        let postDataServer = {
+                          work: 'sauhai',
+                          title: route.params.title,
+                          //isBatch:route.params.idBatch,
+                          isFarmer: currentUser.data._id,
+                          cachtri: route.params.cachtri,
+                          // de y khuc nay'
+                          deTailVal: loaithuocArray,
+                          imageData: route.params.imageSend,
+                        };
+                        console.log(postDataServer);
+                        switch (route.params.title) {
+                          case 'allbatch':
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            //dispatch(actions.pushDiaryToServer(imageSend));
+                            break;
+                          case 'allStumpinBatch':
+                            postDataServer.isBatch = route.params.idBatch;
+                            console.log(route.params.idBatch);
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          case 'Stumps':
+                            postDataServer.arrayStumps =
+                              route.params.arrayStumps;
+                            postDataServer.isBatch = route.params.idBatch;
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          case 'detailStump':
+                            postDataServer.arrayChecked =
+                              route.params.arrayChecked;
+                            postDataServer.isBatch = route.params.idBatch;
+                            postDataServer.isStump = route.params.isStump;
+                            dispatch(actions.pushDiaryToServer(postDataServer));
+                            break;
+                          default:
+                            break;
+                        }
+                        // navigation.navigate('Home');
+                      }
+                    // alert(typeThuoc)
+                  }
                   style={styles.xitthuoc}>
                   <LinearGradient
                     colors={['#08d4c4', '#01ab9d']}
@@ -404,7 +508,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                           color: '#fff',
                         },
                       ]}>
-                      Xịt thuốc
+                      hoàng tất nhật ký
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>

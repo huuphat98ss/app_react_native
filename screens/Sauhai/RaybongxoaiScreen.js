@@ -381,16 +381,17 @@ const RaybongxoaiScreen = ({navigation, route}) => {
                     {
                       console.log(route.params);
                       // console.log(dataSendServer);
-                      let dataSendServer = {
-                        cachtri: cachtri,
-                      };
+                      // let dataSendServer = {
+                      //   cachtri: cachtri,
+                      // };
                       let postDataServer = {
                         work: 'sauhai',
                         title: route.params.title,
                         //isBatch:route.params.idBatch,
                         isFarmer: currentUser.data._id,
                         // de y khuc nay'
-                        deTailVal: dataSendServer,
+                        // deTailVal: dataSendServer,
+                        cachtri: cachtri,
                         imageData: imageSend,
                       };
                       console.log(postDataServer);

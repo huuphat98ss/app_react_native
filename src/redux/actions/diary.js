@@ -3,7 +3,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const localhost = actionTypes.LOCALHOST;
 export const pushDiaryToServer = (data) => {
-  console.log(data.imageData);
+  console.log(data.deTailVal);
+  //console.log(data.imageData);
   imageData = data.imageData;
   const formData = new FormData();
   if (imageData.length !== 0) {
