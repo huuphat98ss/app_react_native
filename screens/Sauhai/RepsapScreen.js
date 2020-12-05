@@ -21,15 +21,20 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import {useDispatch} from 'react-redux';
+import * as actions from '../../src/redux/actions/diary';
 const RepsapScreen = ({navigation, route}) => {
   const {info, loaisau, cachtri} = route.params;
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
-  const [img, chosenImage] = useState(0);
-  console.log('img' + img);
+  const dispatch = useDispatch();
+  // data image send server
+  const [imageSend, setImageSend] = useState([]);
 
+  const [img, chosenImage] = useState(0);
+  //console.log('img' + img);
+  // console.log(route.params);
   // Usestate
   // Sâu đục trái
 
@@ -72,6 +77,27 @@ const RepsapScreen = ({navigation, route}) => {
           ? setImage((dataArr) => [...dataArr, image.path])
           : setImage(tempData);
       }
+      const img = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      // console.log(img);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, img]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, img]);
+      }
+
       bs.current.snapTo(1);
     });
   };
@@ -190,7 +216,18 @@ const RepsapScreen = ({navigation, route}) => {
               }}>
               {cachtri[1]}
             </Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Phun thuốc sâu")}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Phun thuốc sâu', {
+                  cachtri: cachtri[1],
+                  title: route.params.title,
+                  idBatch: route.params.idBatch,
+                  arrayStumps: route.params.arrayStumps,
+                  isStump: route.params.isStump,
+                  arrayChecked: route.params.arrayChecked,
+                  imageSend: imageSend,
+                })
+              }>
               <Feather name="plus-circle" color="green" size={20} />
             </TouchableOpacity>
           </View>
