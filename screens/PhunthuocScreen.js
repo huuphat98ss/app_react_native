@@ -466,7 +466,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                           title: route.params.title,
                           //isBatch:route.params.idBatch,
                           isFarmer: currentUser.data._id,
-                          //   deTailVal: dataSendServer,
+                          deTailVal: loaithuocArray,
                           imageData: imageSend,
                         };
                         switch (route.params.title) {
