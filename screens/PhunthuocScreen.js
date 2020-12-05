@@ -363,7 +363,6 @@ const PhunthuocScreen = ({navigation, route}) => {
                 <TouchableOpacity
                   onPress={
                     () =>
-                      //navigation.navigate('BookmarkScreen')
                       {
                         console.log(route.params.title);
                         console.log(dataSendServer);
@@ -399,9 +398,11 @@ const PhunthuocScreen = ({navigation, route}) => {
                           default:
                             break;
                         }
-                        navigation.navigate('Home');
+                        navigation.reset({
+                          index: 0,
+                          routes: [{name: 'Home'}],
+                        });
                       }
-                    // alert(typeThuoc)
                   }
                   style={styles.xitthuoc}>
                   <LinearGradient
@@ -414,7 +415,7 @@ const PhunthuocScreen = ({navigation, route}) => {
                           color: '#fff',
                         },
                       ]}>
-                      hoàng tất nhật ký
+                      Hoàn tất nhật ký
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
