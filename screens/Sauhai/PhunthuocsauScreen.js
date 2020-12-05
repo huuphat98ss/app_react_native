@@ -52,7 +52,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
   }
 
   // HANDLE
-  function handleValidUser(val, titlebutton) {
+  function handleValidUser(val, titlebutton, index) {
     // console.log('handle ' + titlebutton + val);
     // if (val.trim().length >= 4) {
     //   handleUser(true);
@@ -62,28 +62,46 @@ const PhunthuocsauScreen = ({navigation, route}) => {
     switch (titlebutton) {
       case 'thuoc':
         // dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        console.log(loaithuocArray);
+        loaithuocArray[index][titlebutton] = val;
+        handleloaithuocArray((dataArr) => [...dataArr]);
+        console.log(loaithuocArray);
         console.log('thuoc' + val);
         break;
       case 'loai':
         // dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
-        console.log('loai' + val);
+        loaithuocArray[index][titlebutton] = val;
+        handleloaithuocArray((dataArr) => [...dataArr]);
         break;
       case 'soluong':
         // dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
         handleIsValidSoluong(checkNumber(val));
+        if (checkNumber(val) == true) {
+          loaithuocArray[index][titlebutton] = val;
+          handleloaithuocArray((dataArr) => [...dataArr]);
+        }
         break;
       case 'dungtich':
         // dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
         handleIsValidDungtich(checkNumber(val));
+        if (checkNumber(val) == true) {
+          loaithuocArray[index][titlebutton] = val;
+          handleloaithuocArray((dataArr) => [...dataArr]);
+        }
         break;
       case 'luongnuoc':
         // dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
         handleIsValidLuongnuoc(checkNumber(val));
+        if (checkNumber(val) == true) {
+          loaithuocArray[index][titlebutton] = val;
+          handleloaithuocArray((dataArr) => [...dataArr]);
+        }
         console.log('luongnuoc' + val);
         break;
       default:
         break;
     }
+    console.log(loaithuocArray);
   }
 
   // Bottom Sheet khai báo
@@ -164,10 +182,12 @@ const PhunthuocsauScreen = ({navigation, route}) => {
           // secureTextEntry={this.state.secureTextEntry ? true : false}
           // onChangeText={(val) => handleValidUser(val, 'thuoc')}
           onChangeText={(val) => {
-            element['thuoc'] = val;
-            handleloaithuocArray((dataArr) => [...dataArr]);
+            // element['thuoc'] = val;
+            // handleloaithuocArray((dataArr) => [...dataArr]);
           }}
-          onEndEditing={(e) => handleValidUser(e.nativeEvent.text, 'thuoc')}
+          onEndEditing={(e) =>
+            handleValidUser(e.nativeEvent.text, 'thuoc', index)
+          }
         />
         <TouchableOpacity onPress={() => {}}>
           {isValidUser ? (
@@ -183,8 +203,8 @@ const PhunthuocsauScreen = ({navigation, route}) => {
             element['loai'] === 'Chai'
               ? (element['loai'] = 0)
               : (element['loai'] = 'Chai');
-            handleloaithuocArray((dataArr) => [...dataArr]);
-            handleValidUser(element['loai'], 'loai');
+            // handleloaithuocArray((dataArr) => [...dataArr]);
+            handleValidUser(element['loai'], 'loai', index);
           }}
           style={styles.signIn}>
           <LinearGradient
@@ -210,8 +230,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
             element['loai'] === 'Goi'
               ? (element['loai'] = 0)
               : (element['loai'] = 'Goi');
-            handleloaithuocArray((dataArr) => [...dataArr]);
-            handleValidUser(element['loai'], 'loai');
+            handleValidUser(element['loai'], 'loai', index);
           }}
           style={styles.signIn}>
           <LinearGradient
@@ -239,18 +258,18 @@ const PhunthuocsauScreen = ({navigation, route}) => {
             <View style={styles.action}>
               <TextInput
                 placeholder="Số lượng"
-                style={isValidSoluong ? styles.textInput : styles.textInput}
+                style={styles.textInput}
                 autoCapitalize="none"
                 // secureTextEntry={this.state.secureTextEntry ? true : false}
                 onChangeText={(val) =>
                   // handleValidUser(val, 'luongnuoc')
                   {
-                    element['soluong'] = val;
-                    handleloaithuocArray((dataArr) => [...dataArr]);
+                    // element['soluong'] = val;
+                    // handleloaithuocArray((dataArr) => [...dataArr]);
                   }
                 }
                 onEndEditing={(e) =>
-                  handleValidUser(e.nativeEvent.text, 'soluong')
+                  handleValidUser(e.nativeEvent.text, 'soluong', index)
                 }
               />
 
@@ -266,12 +285,10 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                   // handleValidUser(val, 'luongnuoc')
                   {
                     element['dungtich'] = val;
-                    handleloaithuocArray((dataArr) => [...dataArr]);
-                    console.log(loaithuocArray);
                   }
                 }
                 onEndEditing={(e) =>
-                  handleValidUser(e.nativeEvent.text, 'dungtich')
+                  handleValidUser(e.nativeEvent.text, 'dungtich', index)
                 }
               />
               <Text>ml</Text>
@@ -299,7 +316,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                 {isValidDungtich ? (
                   <Text></Text>
                 ) : (
-                  <Animatable.View animation="fadeInLeft" duration={500}>
+                  <Animatable.View animation="fadeInRight" duration={500}>
                     <Text style={styles.errorMsg}>Must be number</Text>
                   </Animatable.View>
                 )}
@@ -307,44 +324,75 @@ const PhunthuocsauScreen = ({navigation, route}) => {
             )}
           </View>
         ) : (
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Số lượng"
-              style={styles.textInput}
-              autoCapitalize="none"
-              // secureTextEntry={this.state.secureTextEntry ? true : false}
-              // onChangeText={(val) => handleValidUser(val, 'soluong')}
-              onChangeText={(val) =>
-                // handleValidUser(val, 'luongnuoc')
-                {
-                  element['soluong'] = val;
-                  handleloaithuocArray((dataArr) => [...dataArr]);
+          <View>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Số lượng"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // secureTextEntry={this.state.secureTextEntry ? true : false}
+                // onChangeText={(val) => handleValidUser(val, 'soluong')}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    // element['soluong'] = val;
+                    // handleloaithuocArray((dataArr) => [...dataArr]);
+                  }
                 }
-              }
-              onEndEditing={(e) =>
-                handleValidUser(e.nativeEvent.text, 'soluong')
-              }
-            />
-            <TouchableOpacity onPress={() => {}}>
-              <Text style={{}}>Chai</Text>
-            </TouchableOpacity>
-            <TextInput
-              placeholder="Dung tích"
-              style={styles.textInput}
-              autoCapitalize="none"
-              // onChangeText={(val) => handleValidUser(val, 'dungdich')}
-              onChangeText={(val) =>
-                // handleValidUser(val, 'luongnuoc')
-                {
-                  element['dungtich'] = val;
-                  handleloaithuocArray((dataArr) => [...dataArr]);
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'soluong', index)
                 }
-              }
-              onEndEditing={(e) =>
-                handleValidUser(e.nativeEvent.text, 'dungtich')
-              }
-            />
-            <Text>ml</Text>
+              />
+              <TouchableOpacity onPress={() => {}}>
+                <Text style={{}}>Chai</Text>
+              </TouchableOpacity>
+              <TextInput
+                placeholder="Dung tích"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // onChangeText={(val) => handleValidUser(val, 'dungdich')}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    element['dungtich'] = val;
+                    // handleloaithuocArray((dataArr) => [...dataArr]);
+                  }
+                }
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'dungtich', index)
+                }
+              />
+              <Text>ml</Text>
+            </View>
+            {isValidSoluong && isValidDungtich ? null : (
+              <View
+                style={[
+                  styles.action,
+                  {
+                    justifyContent: 'space-around',
+                    alignItems: 'stretch',
+                    flexDirection: 'row',
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    marginTop: 0,
+                  },
+                ]}>
+                {isValidSoluong ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+                {isValidDungtich ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInRight" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+              </View>
+            )}
           </View>
         )
       ) : null}
@@ -358,34 +406,36 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               onChangeText={(val) =>
                 // handleValidUser(val, 'luongnuoc')
                 {
-                  element['luongnuoc'] = val;
-                  handleloaithuocArray((dataArr) => [...dataArr]);
+                  // element['luongnuoc'] = val;
+                  // handleloaithuocArray((dataArr) => [...dataArr]);
                 }
               }
               onEndEditing={(e) =>
-                handleValidUser(e.nativeEvent.text, 'luongnuoc')
+                handleValidUser(e.nativeEvent.text, 'luongnuoc', index)
               }
             />
             <TouchableOpacity onPress={() => {}}>
               <Text style={{justifyContent: 'center'}}>Lít</Text>
             </TouchableOpacity>
           </View>
-          {isValidLuongnuoc ? null : <View style={[
-                  styles.action,
-                  {
-                    justifyContent: 'space-around',
-                    alignItems: 'stretch',
-                    flexDirection: 'row',
-                    marginBottom: 10,
-                    marginLeft: 10,
-                    marginTop: 0,
-                  },
-                ]}>
-            <Text
-              style={styles.errorMsg}>
-              Must be number
-            </Text>
-          </View> }
+          {isValidLuongnuoc ? null : (
+            <View
+              style={[
+                styles.action,
+                {
+                  justifyContent: 'space-around',
+                  alignItems: 'stretch',
+                  flexDirection: 'row',
+                  marginBottom: 10,
+                  marginLeft: 10,
+                  marginTop: 0,
+                },
+              ]}>
+              <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMsg}>Must be number</Text>
+              </Animatable.View>
+            </View>
+          )}
           <View style={styles.action}>
             <Text
               style={{
