@@ -29,6 +29,9 @@ const SauductraiScreen = ({navigation, route}) => {
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
+  // const [loaithuocArray, handleloaithuocArray] = useState([
+  //   {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
+  // ]);
   const dispatch = useDispatch();
   // data image send server
   const [imageSend, setImageSend] = useState([]);
@@ -369,16 +372,17 @@ const SauductraiScreen = ({navigation, route}) => {
                     {
                       console.log(route.params);
                       // console.log(dataSendServer);
-                      let dataSendServer = {
-                        cachtri: cachtri,
-                      };
+                      // let dataSendServer = {
+                      //   cachtri: cachtri,
+                      // };
                       let postDataServer = {
                         work: 'sauhai',
                         title: route.params.title,
                         //isBatch:route.params.idBatch,
                         isFarmer: currentUser.data._id,
+                        cachtri: cachtri,
                         // de y khuc nay'
-                        deTailVal: dataSendServer,
+                        //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
                       console.log(postDataServer);

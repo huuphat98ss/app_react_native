@@ -38,7 +38,7 @@ const TempScreen = ({route, navigation}) => {
           }}>
           <TempStack.Screen
             name="Support"
-            component={PhunthuocScreen}
+            component={PhunthuocsauScreen}
             initialParams={{initialState: initialState}}
             options={{
               title: 'Bón phân',
@@ -138,11 +138,11 @@ const TempScreen = ({route, navigation}) => {
             }}
           />
           <TempStack.Screen
-            name="Chuẩn bị thuốc"
+            name="Phun thuốc"
             component={PhunthuocScreen}
             initialParams={{initialState: initialState, name: name}}
             options={{
-              title: 'Chuẩn bị thuốc',
+              title: 'Phun thuốc',
               headerLeft: () => (
                 <Icon.Button
                   name="chevron-back-outline"
