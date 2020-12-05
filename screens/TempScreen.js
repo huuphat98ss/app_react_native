@@ -21,7 +21,7 @@ import RuiducquaScreen from './Sauhai/RuiducquaScreen';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
-  console.log('navigation' + JSON.stringify(navigation));
+  // console.log('navigation' + JSON.stringify(navigation));
   let navTo = null;
   switch (name) {
     case 'Bón phân':

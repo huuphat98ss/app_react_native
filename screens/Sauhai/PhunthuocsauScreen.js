@@ -11,7 +11,7 @@ import {
   Alert,
   ImageBackground,
 } from 'react-native';
-
+import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,11 +26,14 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../src/redux/actions/diary';
 const PhunthuocsauScreen = ({navigation, route}) => {
-  const [language, setLanguage] = useState('java');
   const [isValidUser, handleUser] = useState(false);
-  const [typeThuoc, handleFerType] = useState(0);
   const dispatch = useDispatch();
   const [image, setImage] = useState(0);
+  const [isValidThuoc, handleIsValidThuoc] = useState(true);
+  const [isValidLoai, handleIsValidLoai] = useState(true);
+  const [isValidSoluong, handleIsValidSoluong] = useState(true);
+  const [isValidDungtich, handleIsValidDungtich] = useState(true);
+  const [isValidLuongnuoc, handleIsValidLuongnuoc] = useState(true);
   const [loaithuocArray, handleloaithuocArray] = useState([
     {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
   ]);
@@ -41,32 +44,46 @@ const PhunthuocsauScreen = ({navigation, route}) => {
   // console.log(route.params.stayhere);
   // console.log(route.params.colhere);
   console.log(route.params);
+
+  function checkNumber(val) {
+    var reg = new RegExp('^[0-9]+$');
+    // pass a function to map
+    return reg.test(val);
+  }
+
+  // HANDLE
   function handleValidUser(val, titlebutton) {
     // console.log('handle ' + titlebutton + val);
-    if (val.trim().length >= 4) {
-      handleUser(true);
-    } else {
-      handleUser(false);
-    }
+    // if (val.trim().length >= 4) {
+    //   handleUser(true);
+    // } else {
+    //   handleUser(false);
+    // }
     switch (titlebutton) {
       case 'thuoc':
-        dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        console.log('thuoc' + val);
+        break;
+      case 'loai':
+        // dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        console.log('loai' + val);
         break;
       case 'soluong':
-        dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
+        handleIsValidSoluong(checkNumber(val));
         break;
       case 'dungtich':
-        dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
+        handleIsValidDungtich(checkNumber(val));
         break;
       case 'luongnuoc':
-        dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
+        handleIsValidLuongnuoc(checkNumber(val));
+        console.log('luongnuoc' + val);
         break;
       default:
         break;
     }
-  }
-  function handleType(val) {
-    handleFerType(val);
   }
 
   // Bottom Sheet khai báo
@@ -134,7 +151,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
   const currentUser = useSelector((state) => state.authReducer.currentUser);
 
   let thuocArray = loaithuocArray.map((element, index) => (
-    <View>
+    <View key={index}>
       <Text style={{color: '#009387', fontSize: 16, marginBottom: 5}}>
         Tên thuốc
       </Text>
@@ -146,15 +163,11 @@ const PhunthuocsauScreen = ({navigation, route}) => {
           autoCapitalize="none"
           // secureTextEntry={this.state.secureTextEntry ? true : false}
           // onChangeText={(val) => handleValidUser(val, 'thuoc')}
-          onChangeText={(val) =>
-            // handleValidUser(val, 'luongnuoc')
-            {
-              element['thuoc'] = val;
-              handleloaithuocArray((dataArr) => [...dataArr]);
-              console.log(loaithuocArray);
-            }
-          }
-          // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
+          onChangeText={(val) => {
+            element['thuoc'] = val;
+            handleloaithuocArray((dataArr) => [...dataArr]);
+          }}
+          onEndEditing={(e) => handleValidUser(e.nativeEvent.text, 'thuoc')}
         />
         <TouchableOpacity onPress={() => {}}>
           {isValidUser ? (
@@ -171,6 +184,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               ? (element['loai'] = 0)
               : (element['loai'] = 'Chai');
             handleloaithuocArray((dataArr) => [...dataArr]);
+            handleValidUser(element['loai'], 'loai');
           }}
           style={styles.signIn}>
           <LinearGradient
@@ -197,6 +211,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               ? (element['loai'] = 0)
               : (element['loai'] = 'Goi');
             handleloaithuocArray((dataArr) => [...dataArr]);
+            handleValidUser(element['loai'], 'loai');
           }}
           style={styles.signIn}>
           <LinearGradient
@@ -220,41 +235,76 @@ const PhunthuocsauScreen = ({navigation, route}) => {
       </View>
       {element['loai'] !== 0 ? (
         element['loai'] === 'Goi' ? (
-          <View style={styles.action}>
-            <TextInput
-              placeholder="Số lượng"
-              style={styles.textInput}
-              autoCapitalize="none"
-              // secureTextEntry={this.state.secureTextEntry ? true : false}
-              onChangeText={(val) =>
-                // handleValidUser(val, 'luongnuoc')
-                {
-                  element['loai'] = val;
-                  handleloaithuocArray((dataArr) => [...dataArr]);
-                  console.log(loaithuocArray);
+          <View>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Số lượng"
+                style={isValidSoluong ? styles.textInput : styles.textInput}
+                autoCapitalize="none"
+                // secureTextEntry={this.state.secureTextEntry ? true : false}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    element['soluong'] = val;
+                    handleloaithuocArray((dataArr) => [...dataArr]);
+                  }
                 }
-              }
-              // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-            />
-            <TouchableOpacity onPress={() => {}}>
-              <Text>Gói</Text>
-            </TouchableOpacity>
-            <TextInput
-              placeholder="Dung tích"
-              style={styles.textInput}
-              autoCapitalize="none"
-              // secureTextEntry={this.state.secureTextEntry ? true : false}
-              onChangeText={(val) =>
-                // handleValidUser(val, 'luongnuoc')
-                {
-                  element['loai'] = val;
-                  handleloaithuocArray((dataArr) => [...dataArr]);
-                  console.log(loaithuocArray);
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'soluong')
                 }
-              }
-              // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-            />
-            <Text>ml</Text>
+              />
+
+              <TouchableOpacity onPress={() => {}}>
+                <Text>Gói</Text>
+              </TouchableOpacity>
+              <TextInput
+                placeholder="Dung tích"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // secureTextEntry={this.state.secureTextEntry ? true : false}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    element['dungtich'] = val;
+                    handleloaithuocArray((dataArr) => [...dataArr]);
+                    console.log(loaithuocArray);
+                  }
+                }
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'dungtich')
+                }
+              />
+              <Text>ml</Text>
+            </View>
+            {isValidSoluong && isValidDungtich ? null : (
+              <View
+                style={[
+                  styles.action,
+                  {
+                    justifyContent: 'space-around',
+                    alignItems: 'stretch',
+                    flexDirection: 'row',
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    marginTop: 0,
+                  },
+                ]}>
+                {isValidSoluong ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+                {isValidDungtich ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+              </View>
+            )}
           </View>
         ) : (
           <View style={styles.action}>
@@ -269,10 +319,11 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                 {
                   element['soluong'] = val;
                   handleloaithuocArray((dataArr) => [...dataArr]);
-                  console.log(loaithuocArray);
                 }
               }
-              // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
+              onEndEditing={(e) =>
+                handleValidUser(e.nativeEvent.text, 'soluong')
+              }
             />
             <TouchableOpacity onPress={() => {}}>
               <Text style={{}}>Chai</Text>
@@ -287,8 +338,10 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                 {
                   element['dungtich'] = val;
                   handleloaithuocArray((dataArr) => [...dataArr]);
-                  console.log(loaithuocArray);
                 }
+              }
+              onEndEditing={(e) =>
+                handleValidUser(e.nativeEvent.text, 'dungtich')
               }
             />
             <Text>ml</Text>
@@ -307,14 +360,32 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                 {
                   element['luongnuoc'] = val;
                   handleloaithuocArray((dataArr) => [...dataArr]);
-                  console.log(loaithuocArray);
                 }
+              }
+              onEndEditing={(e) =>
+                handleValidUser(e.nativeEvent.text, 'luongnuoc')
               }
             />
             <TouchableOpacity onPress={() => {}}>
               <Text style={{justifyContent: 'center'}}>Lít</Text>
             </TouchableOpacity>
           </View>
+          {isValidLuongnuoc ? null : <View style={[
+                  styles.action,
+                  {
+                    justifyContent: 'space-around',
+                    alignItems: 'stretch',
+                    flexDirection: 'row',
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    marginTop: 0,
+                  },
+                ]}>
+            <Text
+              style={styles.errorMsg}>
+              Must be number
+            </Text>
+          </View> }
           <View style={styles.action}>
             <Text
               style={{
@@ -430,18 +501,27 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                     style={{alignSelf: 'center'}}
                   />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    loaithuocArray.pop(),
-                      handleloaithuocArray((dataArr) => [...dataArr]);
-                  }}>
+                {loaithuocArray.length > 1 ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      loaithuocArray.pop(),
+                        handleloaithuocArray((dataArr) => [...dataArr]);
+                    }}>
+                    <Feather
+                      name="minus-circle"
+                      color="green"
+                      size={30}
+                      style={{alignSelf: 'center'}}
+                    />
+                  </TouchableOpacity>
+                ) : (
                   <Feather
                     name="minus-circle"
-                    color="green"
+                    color="gray"
                     size={30}
                     style={{alignSelf: 'center'}}
                   />
-                </TouchableOpacity>
+                )}
               </View>
               {/* <Temp /> */}
               <View style={styles.button}>
@@ -508,7 +588,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                           color: '#fff',
                         },
                       ]}>
-                      hoàng tất nhật ký
+                      Hoàn tất nhật ký
                     </Text>
                   </LinearGradient>
                 </TouchableOpacity>
@@ -545,6 +625,9 @@ const styles = StyleSheet.create({
     // paddingVertical: 30,
     alignContent: 'center',
   },
+  textWrong: {
+    color: 'red',
+  },
   picker: {
     height: 100,
     alignSelf: 'stretch',
@@ -580,6 +663,13 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : -14,
     paddingLeft: 10,
     color: '#05375a',
+    fontSize: 16,
+  },
+  textInputWrong: {
+    flex: 1,
+    marginTop: Platform.OS === 'ios' ? 0 : -14,
+    paddingLeft: 10,
+    color: 'red',
     fontSize: 16,
   },
   errorMsg: {
