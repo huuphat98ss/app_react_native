@@ -23,20 +23,24 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../src/redux/actions/diary';
-const RaybongxoaiScreen = ({navigation, route}) => {
+const NhendoScreen = ({navigation, route}) => {
+  //console.log(route.params);
   const {info, loaisau, cachtri} = route.params;
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
+  // const [loaithuocArray, handleloaithuocArray] = useState([
+  //   {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
+  // ]);
+  const dispatch = useDispatch();
   // data image send server
   const [imageSend, setImageSend] = useState([]);
-  const dispatch = useDispatch();
+
   const [img, chosenImage] = useState(0);
   console.log('img' + img);
 
   // Usestate
   // Sâu đục trái
-  const [imageSauductrai, setImageSauductrai] = useState(0);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -45,6 +49,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -65,7 +70,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
           : setImage(tempData);
       }
 
-      const img = {
+      const imgs = {
         uri: image.path,
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
@@ -80,16 +85,16 @@ const RaybongxoaiScreen = ({navigation, route}) => {
           }
         });
         if (!check) {
-          setImageSend((dataArr) => [...dataArr, img]);
+          setImageSend((dataArr) => [...dataArr, imgs]);
         }
       } else {
-        setImageSend((dataArr) => [...dataArr, img]);
+        setImageSend((dataArr) => [...dataArr, imgs]);
       }
 
       bs.current.snapTo(1);
     });
   };
-
+  //console.log(imageArr);
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -130,10 +135,11 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       } else {
         setImageSend((dataArr) => [...dataArr, imgs]);
       }
+
       bs.current.snapTo(1);
     });
   };
-  console.log('imageArr' + imageArr);
+  console.log(imageSend);
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -220,7 +226,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
 
   let phuongphaptri = null;
   switch (loaisau) {
-    case 'Rầy bông xoài':
+    case 'Nhện đỏ':
       phuongphaptri = (
         <View>
           <View style={styles.action}>
@@ -252,6 +258,22 @@ const RaybongxoaiScreen = ({navigation, route}) => {
               <Feather name="camera" color="green" size={20} />
             </TouchableOpacity>
           </View>
+          {imageArr[2] ? <OpenCam image={imageArr[2]} /> : null}
+          <View style={styles.action}>
+            <Text
+              style={{
+                flex: 1,
+                // paddingLeft: 10,
+                color: '#01ab9d',
+                fontSize: 16,
+              }}>
+              {cachtri[2]}
+            </Text>
+            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+              <Feather name="camera" color="green" size={20} />
+            </TouchableOpacity>
+          </View>
+          {imageArr[3] ? <OpenCam image={imageArr[3]} /> : null}
         </View>
       );
       break;
@@ -389,9 +411,9 @@ const RaybongxoaiScreen = ({navigation, route}) => {
                         title: route.params.title,
                         //isBatch:route.params.idBatch,
                         isFarmer: currentUser.data._id,
-                        // de y khuc nay'
-                        // deTailVal: dataSendServer,
                         cachtri: cachtri,
+                        // de y khuc nay'
+                        //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
                       console.log(postDataServer);
@@ -447,7 +469,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
   );
 };
 
-export default RaybongxoaiScreen;
+export default NhendoScreen;
 
 const styles = StyleSheet.create({
   container: {

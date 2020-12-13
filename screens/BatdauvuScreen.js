@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -18,16 +19,40 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import {useSelector} from 'react-redux';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
 const BatdauvuScreen = ({navigation, route}) => {
-  const [language, setLanguage] = useState('java');
   const album = route.params.initialState;
-  console.log('album' + JSON.stringify(album));
-  console.log(album.type);
-  console.log(language);
-  const menus = album.type.map((x, index) => (
-    <Picker.Item key={index} label={x} value={x} />
-  ));
+  // const menus = album.type.map((x, index) => (
+  //   <Picker.Item key={index} label={x} value={x} />
+  // ));
   // console.log(menus);
+
+  // DATE PICKER
+
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  console.log(date);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+  };
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    showMode('time');
+  };
+  // DATE PICKER
 
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   return (
@@ -37,35 +62,34 @@ const BatdauvuScreen = ({navigation, route}) => {
         <Text style={styles.text_header}>
           Hợp tác xã: {currentUser.username}
         </Text>
+        <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
+          Nông dân: {currentUser.username}
+        </Text>
       </View>
       <View style={styles.footer}>
         <View>
           <ScrollView>
-            <View style={styles.action}>
-              <FontAwesome name="lock" color="black" size={20} />
-              <TextInput
-                placeholder="Your Password"
-                style={styles.textInput}
-                autoCapitalize="none"
-                // secureTextEntry={this.state.secureTextEntry ? true : false}
-                // onChangeText={(val) => this.handlePasswordChange(val)}
-                // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-              />
-              <TouchableOpacity onPress={() => {}}>
-                <Feather name="eye-off" color="black" size={20} />
-                {/* {this.state.secureTextEntry ? (
-                <Feather name="eye-off" color="black" size={20} />
-              ) : (
-                <Feather name="eye" color="#403d3d" size={20} />
-              )} */}
-              </TouchableOpacity>
+            <View>
+              <View>
+                <Button onPress={showDatepicker} title="Show date picker!" />
+              </View>
+              <View>
+                <Button onPress={showTimepicker} title="Show time picker!" />
+              </View>
+              {show && (
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              )}
             </View>
-            <Picker
-              selectedValue={language}
-              style={styles.picker}
-              onValueChange={(itemValue, itemIndex) => setLanguage(itemValue)}>
-              {menus}
-            </Picker>
+            <View>
+              <Text>{JSON.stringify(date).substring(1,11)}</Text>
+            </View>
           </ScrollView>
         </View>
       </View>
@@ -94,26 +118,32 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
-    paddingVertical: 30,
+    // paddingVertical: 30,
     alignContent: 'center',
   },
-  picker: {height: 100, alignSelf: 'stretch', flexDirection: 'row'},
+  picker: {
+    height: 50,
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    color: '#01ab9d',
+  },
   text_header: {
-    color: '#000',
+    color: '#008040',
     fontWeight: 'bold',
-    fontSize: 15,
+    fontSize: 20,
   },
   text_footer: {
-    // color: '#05375a',
-    color: '#0a0909',
-    fontSize: 18,
+    color: '#cf7a13',
+    fontSize: 16,
+    marginBottom: 10,
   },
   action: {
     flexDirection: 'row',
+    marginBottom: 10,
     marginTop: 10,
-    borderBottomWidth: 1,
-    // borderBottomColor: '#f2f2f2',
-    paddingBottom: 5,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#f1f1f1',
+    justifyContent: 'space-between',
   },
   actionError: {
     flexDirection: 'row',
@@ -124,9 +154,10 @@ const styles = StyleSheet.create({
   },
   textInput: {
     flex: 1,
-    marginTop: Platform.OS === 'ios' ? 0 : -12,
+    marginTop: Platform.OS === 'ios' ? 0 : -14,
     paddingLeft: 10,
     color: '#05375a',
+    fontSize: 16,
   },
   errorMsg: {
     color: '#FF0000',
@@ -137,14 +168,86 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   signIn: {
-    width: '100%',
+    flex: 1,
+    alignSelf: 'stretch',
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 1,
+    borderRadius: 10,
+  },
+  xitthuoc: {
+    flex: 1,
+    alignSelf: 'stretch',
     height: 50,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 1,
     borderRadius: 10,
   },
   textSign: {
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  commandButton: {
+    padding: 15,
+    borderRadius: 10,
+    backgroundColor: '#FF6347',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  panel: {
+    padding: 20,
+    backgroundColor: '#f2f2f2',
+    // paddingTop: 20,
+    // borderTopLeftRadius: 30,
+    // borderTopRightRadius: 30,
+    // shadowColor: '#000000',
+    // shadowOffset: {width: 0, height: 0},
+    // shadowRadius: 5,
+    // shadowOpacity: 0.4,
+  },
+  pheader: {
+    backgroundColor: '#f2f2f2',
+    shadowColor: '#333333',
+    shadowOffset: {width: -1, height: -3},
+    shadowRadius: 2,
+    shadowOpacity: 0.4,
+    // elevation: 5,
+    paddingTop: 20,
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+  },
+  panelHeader: {
+    alignItems: 'center',
+  },
+  panelHandle: {
+    width: 40,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#00000040',
+    marginBottom: 10,
+  },
+  panelTitle: {
+    fontSize: 27,
+    height: 35,
+  },
+  panelSubtitle: {
+    fontSize: 14,
+    color: 'gray',
+    height: 30,
+    marginBottom: 10,
+  },
+  panelButton: {
+    padding: 13,
+    borderRadius: 10,
+    backgroundColor: '#01ab9d',
+    alignItems: 'center',
+    marginVertical: 7,
+  },
+  panelButtonTitle: {
+    fontSize: 17,
+    fontWeight: 'bold',
+    color: 'white',
   },
 });

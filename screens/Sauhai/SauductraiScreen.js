@@ -37,10 +37,6 @@ const SauductraiScreen = ({navigation, route}) => {
   const [imageSend, setImageSend] = useState([]);
 
   const [img, chosenImage] = useState(0);
-  console.log('img' + img);
-
-  // Usestate
-  // Sâu đục trái
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -49,6 +45,7 @@ const SauductraiScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
+  
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -69,12 +66,12 @@ const SauductraiScreen = ({navigation, route}) => {
           : setImage(tempData);
       }
 
-      const img = {
+      const imgs = {
         uri: image.path,
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
-      // console.log(img);
+      console.log("img"+imgs);
       //setImageSend(img);
       if (imageSend.length !== 0) {
         let check = false;
@@ -84,16 +81,16 @@ const SauductraiScreen = ({navigation, route}) => {
           }
         });
         if (!check) {
-          setImageSend((dataArr) => [...dataArr, img]);
+          setImageSend((dataArr) => [...dataArr, imgs]);
         }
       } else {
-        setImageSend((dataArr) => [...dataArr, img]);
+        setImageSend((dataArr) => [...dataArr, imgs]);
       }
 
       bs.current.snapTo(1);
     });
   };
-  //console.log(imageArr);
+  
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -103,7 +100,6 @@ const SauductraiScreen = ({navigation, route}) => {
     }).then((image) => {
       let found = imageArr.find((element) => element == img);
       let found1 = found === undefined ? false : true;
-      console.log(found1);
       let tempData = [];
       imageArr.forEach((element) => {
         element === img ? (element = image.path) : null, tempData.push(element);
@@ -114,12 +110,12 @@ const SauductraiScreen = ({navigation, route}) => {
           : setImage(tempData);
       }
 
-      const img = {
+      const imgs = {
         uri: image.path,
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
-      // console.log(img);
+      // console.log("img"+imgs);
       //setImageSend(img);
       if (imageSend.length !== 0) {
         let check = false;
@@ -129,16 +125,15 @@ const SauductraiScreen = ({navigation, route}) => {
           }
         });
         if (!check) {
-          setImageSend((dataArr) => [...dataArr, img]);
+          setImageSend((dataArr) => [...dataArr, imgs]);
         }
       } else {
-        setImageSend((dataArr) => [...dataArr, img]);
+        setImageSend((dataArr) => [...dataArr, imgs]);
       }
 
       bs.current.snapTo(1);
     });
   };
-  console.log(imageSend);
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -242,7 +237,7 @@ const SauductraiScreen = ({navigation, route}) => {
               <Feather name="camera" color="green" size={20} />
             </TouchableOpacity>
           </View>
-          {imageArr[1] ? <OpenCam image={imageArr[1]} /> : null}
+          {imageArr[1] ? <OpenCam image={imageArr[1]} index={1} /> : null}
         </View>
       );
       break;
@@ -366,10 +361,10 @@ const SauductraiScreen = ({navigation, route}) => {
             {phuongphaptri}
             <View style={styles.button}>
               <TouchableOpacity
-                onPress={
+                onPress= {
                   () =>
                     //navigation.navigate('BookmarkScreen')
-                    {
+                    { 
                       console.log(route.params);
                       // console.log(dataSendServer);
                       // let dataSendServer = {
@@ -426,7 +421,7 @@ const SauductraiScreen = ({navigation, route}) => {
                         color: '#fff',
                       },
                     ]}>
-                    hoàng tất nhật ký
+                    Hoàn tất nhật ký
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>

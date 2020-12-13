@@ -5,7 +5,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const TempStack = createStackNavigator();
 
-//import SupportScreen from './SupportScreen';
 import BatdauvuScreen from './BatdauvuScreen';
 import PhunthuocScreen from './PhunthuocScreen';
 import BookmarkScreen from './BookmarkScreen';
@@ -18,6 +17,10 @@ import RaybongxoaiScreen from './Sauhai/RaybongxoaiScreen';
 import RepsapScreen from './Sauhai/RepsapScreen';
 import ShowMap from './QR/ShowMap';
 import RuiducquaScreen from './Sauhai/RuiducquaScreen';
+import BocatlaScreen from './Sauhai/BocatlaScreen';
+import NhendoScreen from './Sauhai/NhendoScreen';
+import BotriScreen from './Sauhai/BotriScreen';
+import BonphanScreen from './BonphanScreen';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
@@ -37,8 +40,8 @@ const TempScreen = ({route, navigation}) => {
             },
           }}>
           <TempStack.Screen
-            name="Support"
-            component={PhunthuocsauScreen}
+            name="Bón phân"
+            component={BonphanScreen}
             initialParams={{initialState: initialState}}
             options={{
               title: 'Bón phân',
@@ -48,7 +51,10 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.goBack();
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
                   }}></Icon.Button>
               ),
             }}
@@ -101,7 +107,7 @@ const TempScreen = ({route, navigation}) => {
             },
           }}>
           <TempStack.Screen
-            name="Check QR"
+            name="CheckQR"
             component={DemoCheckScreenQR}
             initialParams={{initialState: initialState, name: name}}
             options={{
@@ -297,7 +303,58 @@ const TempScreen = ({route, navigation}) => {
             component={RuiducquaScreen}
             initialParams={{initialState: initialState}}
             options={{
-              title: 'Rùi đục quả',
+              title: 'Ruồi đục quả xoài',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Bọ cắt lá"
+            component={BocatlaScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Bọ cắt lá',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Nhện đỏ"
+            component={NhendoScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Nhện đỏ',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Bọ trĩ"
+            component={BotriScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Bọ trĩ',
               headerLeft: () => (
                 <Icon.Button
                   name="chevron-back-outline"

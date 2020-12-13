@@ -309,10 +309,10 @@ const PhunthuocScreen = ({navigation, route}) => {
                         color: '#01ab9d',
                         fontSize: 16,
                       }}>
-                      Quay video quá trình pha thuốc
+                      Hình ảnh quá trình pha thuốc
                     </Text>
                     <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-                      <Feather name="video" color="green" size={20} />
+                      <Feather name="camera" color="green" size={20} />
                     </TouchableOpacity>
                   </View>
                   {image !== 0 ? (
