@@ -23,20 +23,24 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../src/redux/actions/diary';
-const RaybongxoaiScreen = ({navigation, route}) => {
+const BotriScreen = ({navigation, route}) => {
+  //console.log(route.params);
   const {info, loaisau, cachtri} = route.params;
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
+  // const [loaithuocArray, handleloaithuocArray] = useState([
+  //   {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
+  // ]);
+  const dispatch = useDispatch();
   // data image send server
   const [imageSend, setImageSend] = useState([]);
-  const dispatch = useDispatch();
+
   const [img, chosenImage] = useState(0);
   console.log('img' + img);
 
   // Usestate
   // Sâu đục trái
-  const [imageSauductrai, setImageSauductrai] = useState(0);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -89,7 +93,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       bs.current.snapTo(1);
     });
   };
-
+  //console.log(imageArr);
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -130,10 +134,11 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       } else {
         setImageSend((dataArr) => [...dataArr, imgs]);
       }
+
       bs.current.snapTo(1);
     });
   };
-  console.log('imageArr' + imageArr);
+  console.log(imageSend);
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -220,7 +225,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
 
   let phuongphaptri = null;
   switch (loaisau) {
-    case 'Rầy bông xoài':
+    case 'Bọ trĩ':
       phuongphaptri = (
         <View>
           <View style={styles.action}>
@@ -248,10 +253,39 @@ const RaybongxoaiScreen = ({navigation, route}) => {
               }}>
               {cachtri[1]}
             </Text>
+            <TouchableOpacity
+              onPress={() => {
+                imageArr.length === 3
+                  ? navigation.navigate('Phun thuốc sâu', {
+                      cachtri: cachtri[1],
+                      title: route.params.title,
+                      idBatch: route.params.idBatch,
+                      arrayStumps: route.params.arrayStumps,
+                      isStump: route.params.isStump,
+                      arrayChecked: route.params.arrayChecked,
+                      imageSend: imageSend,
+                    })
+                  : alert('Vui lòng nhập đầy đủ hình ảnh');
+              }}>
+              <Feather name="plus-circle" color="green" size={20} />
+            </TouchableOpacity>
+          </View>
+          {imageArr[2] ? <OpenCam image={imageArr[1]} /> : null}
+          <View style={styles.action}>
+            <Text
+              style={{
+                flex: 1,
+                // paddingLeft: 10,
+                color: '#01ab9d',
+                fontSize: 16,
+              }}>
+              {cachtri[2]}
+            </Text>
             <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
               <Feather name="camera" color="green" size={20} />
             </TouchableOpacity>
           </View>
+          {imageArr[3] ? <OpenCam image={imageArr[1]} /> : null}
         </View>
       );
       break;
@@ -373,73 +407,6 @@ const RaybongxoaiScreen = ({navigation, route}) => {
               </Text>
             </View>
             {phuongphaptri}
-            <View style={styles.button}>
-              <TouchableOpacity
-                onPress={
-                  () =>
-                    //navigation.navigate('BookmarkScreen')
-                    {
-                      console.log(route.params);
-                      // console.log(dataSendServer);
-                      // let dataSendServer = {
-                      //   cachtri: cachtri,
-                      // };
-                      let postDataServer = {
-                        work: 'sauhai',
-                        title: route.params.title,
-                        //isBatch:route.params.idBatch,
-                        isFarmer: currentUser.data._id,
-                        // de y khuc nay'
-                        // deTailVal: dataSendServer,
-                        cachtri: cachtri,
-                        imageData: imageSend,
-                      };
-                      console.log(postDataServer);
-                      switch (route.params.title) {
-                        case 'allbatch':
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          //dispatch(actions.pushDiaryToServer(imageSend));
-                          break;
-                        case 'allStumpinBatch':
-                          postDataServer.isBatch = route.params.idBatch;
-                          console.log(route.params.idBatch);
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          break;
-                        case 'Stumps':
-                          postDataServer.arrayStumps = route.params.arrayStumps;
-                          postDataServer.isBatch = route.params.idBatch;
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          break;
-                        case 'detailStump':
-                          postDataServer.arrayChecked =
-                            route.params.arrayChecked;
-                          postDataServer.isBatch = route.params.idBatch;
-                          postDataServer.isStump = route.params.isStump;
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          break;
-                        default:
-                          break;
-                      }
-                      // navigation.navigate('Home');
-                    }
-                  // alert(typeThuoc)
-                }
-                style={styles.xitthuoc}>
-                <LinearGradient
-                  colors={['#08d4c4', '#01ab9d']}
-                  style={styles.xitthuoc}>
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: '#fff',
-                      },
-                    ]}>
-                    hoàng tất nhật ký
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
       </View>
@@ -447,7 +414,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
   );
 };
 
-export default RaybongxoaiScreen;
+export default BotriScreen;
 
 const styles = StyleSheet.create({
   container: {

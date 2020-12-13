@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import {
   View,
+  ScrollView,
   Text,
   Button,
   StyleSheet,
@@ -70,7 +71,7 @@ const SauhaiScreen = ({navigation, route}) => {
         title="Click Here"
         onPress={() => alert("Huy")}
       /> */}
-      {applyArrayRender}
+      <ScrollView>{applyArrayRender}</ScrollView>
     </View>
   );
 };

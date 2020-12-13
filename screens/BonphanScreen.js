@@ -2,98 +2,45 @@ import React, {useState} from 'react';
 import {
   View,
   Text,
+  Button,
   StyleSheet,
-  Dimensions,
   StatusBar,
   ScrollView,
   TextInput,
   TouchableOpacity,
-  Button,
-  ImageBackground,
+  ImageBackground
 } from 'react-native';
-import {useSelector} from 'react-redux';
-// import Animated from 'react-native-reanimated';
-import Feather from 'react-native-vector-icons/Feather';
-import Modal from 'react-native-modal';
-import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/Ionicons';
 
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Picker} from '@react-native-picker/picker';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
+import LinearGradient from 'react-native-linear-gradient';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-import {useDispatch} from 'react-redux';
-import * as actions from '../../src/redux/actions/diary';
-const RaybongxoaiScreen = ({navigation, route}) => {
-  const {info, loaisau, cachtri} = route.params;
-  const currentUser = useSelector((state) => state.authReducer.currentUser);
-  const [isModalVisible, setModalVisible] = useState(false);
+import {useSelector} from 'react-redux';
+
+const BonphanScreen = ({navigation, route}) => {
+  const [typeFer, setFer] = useState(0);
   const [imageArr, setImage] = useState([]);
-  // data image send server
-  const [imageSend, setImageSend] = useState([]);
-  const dispatch = useDispatch();
+  const album = route.params.initialState;
+  console.log('album' + JSON.stringify(album));
+  console.log(album.type);
+  const menus = album.type.map((x, index) => (
+    <Picker.Item key={index} label={x} value={x} />
+  ));
+
+  const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [img, chosenImage] = useState(0);
-  console.log('img' + img);
-
-  // Usestate
-  // Sâu đục trái
-  const [imageSauductrai, setImageSauductrai] = useState(0);
-
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
-
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
+  
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 500,
-      cropping: true,
-      compressImageQuality: 0.7,
-    }).then((image) => {
-      let found = imageArr.find((element) => element == img);
-      let found1 = found === undefined ? false : true;
-      console.log(found1);
-      let tempData = [];
-      imageArr.forEach((element) => {
-        element === img ? (element = image.path) : null, tempData.push(element);
-      });
-      {
-        found1 === false
-          ? setImage((dataArr) => [...dataArr, image.path])
-          : setImage(tempData);
-      }
-
-      const img = {
-        uri: image.path,
-        type: image.mime,
-        name: image.path.substr(image.path.lastIndexOf('/') + 1),
-      };
-      // console.log(img);
-      //setImageSend(img);
-      if (imageSend.length !== 0) {
-        let check = false;
-        imageSend.forEach((ele) => {
-          if (ele.uri === image.path) {
-            check = true;
-          }
-        });
-        if (!check) {
-          setImageSend((dataArr) => [...dataArr, img]);
-        }
-      } else {
-        setImageSend((dataArr) => [...dataArr, img]);
-      }
-
-      bs.current.snapTo(1);
-    });
-  };
-
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 500,
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
@@ -115,7 +62,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
-      // console.log(img);
+      console.log("img"+imgs);
       //setImageSend(img);
       if (imageSend.length !== 0) {
         let check = false;
@@ -130,10 +77,54 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       } else {
         setImageSend((dataArr) => [...dataArr, imgs]);
       }
+
       bs.current.snapTo(1);
     });
   };
-  console.log('imageArr' + imageArr);
+  
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 500,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then((image) => {
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
+
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      // console.log("img"+imgs);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
+      bs.current.snapTo(1);
+    });
+  };
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -166,7 +157,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       </View>
     </View>
   );
-
+  
   function OpenCam(props) {
     let image = props.image;
     return (
@@ -217,87 +208,8 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       </View>
     );
   }
-
-  let phuongphaptri = null;
-  switch (loaisau) {
-    case 'Rầy bông xoài':
-      phuongphaptri = (
-        <View>
-          <View style={styles.action}>
-            <Text
-              style={{
-                flex: 1,
-                // paddingLeft: 10,
-                color: '#01ab9d',
-                fontSize: 16,
-              }}>
-              {cachtri[0]}
-            </Text>
-            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-              <Feather name="camera" color="green" size={20} />
-            </TouchableOpacity>
-          </View>
-          {imageArr[1] ? <OpenCam image={imageArr[1]} /> : null}
-          <View style={styles.action}>
-            <Text
-              style={{
-                flex: 1,
-                // paddingLeft: 10,
-                color: '#01ab9d',
-                fontSize: 16,
-              }}>
-              {cachtri[1]}
-            </Text>
-            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-              <Feather name="camera" color="green" size={20} />
-            </TouchableOpacity>
-          </View>
-        </View>
-      );
-      break;
-    // case y:
-    //   // code block
-    //   break;
-    default:
-      console.log('default');
-  }
-
   return (
     <View style={styles.container}>
-      <Modal
-        isVisible={isModalVisible}
-        style={{backgroundColor: 'white', borderRadius: 30, padding: 20}}>
-        <View style={([styles.container], {borderRadius: 30})}>
-          <Text style={styles.text_header}>{info}</Text>
-          <View
-            style={[
-              styles.button,
-              {
-                flexDirection: 'row',
-                paddingTop: 5,
-                paddingBottom: 5,
-                paddingLeft: 30,
-                paddingRight: 30,
-              },
-            ]}>
-            <TouchableOpacity onPress={toggleModal} style={styles.xitthuoc}>
-              <LinearGradient
-                colors={['#08d4c4', '#01ab9d']}
-                style={styles.xitthuoc}>
-                <Text
-                  style={[
-                    styles.textSign,
-                    {
-                      color: '#fff',
-                    },
-                  ]}>
-                  Ok
-                </Text>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </Modal>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <BottomSheet
         ref={bs}
@@ -308,11 +220,6 @@ const RaybongxoaiScreen = ({navigation, route}) => {
         callbackNode={fall}
         enabledGestureInteraction={true}
       />
-      {/* <Animated.View
-        style={{
-          // margin: 20,
-          opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
-        }}> */}
       <View style={styles.header}>
         <Text style={styles.text_header}>
           Hợp tác xã: {currentUser.username}
@@ -324,122 +231,30 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       <View style={styles.footer}>
         <View>
           <ScrollView>
-            <View style={styles.action}>
-              {/* <FontAwesome name="lock" color="black" size={20} /> */}
-              <Text
-                style={
-                  (styles.textInput,
-                  [
-                    {
-                      color: '#009387',
-                      fontSize: 18,
-                      marginBottom: 5,
-                      marginTop: 5,
-                    },
-                  ])
-                }>
-                Loại sâu: {loaisau}
-              </Text>
-              <TouchableOpacity
-                style={{flexDirection: 'column', alignItems: 'center'}}
-                onPress={toggleModal}>
-                {/* {isValidUser ? (
-                  <Feather name="check-circle" color="green" size={20} />
-                ) : (
-                  <Feather name="slash" color="black" size={20} />
-                )} */}
-                <Text>Thông tin bệnh</Text>
-                <Feather name="plus-circle" color="black" size={20} />
-              </TouchableOpacity>
-            </View>
+            <Text style={{color: '#009387', fontSize: 16, marginBottom: 5}}>
+              Loại phân
+            </Text>
+            <Picker
+              selectedValue={typeFer}
+              style={styles.picker}
+              onValueChange={(itemValue, itemIndex) => setFer(itemValue)}>
+              {menus}
+            </Picker>
             <View style={styles.action}>
               <Text
                 style={{
                   flex: 1,
                   // paddingLeft: 10,
-                  color: '#01ab9d',
+                  color: '#008040',
                   fontSize: 16,
                 }}>
-                Chụp ảnh bệnh
+                Chụp ảnh bón phân
               </Text>
               <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
                 <Feather name="camera" color="green" size={20} />
               </TouchableOpacity>
             </View>
             {imageArr[0] ? <OpenCam image={imageArr[0]} /> : null}
-            <View style={styles.action}>
-              <Text style={{color: 'red', fontSize: 18, flex: 1}}>
-                *Cách phòng trị
-              </Text>
-            </View>
-            {phuongphaptri}
-            <View style={styles.button}>
-              <TouchableOpacity
-                onPress={
-                  () =>
-                    //navigation.navigate('BookmarkScreen')
-                    {
-                      console.log(route.params);
-                      // console.log(dataSendServer);
-                      // let dataSendServer = {
-                      //   cachtri: cachtri,
-                      // };
-                      let postDataServer = {
-                        work: 'sauhai',
-                        title: route.params.title,
-                        //isBatch:route.params.idBatch,
-                        isFarmer: currentUser.data._id,
-                        // de y khuc nay'
-                        // deTailVal: dataSendServer,
-                        cachtri: cachtri,
-                        imageData: imageSend,
-                      };
-                      console.log(postDataServer);
-                      switch (route.params.title) {
-                        case 'allbatch':
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          //dispatch(actions.pushDiaryToServer(imageSend));
-                          break;
-                        case 'allStumpinBatch':
-                          postDataServer.isBatch = route.params.idBatch;
-                          console.log(route.params.idBatch);
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          break;
-                        case 'Stumps':
-                          postDataServer.arrayStumps = route.params.arrayStumps;
-                          postDataServer.isBatch = route.params.idBatch;
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          break;
-                        case 'detailStump':
-                          postDataServer.arrayChecked =
-                            route.params.arrayChecked;
-                          postDataServer.isBatch = route.params.idBatch;
-                          postDataServer.isStump = route.params.isStump;
-                          dispatch(actions.pushDiaryToServer(postDataServer));
-                          break;
-                        default:
-                          break;
-                      }
-                      // navigation.navigate('Home');
-                    }
-                  // alert(typeThuoc)
-                }
-                style={styles.xitthuoc}>
-                <LinearGradient
-                  colors={['#08d4c4', '#01ab9d']}
-                  style={styles.xitthuoc}>
-                  <Text
-                    style={[
-                      styles.textSign,
-                      {
-                        color: '#fff',
-                      },
-                    ]}>
-                    hoàng tất nhật ký
-                  </Text>
-                </LinearGradient>
-              </TouchableOpacity>
-            </View>
           </ScrollView>
         </View>
       </View>
@@ -447,7 +262,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
   );
 };
 
-export default RaybongxoaiScreen;
+export default BonphanScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -472,9 +287,10 @@ const styles = StyleSheet.create({
     alignContent: 'center',
   },
   picker: {
-    height: 100,
+    height: 50,
     alignSelf: 'stretch',
     flexDirection: 'row',
+    color: '#01ab9d',
   },
   text_header: {
     color: '#008040',

@@ -23,20 +23,24 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
 import * as actions from '../../src/redux/actions/diary';
-const RaybongxoaiScreen = ({navigation, route}) => {
+const BocatlaScreen = ({navigation, route}) => {
+  //console.log(route.params);
   const {info, loaisau, cachtri} = route.params;
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
+  // const [loaithuocArray, handleloaithuocArray] = useState([
+  //   {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
+  // ]);
+  const dispatch = useDispatch();
   // data image send server
   const [imageSend, setImageSend] = useState([]);
-  const dispatch = useDispatch();
+
   const [img, chosenImage] = useState(0);
   console.log('img' + img);
 
   // Usestate
   // Sâu đục trái
-  const [imageSauductrai, setImageSauductrai] = useState(0);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -49,6 +53,51 @@ const RaybongxoaiScreen = ({navigation, route}) => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 500,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then((image) => {
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      console.log(found1);
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
+
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      // console.log(img);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
+      bs.current.snapTo(1);
+    });
+  };
+  //console.log(imageArr);
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 500,
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
@@ -89,51 +138,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
       bs.current.snapTo(1);
     });
   };
-
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 500,
-      cropping: true,
-      compressImageQuality: 0.7,
-    }).then((image) => {
-      let found = imageArr.find((element) => element == img);
-      let found1 = found === undefined ? false : true;
-      console.log(found1);
-      let tempData = [];
-      imageArr.forEach((element) => {
-        element === img ? (element = image.path) : null, tempData.push(element);
-      });
-      {
-        found1 === false
-          ? setImage((dataArr) => [...dataArr, image.path])
-          : setImage(tempData);
-      }
-
-      const imgs = {
-        uri: image.path,
-        type: image.mime,
-        name: image.path.substr(image.path.lastIndexOf('/') + 1),
-      };
-      // console.log(img);
-      //setImageSend(img);
-      if (imageSend.length !== 0) {
-        let check = false;
-        imageSend.forEach((ele) => {
-          if (ele.uri === image.path) {
-            check = true;
-          }
-        });
-        if (!check) {
-          setImageSend((dataArr) => [...dataArr, imgs]);
-        }
-      } else {
-        setImageSend((dataArr) => [...dataArr, imgs]);
-      }
-      bs.current.snapTo(1);
-    });
-  };
-  console.log('imageArr' + imageArr);
+  console.log(imageSend);
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -220,7 +225,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
 
   let phuongphaptri = null;
   switch (loaisau) {
-    case 'Rầy bông xoài':
+    case 'Bọ cắt lá':
       phuongphaptri = (
         <View>
           <View style={styles.action}>
@@ -252,6 +257,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
               <Feather name="camera" color="green" size={20} />
             </TouchableOpacity>
           </View>
+          {imageArr[2] ? <OpenCam image={imageArr[2]} /> : null}
         </View>
       );
       break;
@@ -389,9 +395,9 @@ const RaybongxoaiScreen = ({navigation, route}) => {
                         title: route.params.title,
                         //isBatch:route.params.idBatch,
                         isFarmer: currentUser.data._id,
-                        // de y khuc nay'
-                        // deTailVal: dataSendServer,
                         cachtri: cachtri,
+                        // de y khuc nay'
+                        //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
                       console.log(postDataServer);
@@ -447,7 +453,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
   );
 };
 
-export default RaybongxoaiScreen;
+export default BocatlaScreen;
 
 const styles = StyleSheet.create({
   container: {

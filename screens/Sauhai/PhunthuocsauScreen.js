@@ -29,8 +29,6 @@ const PhunthuocsauScreen = ({navigation, route}) => {
   const [isValidUser, handleUser] = useState(false);
   const dispatch = useDispatch();
   const [image, setImage] = useState(0);
-  const [isValidThuoc, handleIsValidThuoc] = useState(true);
-  const [isValidLoai, handleIsValidLoai] = useState(true);
   const [isValidSoluong, handleIsValidSoluong] = useState(true);
   const [isValidDungtich, handleIsValidDungtich] = useState(true);
   const [isValidLuongnuoc, handleIsValidLuongnuoc] = useState(true);

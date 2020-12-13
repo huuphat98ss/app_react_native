@@ -82,7 +82,7 @@ const DetailsStackScreen = ({navigation}) => {
     <DetailsStack.Navigator
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#1f65ff',
+          backgroundColor: '#009387',
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
@@ -98,7 +98,7 @@ const DetailsStackScreen = ({navigation}) => {
             <Icon.Button
               name="ios-menu"
               size={25}
-              backgroundColor="#1f65ff"
+              backgroundColor="#009387"
               onPress={() => {
                 navigation.openDrawer();
               }}></Icon.Button>
@@ -106,21 +106,6 @@ const DetailsStackScreen = ({navigation}) => {
         }}
       />
     </DetailsStack.Navigator>
-  );
-};
-
-const TempStackScreen = ({navigation}) => {
-  return (
-    <DetailsStack.Navigator
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: '#1f65ff',
-        },
-        headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
-      }}></DetailsStack.Navigator>
   );
 };
 

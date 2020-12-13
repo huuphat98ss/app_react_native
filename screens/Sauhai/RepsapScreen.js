@@ -45,6 +45,7 @@ const RepsapScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -77,7 +78,7 @@ const RepsapScreen = ({navigation, route}) => {
           ? setImage((dataArr) => [...dataArr, image.path])
           : setImage(tempData);
       }
-      const img = {
+      const imgs = {
         uri: image.path,
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
@@ -92,16 +93,15 @@ const RepsapScreen = ({navigation, route}) => {
           }
         });
         if (!check) {
-          setImageSend((dataArr) => [...dataArr, img]);
+          setImageSend((dataArr) => [...dataArr, imgs]);
         }
       } else {
-        setImageSend((dataArr) => [...dataArr, img]);
+        setImageSend((dataArr) => [...dataArr, imgs]);
       }
 
       bs.current.snapTo(1);
     });
   };
-  console.log('imageArr' + imageArr);
 
   renderInner = () => (
     <View style={styles.panel}>
@@ -217,17 +217,19 @@ const RepsapScreen = ({navigation, route}) => {
               {cachtri[1]}
             </Text>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Phun thuốc sâu', {
-                  cachtri: cachtri[1],
-                  title: route.params.title,
-                  idBatch: route.params.idBatch,
-                  arrayStumps: route.params.arrayStumps,
-                  isStump: route.params.isStump,
-                  arrayChecked: route.params.arrayChecked,
-                  imageSend: imageSend,
-                })
-              }>
+              onPress={() => {
+                imageArr.length == 2
+                  ? navigation.navigate('Phun thuốc sâu', {
+                      cachtri: cachtri[1],
+                      title: route.params.title,
+                      idBatch: route.params.idBatch,
+                      arrayStumps: route.params.arrayStumps,
+                      isStump: route.params.isStump,
+                      arrayChecked: route.params.arrayChecked,
+                      imageSend: imageSend,
+                    })
+                  : alert('Vui lòng nhập đầy đủ hình ảnh');
+              }}>
               <Feather name="plus-circle" color="green" size={20} />
             </TouchableOpacity>
           </View>

@@ -205,7 +205,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
               onPress={() => {
                 handleModal(false);
               }}>
-              <Text style={styles.textStyle}>hủy</Text>
+              <Text style={styles.textStyle}>Hủy</Text>
             </TouchableHighlight>
             <TouchableHighlight
               style={{...styles.openButton, backgroundColor: '#2196F3'}}
@@ -221,7 +221,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
                 }
                 //console.log(arrayStumps);
               }}>
-              <Text style={styles.textStyle}>tiếp</Text>
+              <Text style={styles.textStyle}>Tiếp</Text>
             </TouchableHighlight>
           </View>
         </View>
@@ -242,7 +242,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
               }}
               onRead={ifScaned}
               reactivate={true} // first time true
-              permissionDialogMessage="need premission to Access Camera"
+              permissionDialogMessage="Need premission to Access Camera"
               reactivateTimeout={2000}
               showMarker={true}
               markerStyle={{borderColor: '#FFF', borderRadius: 10}}
@@ -253,7 +253,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
           <Animatable.View style={styles.footer} animation="fadeInUpBig">
             <Animatable.View animation="fadeInLeft" style={{height: 300}}>
               <View>
-                <Text>Thông tin thưa check</Text>
+                <Text>Thông tin thửa check</Text>
               </View>
               <ScrollView>{applyArrayRender}</ScrollView>
             </Animatable.View>

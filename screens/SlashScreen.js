@@ -29,9 +29,9 @@ const SlashScreen = ({navigation}) => {
       </View>
       <Animatable.View style={styles.footer} animation="fadeInUpBig">
         <Text style={styles.title}>
-          kiểm tra nguồn góc và ghi nhật ký sản xuất
+          Kiểm tra nguồn gốc và ghi nhật ký sản xuất
         </Text>
-        <Text style={styles.text}>đăng nhập khi bạn là thành viên htx</Text>
+        <Text style={styles.text}>Đăng nhập khi bạn là thành viên HTX</Text>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
             <LinearGradient
