@@ -114,7 +114,7 @@ const SauductraiScreen = ({navigation, route}) => {
           : setImage(tempData);
       }
 
-      const img = {
+      const imgs = {
         uri: image.path,
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
@@ -129,10 +129,10 @@ const SauductraiScreen = ({navigation, route}) => {
           }
         });
         if (!check) {
-          setImageSend((dataArr) => [...dataArr, img]);
+          setImageSend((dataArr) => [...dataArr, imgs]);
         }
       } else {
-        setImageSend((dataArr) => [...dataArr, img]);
+        setImageSend((dataArr) => [...dataArr, imgs]);
       }
 
       bs.current.snapTo(1);
