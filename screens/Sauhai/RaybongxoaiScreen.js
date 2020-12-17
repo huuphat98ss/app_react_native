@@ -379,7 +379,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
                   () =>
                     //navigation.navigate('BookmarkScreen')
                     {
-                      console.log(route.params);
+                      // console.log(cachtri);
                       // console.log(dataSendServer);
                       // let dataSendServer = {
                       //   cachtri: cachtri,
@@ -387,14 +387,15 @@ const RaybongxoaiScreen = ({navigation, route}) => {
                       let postDataServer = {
                         work: 'sauhai',
                         title: route.params.title,
-                        //isBatch:route.params.idBatch,
+                        // loaisau: loaisau,
                         isFarmer: currentUser.data._id,
-                        // de y khuc nay'
-                        // deTailVal: dataSendServer,
-                        cachtri: cachtri,
+                        sau: {
+                          type: loaisau,
+                          theCure: cachtri[0],
+                        },
                         imageData: imageSend,
                       };
-                      console.log(postDataServer);
+                      // console.log(postDataServer);
                       switch (route.params.title) {
                         case 'allbatch':
                           dispatch(actions.pushDiaryToServer(postDataServer));
@@ -421,6 +422,10 @@ const RaybongxoaiScreen = ({navigation, route}) => {
                           break;
                       }
                       // navigation.navigate('Home');
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'Home'}],
+                      });
                     }
                   // alert(typeThuoc)
                 }

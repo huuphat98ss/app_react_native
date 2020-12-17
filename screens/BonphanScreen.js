@@ -8,7 +8,7 @@ import {
   ScrollView,
   TextInput,
   TouchableOpacity,
-  ImageBackground
+  ImageBackground,
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -20,13 +20,17 @@ import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useSelector} from 'react-redux';
-
+import {useDispatch} from 'react-redux';
+import * as actions from '../src/redux/actions/diary';
 const BonphanScreen = ({navigation, route}) => {
   const [typeFer, setFer] = useState(0);
   const [imageArr, setImage] = useState([]);
   const album = route.params.initialState;
-  console.log('album' + JSON.stringify(album));
-  console.log(album.type);
+  // console.log('album' + JSON.stringify(album));
+  // console.log(album.type);
+  const dispatch = useDispatch();
+  // data image send server
+  const [imageSend, setImageSend] = useState([]);
   const menus = album.type.map((x, index) => (
     <Picker.Item key={index} label={x} value={x} />
   ));
@@ -36,7 +40,7 @@ const BonphanScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
-  
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -62,7 +66,7 @@ const BonphanScreen = ({navigation, route}) => {
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
-      console.log("img"+imgs);
+      console.log('img' + imgs);
       //setImageSend(img);
       if (imageSend.length !== 0) {
         let check = false;
@@ -81,7 +85,7 @@ const BonphanScreen = ({navigation, route}) => {
       bs.current.snapTo(1);
     });
   };
-  
+
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -157,7 +161,7 @@ const BonphanScreen = ({navigation, route}) => {
       </View>
     </View>
   );
-  
+
   function OpenCam(props) {
     let image = props.image;
     return (
@@ -255,6 +259,79 @@ const BonphanScreen = ({navigation, route}) => {
               </TouchableOpacity>
             </View>
             {imageArr[0] ? <OpenCam image={imageArr[0]} /> : null}
+
+            <View style={styles.button}>
+              <TouchableOpacity
+                onPress={
+                  () =>
+                    //navigation.navigate('BookmarkScreen')
+                    {
+                      // console.log(route.params);
+                      // console.log(dataSendServer);
+                      // let dataSendServer = {
+                      //   cachtri: cachtri,
+                      // };
+                      let postDataServer = {
+                        work: 'bonphan',
+                        title: route.params.title,
+                        //isBatch:route.params.idBatch,
+                        isFarmer: currentUser.data._id,
+                        //cachtri: cachtri,
+                        // de y khuc nay'
+                        //deTailVal: dataSendServer,
+                        ferTiLizer: typeFer,
+                        imageData: imageSend,
+                      };
+                      // console.log(postDataServer);
+                      switch (route.params.title) {
+                        case 'allbatch':
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          //dispatch(actions.pushDiaryToServer(imageSend));
+                          break;
+                        case 'allStumpinBatch':
+                          postDataServer.isBatch = route.params.idBatch;
+                          console.log(route.params.idBatch);
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          break;
+                        case 'Stumps':
+                          postDataServer.arrayStumps = route.params.arrayStumps;
+                          postDataServer.isBatch = route.params.idBatch;
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          break;
+                        case 'detailStump':
+                          postDataServer.arrayChecked =
+                            route.params.arrayChecked;
+                          postDataServer.isBatch = route.params.idBatch;
+                          postDataServer.isStump = route.params.isStump;
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          break;
+                        default:
+                          break;
+                      }
+                      // navigation.navigate('Home');
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'Home'}],
+                      });
+                    }
+                  // alert(typeThuoc)
+                }
+                style={styles.xitthuoc}>
+                <LinearGradient
+                  colors={['#08d4c4', '#01ab9d']}
+                  style={styles.xitthuoc}>
+                  <Text
+                    style={[
+                      styles.textSign,
+                      {
+                        color: '#fff',
+                      },
+                    ]}>
+                    Hoàn tất nhật ký
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </View>
       </View>

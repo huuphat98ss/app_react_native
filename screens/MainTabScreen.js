@@ -17,7 +17,12 @@ const Tab = createBottomTabNavigator();
 //Render Tab Footer
 const MainTabScreen = () => {
   return (
-    <Tab.Navigator initialRouteName="Home" activeColor="#fff">
+    <Tab.Navigator
+      initialRouteName="Home"
+      // activeColor="#fff"
+      tabBarOptions={{
+        activeTintColor: '#009387',
+      }}>
       <Tab.Screen
         name="Home"
         component={HomeStackScreen}
@@ -25,7 +30,7 @@ const MainTabScreen = () => {
           tabBarLabel: 'Home',
           tabBarColor: '#009387',
           tabBarIcon: ({color}) => (
-            <Icon name="ios-home" color={color} size={26} />
+            <Icon name="ios-home" color="#009387" size={26} />
           ),
         }}
       />
@@ -34,9 +39,9 @@ const MainTabScreen = () => {
         component={DetailsStackScreen}
         options={{
           tabBarLabel: 'Updates',
-          tabBarColor: '#1f65ff',
+          tabBarColor: '#009387',
           tabBarIcon: ({color}) => (
-            <Icon name="ios-notifications" color={color} size={26} />
+            <Icon name="ios-notifications" color="#009387" size={26} />
           ),
         }}
       />

@@ -18,7 +18,7 @@ import {DrawerContent} from './screens/DrawerContent';
 import SupportScreen from './screens/SupportScreen';
 import SettingsScreen from './screens/SettingScreen';
 import BookmarkScreen from './screens/BookmarkScreen';
-import CheckProduct from './screens/CheckProduct';
+import UpdateQrSold from './screens/QR/updateQrSold';
 import SignInScreen from './screens/SignInScreen';
 import TempScreen from './screens/TempScreen';
 import {ActivityIndicator} from 'react-native-paper';
@@ -81,7 +81,7 @@ class App extends Component {
             <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
             <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
             <Drawer.Screen name="TempScreen" component={TempScreen} />
-            <Drawer.Screen name="CheckProduct" component={CheckProduct} />
+            <Drawer.Screen name="UpdateQrSold" component={UpdateQrSold} />
           </Drawer.Navigator>
         ) : (
           <RootStackScreen />

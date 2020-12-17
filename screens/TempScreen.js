@@ -40,9 +40,47 @@ const TempScreen = ({route, navigation}) => {
             },
           }}>
           <TempStack.Screen
+            name="CheckQR"
+            component={DemoCheckScreenQR}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'CheckQR',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Show Map"
+            component={ShowMap}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'Show Map',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Check QR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
             name="Bón phân"
             component={BonphanScreen}
-            initialParams={{initialState: initialState}}
+            //initialParams={{initialState: initialState}}
+            initialParams={{initialState: initialState, name: name}}
             options={{
               title: 'Bón phân',
               headerLeft: () => (
@@ -242,7 +280,8 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.goBack();
+                    //navigation.goBack();
+                    navigation.navigate('Check QR');
                   }}></Icon.Button>
               ),
             }}

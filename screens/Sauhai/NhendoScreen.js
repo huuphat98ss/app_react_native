@@ -402,17 +402,17 @@ const NhendoScreen = ({navigation, route}) => {
                     //navigation.navigate('BookmarkScreen')
                     {
                       console.log(route.params);
-                      // console.log(dataSendServer);
-                      // let dataSendServer = {
-                      //   cachtri: cachtri,
-                      // };
                       let postDataServer = {
                         work: 'sauhai',
                         title: route.params.title,
-                        //isBatch:route.params.idBatch,
+                        //loaisau: loaisau,
                         isFarmer: currentUser.data._id,
-                        cachtri: cachtri,
-                        // de y khuc nay'
+                        // cachtri: cachtri,
+                        sau: {
+                          type: loaisau,
+                          theCure:
+                            cachtri[0] + ',' + cachtri[1] + ',' + cachtri[2],
+                        },
                         //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
@@ -443,6 +443,10 @@ const NhendoScreen = ({navigation, route}) => {
                           break;
                       }
                       // navigation.navigate('Home');
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'Home'}],
+                      });
                     }
                   // alert(typeThuoc)
                 }

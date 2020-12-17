@@ -11,7 +11,7 @@ import {
   Alert,
   ImageBackground,
 } from 'react-native';
-
+import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Picker} from '@react-native-picker/picker';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -26,47 +26,82 @@ import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
 import * as actions from '../src/redux/actions/diary';
 const PhunthuocScreen = ({navigation, route}) => {
-  const [language, setLanguage] = useState('java');
   const [isValidUser, handleUser] = useState(false);
-  const [typeThuoc, handleFerType] = useState(0);
-  const [image, setImage] = useState(0);
-  const [dataSendServer, dataSend] = useState({});
-  const album = route.params.initialState;
   const dispatch = useDispatch();
+  //const [image, setImage] = useState(0);
+  const [isValidSoluong, handleIsValidSoluong] = useState(true);
+  const [isValidDungtich, handleIsValidDungtich] = useState(true);
+  const [isValidLuongnuoc, handleIsValidLuongnuoc] = useState(true);
+  const [loaithuocArray, handleloaithuocArray] = useState([
+    {thuoc: '', loai: 0, soluong: 0, dungtich: 0, luongnuoc: 0},
+  ]);
+  const album = route.params.initialState;
+  const [dataSendServer, dataSend] = useState({});
+  const [imageArr, setImage] = useState([]);
+  // data image send server
+  const [imageSend, setImageSend] = useState([]);
 
-  // console.log('albums' + JSON.stringify(album));
-  console.log('alo phun thuoc');
-  console.log(route.params.title);
-  console.log(route.params.idBatch);
-  // console.log(route.params.arrayStumps);
-  // console.log(dataSendServer);
-  function handleValidUser(val, titlebutton) {
+  const [img, chosenImage] = useState(0);
+
+  console.log(route.params);
+
+  function checkNumber(val) {
+    var reg = new RegExp('^[0-9]+$');
+    // pass a function to map
+    return reg.test(val);
+  }
+
+  // HANDLE
+  function handleValidUser(val, titlebutton, index) {
     // console.log('handle ' + titlebutton + val);
-    if (val.trim().length >= 4) {
-      handleUser(true);
-    } else {
-      handleUser(false);
-    }
+    // if (val.trim().length >= 4) {
+    //   handleUser(true);
+    // } else {
+    //   handleUser(false);
+    // }
     switch (titlebutton) {
       case 'thuoc':
-        dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        console.log(loaithuocArray);
+        loaithuocArray[index][titlebutton] = val;
+        handleloaithuocArray((dataArr) => [...dataArr]);
+        console.log(loaithuocArray);
+        console.log('thuoc' + val);
+        break;
+      case 'loai':
+        // dataSend((prevKeyMap) => ({...prevKeyMap, thuoc: val}));
+        loaithuocArray[index][titlebutton] = val;
+        handleloaithuocArray((dataArr) => [...dataArr]);
         break;
       case 'soluong':
-        dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, soluong: val}));
+        handleIsValidSoluong(checkNumber(val));
+        if (checkNumber(val) == true) {
+          loaithuocArray[index][titlebutton] = val;
+          handleloaithuocArray((dataArr) => [...dataArr]);
+        }
         break;
       case 'dungtich':
-        dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, dungtich: val}));
+        handleIsValidDungtich(checkNumber(val));
+        if (checkNumber(val) == true) {
+          loaithuocArray[index][titlebutton] = val;
+          handleloaithuocArray((dataArr) => [...dataArr]);
+        }
         break;
       case 'luongnuoc':
-        dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
+        // dataSend((prevKeyMap) => ({...prevKeyMap, luongnuoc: val}));
+        handleIsValidLuongnuoc(checkNumber(val));
+        if (checkNumber(val) == true) {
+          loaithuocArray[index][titlebutton] = val;
+          handleloaithuocArray((dataArr) => [...dataArr]);
+        }
+        console.log('luongnuoc' + val);
         break;
       default:
         break;
     }
-  }
-
-  function handleType(val) {
-    handleFerType(val);
+    console.log(loaithuocArray);
   }
 
   // Bottom Sheet khai báo
@@ -80,9 +115,40 @@ const PhunthuocScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      console.log(found1);
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
 
-      setImage(image.path);
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      console.log('img' + imgs);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
       bs.current.snapTo(1);
     });
   };
@@ -94,9 +160,39 @@ const PhunthuocScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
 
-      setImage(image.path);
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      // console.log("img"+imgs);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
       bs.current.snapTo(1);
     });
   };
@@ -133,8 +229,346 @@ const PhunthuocScreen = ({navigation, route}) => {
     </View>
   );
 
-  console.log(typeThuoc);
+  function OpenCam(props) {
+    let image = props.image;
+    return (
+      <View style={{alignItems: 'center'}}>
+        <TouchableOpacity
+          onPress={(e) => {
+            bs.current.snapTo(0);
+            chosenImage(image);
+            e.persist();
+          }}>
+          <View
+            style={{
+              height: 100,
+              width: 100,
+              borderRadius: 15,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <ImageBackground
+              source={{
+                uri: image,
+              }}
+              style={{height: 100, width: 300}}
+              imageStyle={{borderRadius: 15}}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Icon
+                  name="camera"
+                  size={35}
+                  color="#fff"
+                  style={{
+                    opacity: 0.7,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderWidth: 1,
+                    borderColor: '#fff',
+                    borderRadius: 10,
+                  }}
+                />
+              </View>
+            </ImageBackground>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
   const currentUser = useSelector((state) => state.authReducer.currentUser);
+
+  let thuocArray = loaithuocArray.map((element, index) => (
+    <View key={index}>
+      <Text style={{color: '#009387', fontSize: 16, marginBottom: 5}}>
+        Tên thuốc
+      </Text>
+      <View style={styles.action}>
+        {/* <FontAwesome name="lock" color="black" size={20} /> */}
+        <TextInput
+          placeholder="Tên thuốc"
+          style={styles.textInput}
+          autoCapitalize="none"
+          // secureTextEntry={this.state.secureTextEntry ? true : false}
+          // onChangeText={(val) => handleValidUser(val, 'thuoc')}
+          onChangeText={(val) => {
+            // element['thuoc'] = val;
+            // handleloaithuocArray((dataArr) => [...dataArr]);
+          }}
+          onEndEditing={(e) =>
+            handleValidUser(e.nativeEvent.text, 'thuoc', index)
+          }
+        />
+        <TouchableOpacity onPress={() => {}}>
+          {isValidUser ? (
+            <Feather name="check-circle" color="green" size={20} />
+          ) : (
+            <Feather name="slash" color="black" size={20} />
+          )}
+        </TouchableOpacity>
+      </View>
+      <View style={styles.action}>
+        <TouchableOpacity
+          onPress={() => {
+            element['loai'] === 'Chai'
+              ? (element['loai'] = 0)
+              : (element['loai'] = 'Chai');
+            // handleloaithuocArray((dataArr) => [...dataArr]);
+            handleValidUser(element['loai'], 'loai', index);
+          }}
+          style={styles.signIn}>
+          <LinearGradient
+            colors={
+              element['loai'] == 'Chai'
+                ? ['#01ab9d', '#008075']
+                : ['#08d4c4', '#01ab9d']
+            }
+            style={styles.signIn}>
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: '#fff',
+                },
+              ]}>
+              Chai
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            element['loai'] === 'Goi'
+              ? (element['loai'] = 0)
+              : (element['loai'] = 'Goi');
+            handleValidUser(element['loai'], 'loai', index);
+          }}
+          style={styles.signIn}>
+          <LinearGradient
+            colors={
+              element['loai'] == 'Goi'
+                ? ['#01ab9d', '#008075']
+                : ['#08d4c4', '#01ab9d']
+            }
+            style={styles.signIn}>
+            <Text
+              style={[
+                styles.textSign,
+                {
+                  color: '#fff',
+                },
+              ]}>
+              Gói
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
+      </View>
+      {element['loai'] !== 0 ? (
+        element['loai'] === 'Goi' ? (
+          <View>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Số lượng"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // secureTextEntry={this.state.secureTextEntry ? true : false}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    // element['soluong'] = val;
+                    // handleloaithuocArray((dataArr) => [...dataArr]);
+                  }
+                }
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'soluong', index)
+                }
+              />
+
+              <TouchableOpacity onPress={() => {}}>
+                <Text>Gói</Text>
+              </TouchableOpacity>
+              <TextInput
+                placeholder="Dung tích"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // secureTextEntry={this.state.secureTextEntry ? true : false}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    element['dungtich'] = val;
+                  }
+                }
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'dungtich', index)
+                }
+              />
+              <Text>ml</Text>
+            </View>
+            {isValidSoluong && isValidDungtich ? null : (
+              <View
+                style={[
+                  styles.action,
+                  {
+                    justifyContent: 'space-around',
+                    alignItems: 'stretch',
+                    flexDirection: 'row',
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    marginTop: 0,
+                  },
+                ]}>
+                {isValidSoluong ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+                {isValidDungtich ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInRight" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+              </View>
+            )}
+          </View>
+        ) : (
+          <View>
+            <View style={styles.action}>
+              <TextInput
+                placeholder="Số lượng"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // secureTextEntry={this.state.secureTextEntry ? true : false}
+                // onChangeText={(val) => handleValidUser(val, 'soluong')}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    // element['soluong'] = val;
+                    // handleloaithuocArray((dataArr) => [...dataArr]);
+                  }
+                }
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'soluong', index)
+                }
+              />
+              <TouchableOpacity onPress={() => {}}>
+                <Text style={{}}>Chai</Text>
+              </TouchableOpacity>
+              <TextInput
+                placeholder="Dung tích"
+                style={styles.textInput}
+                autoCapitalize="none"
+                // onChangeText={(val) => handleValidUser(val, 'dungdich')}
+                onChangeText={(val) =>
+                  // handleValidUser(val, 'luongnuoc')
+                  {
+                    element['dungtich'] = val;
+                    // handleloaithuocArray((dataArr) => [...dataArr]);
+                  }
+                }
+                onEndEditing={(e) =>
+                  handleValidUser(e.nativeEvent.text, 'dungtich', index)
+                }
+              />
+              <Text>ml</Text>
+            </View>
+            {isValidSoluong && isValidDungtich ? null : (
+              <View
+                style={[
+                  styles.action,
+                  {
+                    justifyContent: 'space-around',
+                    alignItems: 'stretch',
+                    flexDirection: 'row',
+                    marginBottom: 10,
+                    marginLeft: 10,
+                    marginTop: 0,
+                  },
+                ]}>
+                {isValidSoluong ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInLeft" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+                {isValidDungtich ? (
+                  <Text></Text>
+                ) : (
+                  <Animatable.View animation="fadeInRight" duration={500}>
+                    <Text style={styles.errorMsg}>Must be number</Text>
+                  </Animatable.View>
+                )}
+              </View>
+            )}
+          </View>
+        )
+      ) : null}
+      {element['loai'] !== 0 ? (
+        <View>
+          <View style={styles.action}>
+            <TextInput
+              placeholder="Lượng nước dùng để pha"
+              style={styles.textInput}
+              autoCapitalize="none"
+              onChangeText={(val) =>
+                // handleValidUser(val, 'luongnuoc')
+                {
+                  // element['luongnuoc'] = val;
+                  // handleloaithuocArray((dataArr) => [...dataArr]);
+                }
+              }
+              onEndEditing={(e) =>
+                handleValidUser(e.nativeEvent.text, 'luongnuoc', index)
+              }
+            />
+            <TouchableOpacity onPress={() => {}}>
+              <Text style={{justifyContent: 'center'}}>Lít</Text>
+            </TouchableOpacity>
+          </View>
+          {isValidLuongnuoc ? null : (
+            <View
+              style={[
+                styles.action,
+                {
+                  justifyContent: 'space-around',
+                  alignItems: 'stretch',
+                  flexDirection: 'row',
+                  marginBottom: 10,
+                  marginLeft: 10,
+                  marginTop: 0,
+                },
+              ]}>
+              <Animatable.View animation="fadeInLeft" duration={500}>
+                <Text style={styles.errorMsg}>Must be number</Text>
+              </Animatable.View>
+            </View>
+          )}
+          <View style={styles.action}>
+            <Text
+              style={{
+                flex: 1,
+                paddingLeft: 10,
+                color: '#01ab9d',
+                fontSize: 16,
+              }}>
+              chụp sản phẩm
+            </Text>
+            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+              <Feather name="camera" color="green" size={20} />
+            </TouchableOpacity>
+          </View>
+          {imageArr[index] ? <OpenCam image={imageArr[index]} /> : null}
+        </View>
+      ) : null}
+    </View>
+  ));
+
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -154,10 +588,10 @@ const PhunthuocScreen = ({navigation, route}) => {
         }}>
         <View style={styles.header}>
           <Text style={styles.text_header}>
-            Hợp tác xã: {currentUser.data.username}
+            Hợp tác xã: {currentUser.username}
           </Text>
           <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
-            Nông dân: {currentUser.data.username}
+            Nông dân: {currentUser.username}
           </Text>
         </View>
         <View style={styles.footer}>
@@ -167,215 +601,78 @@ const PhunthuocScreen = ({navigation, route}) => {
                 Thuốc và sử dụng công cụ
               </Text>
               <Text style={styles.text_footer}>1. Chọn thuốc/công cụ</Text>
-              <Text style={{color: '#009387', fontSize: 16, marginBottom: 5}}>
-                Tên thuốc
-              </Text>
-              <View style={styles.action}>
-                {/* <FontAwesome name="lock" color="black" size={20} /> */}
-                <TextInput
-                  placeholder="Tên thuốc"
-                  style={styles.textInput}
-                  autoCapitalize="none"
-                  // secureTextEntry={this.state.secureTextEntry ? true : false}
-                  onChangeText={(val) => {
-                    handleValidUser(val, 'thuoc');
-                    //  console.log(val);
-                  }}
-                  // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-                />
-                <TouchableOpacity onPress={() => {}}>
-                  {isValidUser ? (
-                    <Feather name="check-circle" color="green" size={20} />
-                  ) : (
-                    <Feather name="slash" color="black" size={20} />
-                  )}
-                </TouchableOpacity>
-              </View>
+              {thuocArray}
               <View style={styles.action}>
                 <TouchableOpacity
-                  onPress={() => {
-                    typeThuoc === 'Chai' ? handleType(0) : handleType('Chai');
-                  }}
-                  style={styles.signIn}>
-                  <LinearGradient
-                    colors={
-                      typeThuoc == 'Chai'
-                        ? ['#01ab9d', '#008075']
-                        : ['#08d4c4', '#01ab9d']
-                    }
-                    style={styles.signIn}>
-                    <Text
-                      style={[
-                        styles.textSign,
-                        {
-                          color: '#fff',
-                        },
-                      ]}>
-                      Chai
-                    </Text>
-                  </LinearGradient>
+                  onPress={() =>
+                    handleloaithuocArray((dataArr) => [
+                      ...dataArr,
+                      {
+                        thuoc: '',
+                        loai: 0,
+                        soluong: 0,
+                        dungtich: 0,
+                        luongnuoc: 0,
+                      },
+                    ])
+                  }>
+                  <Feather
+                    name="plus-circle"
+                    color="green"
+                    size={30}
+                    style={{alignSelf: 'center'}}
+                  />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    typeThuoc === 'Goi' ? handleType(0) : handleType('Goi');
-                  }}
-                  style={styles.signIn}>
-                  <LinearGradient
-                    colors={
-                      typeThuoc == 'Goi'
-                        ? ['#01ab9d', '#008075']
-                        : ['#08d4c4', '#01ab9d']
-                    }
-                    style={styles.signIn}>
-                    <Text
-                      style={[
-                        styles.textSign,
-                        {
-                          color: '#fff',
-                        },
-                      ]}>
-                      Gói
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
-              </View>
-              {typeThuoc !== 0 ? (
-                typeThuoc === 'Goi' ? (
-                  <View style={styles.action}>
-                    <TextInput
-                      placeholder="Số lượng"
-                      style={styles.textInput}
-                      autoCapitalize="none"
-                      // secureTextEntry={this.state.secureTextEntry ? true : false}
-                      onChangeText={(val) => handleValidUser(val, 'soluong')}
-                      // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
+                {loaithuocArray.length > 1 ? (
+                  <TouchableOpacity
+                    onPress={() => {
+                      loaithuocArray.pop(),
+                        handleloaithuocArray((dataArr) => [...dataArr]);
+                    }}>
+                    <Feather
+                      name="minus-circle"
+                      color="green"
+                      size={30}
+                      style={{alignSelf: 'center'}}
                     />
-                    <TouchableOpacity onPress={() => {}}>
-                      <Text>Gói</Text>
-                    </TouchableOpacity>
-                    <TextInput
-                      placeholder="Dung tích"
-                      style={styles.textInput}
-                      autoCapitalize="none"
-                      // secureTextEntry={this.state.secureTextEntry ? true : false}
-                      onChangeText={(val) => handleValidUser(val, 'dungtich')}
-                      // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-                    />
-                    <Text>ml</Text>
-                  </View>
+                  </TouchableOpacity>
                 ) : (
-                  <View style={styles.action}>
-                    <TextInput
-                      placeholder="Số lượng"
-                      style={styles.textInput}
-                      autoCapitalize="none"
-                      // secureTextEntry={this.state.secureTextEntry ? true : false}
-                      onChangeText={(val) => handleValidUser(val, 'soluong')}
-                      // onEndEditing={(e) => this.handleValidPassword(e.nativeEvent.text)}
-                    />
-                    <TouchableOpacity onPress={() => {}}>
-                      <Text style={{}}>Chai</Text>
-                    </TouchableOpacity>
-                    <TextInput
-                      placeholder="Dung tích"
-                      style={styles.textInput}
-                      autoCapitalize="none"
-                      onChangeText={(val) => handleValidUser(val, 'dungtich')}
-                    />
-                    <Text>ml</Text>
-                  </View>
-                )
-              ) : null}
-              {typeThuoc !== 0 ? (
-                <View>
-                  <View style={styles.action}>
-                    <TextInput
-                      placeholder="Lượng nước dùng để pha"
-                      style={styles.textInput}
-                      autoCapitalize="none"
-                      onChangeText={(val) => handleValidUser(val, 'luongnuoc')}
-                    />
-                    <TouchableOpacity
-                    //onPress={(val) => handleValidUser(val, 'luongnuoc')}
-                    >
-                      <Text style={{justifyContent: 'center'}}>Lít</Text>
-                    </TouchableOpacity>
-                  </View>
-                  <View style={styles.action}>
-                    <Text
-                      style={{
-                        flex: 1,
-                        paddingLeft: 10,
-                        color: '#01ab9d',
-                        fontSize: 16,
-                      }}>
-                      Hình ảnh quá trình pha thuốc
-                    </Text>
-                    <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-                      <Feather name="camera" color="green" size={20} />
-                    </TouchableOpacity>
-                  </View>
-                  {image !== 0 ? (
-                    <View style={{alignItems: 'center'}}>
-                      <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-                        <View
-                          style={{
-                            height: 100,
-                            width: 100,
-                            borderRadius: 15,
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                          }}>
-                          <ImageBackground
-                            source={{
-                              uri: image,
-                            }}
-                            style={{height: 100, width: 300}}
-                            imageStyle={{borderRadius: 15}}>
-                            <View
-                              style={{
-                                flex: 1,
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}>
-                              <Icon
-                                name="camera"
-                                size={35}
-                                color="#fff"
-                                style={{
-                                  opacity: 0.7,
-                                  alignItems: 'center',
-                                  justifyContent: 'center',
-                                  borderWidth: 1,
-                                  borderColor: '#fff',
-                                  borderRadius: 10,
-                                }}
-                              />
-                            </View>
-                          </ImageBackground>
-                        </View>
-                      </TouchableOpacity>
-                    </View>
-                  ) : null}
-                </View>
-              ) : null}
+                  <Feather
+                    name="minus-circle"
+                    color="gray"
+                    size={30}
+                    style={{alignSelf: 'center'}}
+                  />
+                )}
+              </View>
+              {/* <Temp /> */}
               <View style={styles.button}>
                 <TouchableOpacity
                   onPress={
                     () =>
+                      //navigation.navigate('BookmarkScreen')
                       {
-                        console.log(route.params.title);
-                        console.log(dataSendServer);
+                        //console.log(route.params);
+                        // console.log(dataSendServer);
+                        //let dataSendServer = {
+                        // dataSendServer.cachtri = route.params.cachtri;
+                        // };
+                        // let dataSendServer = dataSendServer
                         let postDataServer = {
                           work: 'phunthuoc',
                           title: route.params.title,
                           //isBatch:route.params.idBatch,
                           isFarmer: currentUser.data._id,
-                          deTailVal: dataSendServer,
+                          cachtri: route.params.cachtri,
+                          // de y khuc nay'
+                          deTailVal: loaithuocArray,
+                          imageData: imageSend,
                         };
+                        console.log(postDataServer);
                         switch (route.params.title) {
                           case 'allbatch':
                             dispatch(actions.pushDiaryToServer(postDataServer));
+                            //dispatch(actions.pushDiaryToServer(imageSend));
                             break;
                           case 'allStumpinBatch':
                             postDataServer.isBatch = route.params.idBatch;
@@ -398,11 +695,9 @@ const PhunthuocScreen = ({navigation, route}) => {
                           default:
                             break;
                         }
-                        navigation.reset({
-                          index: 0,
-                          routes: [{name: 'Home'}],
-                        });
+                        // navigation.navigate('Home');
                       }
+                    // alert(typeThuoc)
                   }
                   style={styles.xitthuoc}>
                   <LinearGradient
@@ -452,6 +747,9 @@ const styles = StyleSheet.create({
     // paddingVertical: 30,
     alignContent: 'center',
   },
+  textWrong: {
+    color: 'red',
+  },
   picker: {
     height: 100,
     alignSelf: 'stretch',
@@ -487,6 +785,13 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? 0 : -14,
     paddingLeft: 10,
     color: '#05375a',
+    fontSize: 16,
+  },
+  textInputWrong: {
+    flex: 1,
+    marginTop: Platform.OS === 'ios' ? 0 : -14,
+    paddingLeft: 10,
+    color: 'red',
     fontSize: 16,
   },
   errorMsg: {

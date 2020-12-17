@@ -45,7 +45,7 @@ const SauductraiScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
-  
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -71,7 +71,7 @@ const SauductraiScreen = ({navigation, route}) => {
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
-      console.log("img"+imgs);
+      console.log('img' + imgs);
       //setImageSend(img);
       if (imageSend.length !== 0) {
         let check = false;
@@ -90,7 +90,7 @@ const SauductraiScreen = ({navigation, route}) => {
       bs.current.snapTo(1);
     });
   };
-  
+
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -361,10 +361,10 @@ const SauductraiScreen = ({navigation, route}) => {
             {phuongphaptri}
             <View style={styles.button}>
               <TouchableOpacity
-                onPress= {
+                onPress={
                   () =>
                     //navigation.navigate('BookmarkScreen')
-                    { 
+                    {
                       console.log(route.params);
                       // console.log(dataSendServer);
                       // let dataSendServer = {
@@ -373,10 +373,13 @@ const SauductraiScreen = ({navigation, route}) => {
                       let postDataServer = {
                         work: 'sauhai',
                         title: route.params.title,
-                        //isBatch:route.params.idBatch,
+                        //loaisau: loaisau,
                         isFarmer: currentUser.data._id,
-                        cachtri: cachtri,
-                        // de y khuc nay'
+                        // cachtri: cachtri,
+                        sau: {
+                          type: loaisau,
+                          theCure: cachtri,
+                        },
                         //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
@@ -407,6 +410,10 @@ const SauductraiScreen = ({navigation, route}) => {
                           break;
                       }
                       // navigation.navigate('Home');
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'Home'}],
+                      });
                     }
                   // alert(typeThuoc)
                 }

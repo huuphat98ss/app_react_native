@@ -13,13 +13,12 @@ import {
 } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {AuthContext} from '../components/context';
-import { useSelector } from 'react-redux'
+import {useSelector} from 'react-redux';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useDispatch} from 'react-redux';
 import * as actions from '../src/redux/actions/auth';
 export function DrawerContent(props) {
-  
   const dispatch = useDispatch();
 
   return (
@@ -79,9 +78,9 @@ export function DrawerContent(props) {
               icon={({color, size}) => (
                 <Icon name="account-check-outline" color={color} size={size} />
               )}
-              label="Check Product"
+              label="Update Qr Sold"
               onPress={() => {
-                props.navigation.navigate('CheckProduct');
+                props.navigation.navigate('UpdateQrSold');
               }}
             />
           </Drawer.Section>

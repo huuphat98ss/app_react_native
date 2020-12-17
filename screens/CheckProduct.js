@@ -28,8 +28,7 @@ class CheckProduct1 extends Component {
       resdata: 'not',
       nameOfCooperative: null,
       farmOwner: null,
-      // data: [],
-      // isLoading: true,
+      sold: false,
     };
   }
 
@@ -62,10 +61,11 @@ class CheckProduct1 extends Component {
     fetch(`http://${localhost}:3456/search/${e.data}`)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
+        console.log(data);
         this.setState({
           nameOfCooperative: data[0].nameOfCooperative,
           farmOwner: data[0].Owner,
+          sold: data[2],
         });
       });
   };
@@ -102,7 +102,20 @@ class CheckProduct1 extends Component {
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
           {this.state.nameOfCooperative !== null ? (
             <Animatable.View animation="fadeInLeft">
-              <Text style={styles.title}>Kết quả tìm được</Text>
+              <Text style={styles.title}>
+                Kết quả tìm được
+                <Text
+                  style={{
+                    fontSize: 15,
+                    color: this.state.count === 1 ? '#05375a' : 'red',
+                  }}>
+                  ({this.state.count})
+                </Text>
+              </Text>
+              <Text style={styles.title}>
+                Trái cây:
+                {this.state.sold ? 'Đã thanh toán' : 'chưa thanh toán'}
+              </Text>
               <Text style={styles.text}>
                 {'Hợp tác xã: ' + this.state.nameOfCooperative}
               </Text>
