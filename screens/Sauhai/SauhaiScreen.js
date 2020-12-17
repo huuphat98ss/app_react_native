@@ -66,11 +66,6 @@ const SauhaiScreen = ({navigation, route}) => {
 
   return (
     <View style={styles.container}>
-      {/* <Text>SauhaiScreen</Text>
-      <Button
-        title="Click Here"
-        onPress={() => alert("Huy")}
-      /> */}
       <ScrollView>{applyArrayRender}</ScrollView>
     </View>
   );

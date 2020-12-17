@@ -79,9 +79,11 @@ const Menu = [
       ],
       'Bọ trĩ': [
         'Thành trùng có kích thước rất nhỏ 0,1-0,2 mm, khó nhìn thấy bằng mắt thường. Cả con trưởng thành và ấu trùng đều tập trung ở bộ phận non của cây như đọt non, lá non, hoa và trái để chích hút nhựa. Trên lá non làm lá thâm đen và cong queo, mép lá cụp xuống, trên trái tạo thành vùng da cám xung quanh cuống trái và tạo vết thương giúp vi khuẩn xâm nhập gây bệnh xì mủ trái, gây hại nặng có thể làm cho cả hoa Xoài cháy khô. Bù lạch phát triển mạnh khi thời tiết nắng nóng và sinh sản rất nhanh nên rất mau kháng thuốc.',
-        ['- Dùng vòi nước áp lực cao phun phía dưới mặt lá.'
-        ,'- Dùng dầu khoáng DS 98.8 EC + Actara 25 WG phun lúc cây ra đọt và lá non giúp ngừa được cả rầy bông Xoài và sâu đục đọt Xoài, không phun dầu khoáng giai đọan hoa đang nở. Phun đồng loạt trên khu vực rộng sẽ có hiệu quả cao hơn.'
-        ,'- Phun thuốc hóa học: Nên dùng các loại thuốc có nguồn gốc sinh học và tuân thủ nguyên tắc 4 đúng.'],
+        [
+          '- Dùng vòi nước áp lực cao phun phía dưới mặt lá.',
+          '- Dùng dầu khoáng DS 98.8 EC + Actara 25 WG phun lúc cây ra đọt và lá non giúp ngừa được cả rầy bông Xoài và sâu đục đọt Xoài, không phun dầu khoáng giai đọan hoa đang nở. Phun đồng loạt trên khu vực rộng sẽ có hiệu quả cao hơn.',
+          '- Phun thuốc hóa học: Nên dùng các loại thuốc có nguồn gốc sinh học và tuân thủ nguyên tắc 4 đúng.',
+        ],
       ],
     },
   },
@@ -97,14 +99,20 @@ const Menu = [
     name: 'Tưới nước',
     album:
       'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605413962/menu/002-watering-can_jqt74h.png',
-    route: 'SupportScreen',
+    route: 'TempScreen',
+    type: {
+      'Thông tin':  'Khi bón phân nên xới vòng tròn theo hình chiếu tán cây, trộn phân đều vào đất, sau đó tưới nước và tủ cỏ giữ ẩm.',
+    },
   },
   {
     id: 8,
     name: 'Bao trái',
     album:
       'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605713555/menu/sack_tm82cd.png',
-    route: 'SupportScreen',
+    route: 'TempScreen',
+    type: {
+      'Thông tin':  'Bao trái sẽ hạn chế được số lần phun thuốc hóa học từ 5 - 7 lần/vụ, giúp vỏ trái bóng đẹp, bán được giá cao, góp phần hạ giá thành sản phẩm, tăng lợi nhuận, giúp giảm ô nhiễm môi trường và không tồn dư thuốc BVTV trên trái.',
+    },
   },
 ];
 

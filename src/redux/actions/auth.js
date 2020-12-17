@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 
 const localhost = actionTypes.LOCALHOST;
-//const localhost = '192.168.1.6';
+// const localhost = '192.168.1.6';
 export const login = (datapayload) => ({
   type: actionTypes.LOGIN_USER,
   data: datapayload,

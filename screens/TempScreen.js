@@ -21,10 +21,11 @@ import BocatlaScreen from './Sauhai/BocatlaScreen';
 import NhendoScreen from './Sauhai/NhendoScreen';
 import BotriScreen from './Sauhai/BotriScreen';
 import BonphanScreen from './BonphanScreen';
+import BaotraiScreen from './BaotraiScreen';
+import TuoinuocScreen from './TuoinuocScreen';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
-  // console.log('navigation' + JSON.stringify(navigation));
   let navTo = null;
   switch (name) {
     case 'Bón phân':
@@ -86,7 +87,80 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.goBack();
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Bao trái':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="Bao trái"
+            component={BaotraiScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Bao trái',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Tưới nước':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="Tưới nước"
+            component={TuoinuocScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Tưới nước',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
                   }}></Icon.Button>
               ),
             }}
@@ -411,13 +485,3 @@ const TempScreen = ({route, navigation}) => {
   return navTo;
 };
 export default TempScreen;
-
-// const styles = StyleSheet.create({
-//   container: {
-//     //flexDirection: 'column',
-//     //justifyContent: 'space-between',
-//     // flex: 1,
-//     alignItems: 'center',
-//     //justifyContent: 'center',
-//   },
-// });
