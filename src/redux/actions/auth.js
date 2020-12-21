@@ -3,7 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import jwt_decode from 'jwt-decode';
 
 const localhost = actionTypes.LOCALHOST;
-//const localhost = '192.168.1.6';
+// const localhost = '192.168.1.6';
 export const login = (datapayload) => ({
   type: actionTypes.LOGIN_USER,
   data: datapayload,
@@ -30,7 +30,7 @@ export const userLoginFetch = (data) => {
       .then((response) => response.json())
       .then((json) => {
         console.log('decode');
-        console.log(json);
+        //  console.log(json);
         if (json.message) {
           console.log(json.message);
           dispatch(logout());
@@ -39,11 +39,11 @@ export const userLoginFetch = (data) => {
         //AsyncStorage.setItem('userToken', JSON.stringify(data));
 
         const decodedToken = jwt_decode(json.accessToken);
-        console.log(decodedToken);
+        //  console.log(decodedToken);
         AsyncStorage.setItem('userToken', JSON.stringify(json.accessToken));
 
         dispatch(authStart());
-        dispatch(login(decodedToken.data));
+        dispatch(login(decodedToken));
         dispatch(getDataMap(decodedToken.data._id));
       })
       .catch((error) => {
@@ -61,7 +61,7 @@ export const authStart = () => {
 
 export const getDataMap = (data) => {
   console.log('at map');
-  console.log(data);
+  // console.log(data);
   // let token = await AsyncStorage.getItem('userToken');
   // console.log(token);
   return (dispatch) => {
@@ -88,8 +88,8 @@ export const checkLogin = (data) => {
     if (decodedToken == null) {
       dispatch(checkLoginFail());
     }
-    console.log('dua ve object ');
-    console.log(decodedToken);
+    //console.log('dua ve object ');
+    //console.log(decodedToken);
     dispatch(login(decodedToken));
     dispatch(getDataMap(decodedToken.data._id));
   };

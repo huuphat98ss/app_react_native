@@ -12,11 +12,13 @@ import configureStore from './src/redux/store';
 
 import {createStore, combineReducers, applyMiddleware} from 'redux';
 import authReducer from './src/redux/reducers/AuthReducer';
+import diaryReducer from './src/redux/reducers/DiaryReducer';
 import thunk from 'redux-thunk';
 import {reducer as network} from 'react-native-offline';
 import {ReduxNetworkProvider} from 'react-native-offline';
 const rootReducer = combineReducers({
   authReducer: authReducer,
+  diaryReducer: diaryReducer,
   network,
 });
 

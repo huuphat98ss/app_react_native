@@ -22,11 +22,14 @@ import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
 import {useDispatch} from 'react-redux';
-import * as actions from '../../src/redux/actions/diary';
-const SauductraiScreen = ({navigation, route}) => {
-  //console.log(route.params);
-  const {info, loaisau, cachtri} = route.params;
-  console.log(info);
+import * as actions from '../src/redux/actions/diary';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const TuoinuocScreen = ({navigation, route}) => {
+  const album = route.params.initialState.type;
+  let thongtin;
+  for (const [key, value] of Object.entries(album)) {
+    thongtin = value;
+  }
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
@@ -219,43 +222,13 @@ const SauductraiScreen = ({navigation, route}) => {
     );
   }
 
-  let phuongphaptri = null;
-  switch (loaisau) {
-    case 'Sâu đục trái':
-      phuongphaptri = (
-        <View>
-          <View style={styles.action}>
-            <Text
-              style={{
-                flex: 1,
-                // paddingLeft: 10,
-                color: '#01ab9d',
-                fontSize: 16,
-              }}>
-              {cachtri}
-            </Text>
-            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
-              <Feather name="camera" color="green" size={20} />
-            </TouchableOpacity>
-          </View>
-          {imageArr[1] ? <OpenCam image={imageArr[1]} index={1} /> : null}
-        </View>
-      );
-      break;
-    // case y:
-    //   // code block
-    //   break;
-    default:
-      console.log('default');
-  }
-
   return (
     <View style={styles.container}>
       <Modal
         isVisible={isModalVisible}
         style={{backgroundColor: 'white', borderRadius: 30, padding: 20}}>
         <View style={([styles.container], {borderRadius: 30})}>
-          <Text style={styles.text_header}>{info}</Text>
+          <Text style={styles.text_header}>{thongtin}</Text>
           <View
             style={[
               styles.button,
@@ -325,7 +298,7 @@ const SauductraiScreen = ({navigation, route}) => {
                     },
                   ])
                 }>
-                Loại sâu: {loaisau}
+                Tưới nước
               </Text>
               <TouchableOpacity
                 style={{flexDirection: 'column', alignItems: 'center'}}
@@ -335,7 +308,7 @@ const SauductraiScreen = ({navigation, route}) => {
                 ) : (
                   <Feather name="slash" color="black" size={20} />
                 )} */}
-                <Text>Thông tin bệnh</Text>
+                <Text>Thông tin</Text>
                 <Feather name="plus-circle" color="black" size={20} />
               </TouchableOpacity>
             </View>
@@ -347,19 +320,13 @@ const SauductraiScreen = ({navigation, route}) => {
                   color: '#01ab9d',
                   fontSize: 16,
                 }}>
-                Chụp ảnh bệnh
+                Chụp ảnh tưới nước
               </Text>
               <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
                 <Feather name="camera" color="green" size={20} />
               </TouchableOpacity>
             </View>
             {imageArr[0] ? <OpenCam image={imageArr[0]} /> : null}
-            <View style={styles.action}>
-              <Text style={{color: 'red', fontSize: 18, flex: 1}}>
-                *Cách phòng trị
-              </Text>
-            </View>
-            {phuongphaptri}
             <View style={styles.button}>
               <TouchableOpacity
                 onPress={
@@ -372,15 +339,15 @@ const SauductraiScreen = ({navigation, route}) => {
                       //   cachtri: cachtri,
                       // };
                       let postDataServer = {
-                        work: 'sauhai',
+                        work: 'tuoinuoc',
                         title: route.params.title,
                         //loaisau: loaisau,
                         isFarmer: currentUser.data._id,
                         // cachtri: cachtri,
-                        sau: {
-                          type: loaisau,
-                          theCure: cachtri,
-                        },
+                        // sau: {
+                        //   type: loaisau,
+                        //   theCure: cachtri,
+                        // },
                         //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
@@ -441,7 +408,7 @@ const SauductraiScreen = ({navigation, route}) => {
   );
 };
 
-export default SauductraiScreen;
+export default TuoinuocScreen;
 
 const styles = StyleSheet.create({
   container: {

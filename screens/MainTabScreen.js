@@ -66,7 +66,7 @@ const HomeStackScreen = ({navigation}) => {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Overview',
+          title: 'Trang chủ',
           headerLeft: () => (
             <Icon.Button
               name="ios-menu"
@@ -98,7 +98,7 @@ const DetailsStackScreen = ({navigation}) => {
         name="Details"
         component={DetailsScreen}
         options={{
-          title: 'Details',
+          title: 'Thông tin',
           headerLeft: () => (
             <Icon.Button
               name="ios-menu"

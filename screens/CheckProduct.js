@@ -64,7 +64,7 @@ class CheckProduct1 extends Component {
         console.log(data);
         this.setState({
           nameOfCooperative: data[0].nameOfCooperative,
-          farmOwner: data[0].Owner,
+          farmOwner: data[1].farmOwner,
           sold: data[2],
         });
       });

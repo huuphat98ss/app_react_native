@@ -696,6 +696,10 @@ const PhunthuocScreen = ({navigation, route}) => {
                             break;
                         }
                         // navigation.navigate('Home');
+                        navigation.reset({
+                          index: 0,
+                          routes: [{name: 'Home'}],
+                        });
                       }
                     // alert(typeThuoc)
                   }
