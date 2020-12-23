@@ -25,10 +25,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const BatdauvuScreen = ({navigation, route}) => {
   const album = route.params.initialState;
-  // const menus = album.type.map((x, index) => (
-  //   <Picker.Item key={index} label={x} value={x} />
-  // ));
-  // console.log(menus);
 
   // DATE PICKER
   const [date, setDate] = useState(new Date());

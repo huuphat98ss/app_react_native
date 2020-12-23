@@ -23,6 +23,7 @@ import BotriScreen from './Sauhai/BotriScreen';
 import BonphanScreen from './BonphanScreen';
 import BaotraiScreen from './BaotraiScreen';
 import TuoinuocScreen from './TuoinuocScreen';
+import ProfileScreen from './ProfileScreen';
 
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
@@ -46,6 +47,41 @@ const TempScreen = ({route, navigation}) => {
             initialParams={{initialState: initialState}}
             options={{
               title: 'Bón phân',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Temp':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="Temp"
+            component={ProfileScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Temp',
               headerLeft: () => (
                 <Icon.Button
                   name="chevron-back-outline"
