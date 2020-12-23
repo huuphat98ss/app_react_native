@@ -53,8 +53,40 @@ const RepsapScreen = ({navigation, route}) => {
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
-      console.log(image);
-      setImage(image.path);
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      console.log(found1);
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
+
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      console.log('img' + imgs);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
       bs.current.snapTo(1);
     });
   };
@@ -220,7 +252,8 @@ const RepsapScreen = ({navigation, route}) => {
               onPress={() => {
                 imageArr.length == 2
                   ? navigation.navigate('Phun thuốc sâu', {
-                      cachtri: cachtri[1],
+                      cachtri: cachtri[0] + ',' + cachtri[1],
+                      loaisau: loaisau,
                       title: route.params.title,
                       idBatch: route.params.idBatch,
                       arrayStumps: route.params.arrayStumps,

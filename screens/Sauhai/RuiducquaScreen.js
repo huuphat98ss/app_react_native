@@ -21,17 +21,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
 import ImagePicker from 'react-native-image-crop-picker';
-
+import {useDispatch} from 'react-redux';
+import * as actions from '../../src/redux/actions/diary';
 const RuiducquaScreen = ({navigation, route}) => {
   const {info, loaisau, cachtri} = route.params;
   const currentUser = useSelector((state) => state.authReducer.currentUser);
   const [isModalVisible, setModalVisible] = useState(false);
   const [imageArr, setImage] = useState([]);
-  const [img, chosenImage] = useState(0);
-  console.log('img' + img);
 
-  // Usestate
-  // Sâu đục trái
+  const dispatch = useDispatch();
+  // data image send server
+  const [imageSend, setImageSend] = useState([]);
+
+  const [img, chosenImage] = useState(0);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -40,23 +42,11 @@ const RuiducquaScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
       compressImageMaxHeight: 500,
-      cropping: true,
-      compressImageQuality: 0.7,
-    }).then((image) => {
-      console.log(image);
-      setImage(image.path);
-      bs.current.snapTo(1);
-    });
-  };
-
-  const choosePhotoFromLibrary = () => {
-    ImagePicker.openPicker({
-      width: 300,
-      height: 500,
       cropping: true,
       compressImageQuality: 0.7,
     }).then((image) => {
@@ -72,6 +62,72 @@ const RuiducquaScreen = ({navigation, route}) => {
           ? setImage((dataArr) => [...dataArr, image.path])
           : setImage(tempData);
       }
+
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      console.log('img' + imgs);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
+      bs.current.snapTo(1);
+    });
+  };
+
+  const choosePhotoFromLibrary = () => {
+    ImagePicker.openPicker({
+      width: 300,
+      height: 500,
+      cropping: true,
+      compressImageQuality: 0.7,
+    }).then((image) => {
+      let found = imageArr.find((element) => element == img);
+      let found1 = found === undefined ? false : true;
+      let tempData = [];
+      imageArr.forEach((element) => {
+        element === img ? (element = image.path) : null, tempData.push(element);
+      });
+      {
+        found1 === false
+          ? setImage((dataArr) => [...dataArr, image.path])
+          : setImage(tempData);
+      }
+
+      const imgs = {
+        uri: image.path,
+        type: image.mime,
+        name: image.path.substr(image.path.lastIndexOf('/') + 1),
+      };
+      // console.log("img"+imgs);
+      //setImageSend(img);
+      if (imageSend.length !== 0) {
+        let check = false;
+        imageSend.forEach((ele) => {
+          if (ele.uri === image.path) {
+            check = true;
+          }
+        });
+        if (!check) {
+          setImageSend((dataArr) => [...dataArr, imgs]);
+        }
+      } else {
+        setImageSend((dataArr) => [...dataArr, imgs]);
+      }
+
       bs.current.snapTo(1);
     });
   };
@@ -301,6 +357,80 @@ const RuiducquaScreen = ({navigation, route}) => {
               </Text>
             </View>
             {phuongphaptri}
+            <View style={styles.button}>
+              <TouchableOpacity
+                onPress={
+                  () =>
+                    //navigation.navigate('BookmarkScreen')
+                    {
+                      console.log(route.params);
+                      // console.log(dataSendServer);
+                      // let dataSendServer = {
+                      //   cachtri: cachtri,
+                      // };
+                      let postDataServer = {
+                        work: 'sauhai',
+                        title: route.params.title,
+                        //loaisau: loaisau,
+                        isFarmer: currentUser.data._id,
+                        // cachtri: cachtri,
+                        sau: {
+                          type: loaisau,
+                          theCure: cachtri[0],
+                        },
+                        //deTailVal: dataSendServer,
+                        imageData: imageSend,
+                      };
+                      console.log(postDataServer);
+                      switch (route.params.title) {
+                        case 'allbatch':
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          //dispatch(actions.pushDiaryToServer(imageSend));
+                          break;
+                        case 'allStumpinBatch':
+                          postDataServer.isBatch = route.params.idBatch;
+                          console.log(route.params.idBatch);
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          break;
+                        case 'Stumps':
+                          postDataServer.arrayStumps = route.params.arrayStumps;
+                          postDataServer.isBatch = route.params.idBatch;
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          break;
+                        case 'detailStump':
+                          postDataServer.arrayChecked =
+                            route.params.arrayChecked;
+                          postDataServer.isBatch = route.params.idBatch;
+                          postDataServer.isStump = route.params.isStump;
+                          dispatch(actions.pushDiaryToServer(postDataServer));
+                          break;
+                        default:
+                          break;
+                      }
+                      // navigation.navigate('Home');
+                      // navigation.reset({
+                      //   index: 0,
+                      //   routes: [{name: 'Home'}],
+                      // });
+                    }
+                  // alert(typeThuoc)
+                }
+                style={styles.xitthuoc}>
+                <LinearGradient
+                  colors={['#08d4c4', '#01ab9d']}
+                  style={styles.xitthuoc}>
+                  <Text
+                    style={[
+                      styles.textSign,
+                      {
+                        color: '#fff',
+                      },
+                    ]}>
+                    Hoàn tất nhật ký
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
           </ScrollView>
         </View>
       </View>

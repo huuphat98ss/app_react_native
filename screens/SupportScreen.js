@@ -97,9 +97,7 @@ const SupportScreen = ({navigation, route}) => {
             </Picker>
             <View style={styles.button}>
               <TouchableOpacity
-                onPress={() => {
-                  () => navigation.goBack();
-                }}
+                onPress={() => navigation.goBack()}
                 style={styles.signIn}>
                 <LinearGradient
                   colors={['#08d4c4', '#01ab9d']}

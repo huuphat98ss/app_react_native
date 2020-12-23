@@ -15,12 +15,15 @@ import MainTabScreen from './screens/MainTabScreen';
 const Drawer = createDrawerNavigator();
 
 import {DrawerContent} from './screens/DrawerContent';
-import SupportScreen from './screens/SupportScreen';
-import SettingsScreen from './screens/SettingScreen';
-import BookmarkScreen from './screens/BookmarkScreen';
-import CheckProduct from './screens/CheckProduct';
-import SignInScreen from './screens/SignInScreen';
+// import SupportScreen from './screens/SupportScreen';
+// import SettingsScreen from './screens/SettingScreen';
+// import BookmarkScreen from './screens/BookmarkScreen';
+import ProfileFarmer from './screens/ProfileFarmer';
+import UpdateQrSold from './screens/QR/updateQrSold';
+// import SignInScreen from './screens/SignInScreen';
 import TempScreen from './screens/TempScreen';
+import ViewDiary from './screens/ViewDiary';
+import ShowDiary from './screens/ShowDiary';
 import {ActivityIndicator} from 'react-native-paper';
 
 import {connect} from 'react-redux';
@@ -61,8 +64,8 @@ class App extends Component {
   };
 
   render() {
-    console.log('isLogin ' + this.props.loading);
-    console.log(' login adtion ' + JSON.stringify(this.props.authReducer));
+    // console.log('isLogin ' + this.props.loading);
+    //console.log(' login adtion ' + JSON.stringify(this.props.authReducer));
     // console.log(' user name ' + this.props.loading);
     if (this.props.loading) {
       return (
@@ -77,11 +80,13 @@ class App extends Component {
           <Drawer.Navigator
             drawerContent={(props) => <DrawerContent {...props} />}>
             <Drawer.Screen name="Home" component={MainTabScreen} />
-            <Drawer.Screen name="SupportScreen" component={SupportScreen} />
-            <Drawer.Screen name="SettingsScreen" component={SettingsScreen} />
-            <Drawer.Screen name="BookmarkScreen" component={BookmarkScreen} />
+            {/* <Drawer.Screen name="SupportScreen" component={SupportScreen} />
+            <Drawer.Screen name="SettingsScreen" component={SettingsScreen} /> */}
+            <Drawer.Screen name="ProfileFarmer" component={ProfileFarmer} />
             <Drawer.Screen name="TempScreen" component={TempScreen} />
-            <Drawer.Screen name="CheckProduct" component={CheckProduct} />
+            <Drawer.Screen name="UpdateQrSold" component={UpdateQrSold} />
+            <Drawer.Screen name="ViewDiary" component={ViewDiary} />
+            <Drawer.Screen name="ShowDiary" component={ShowDiary} />
           </Drawer.Navigator>
         ) : (
           <RootStackScreen />

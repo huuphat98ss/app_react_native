@@ -578,7 +578,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                     () =>
                       //navigation.navigate('BookmarkScreen')
                       {
-                        //console.log(route.params);
+                        console.log(route.params.loaisau);
                         // console.log(dataSendServer);
                         //let dataSendServer = {
                         // dataSendServer.cachtri = route.params.cachtri;
@@ -589,7 +589,11 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                           title: route.params.title,
                           //isBatch:route.params.idBatch,
                           isFarmer: currentUser.data._id,
-                          cachtri: route.params.cachtri,
+                          //cachtri: route.params.cachtri,
+                          sau: {
+                            type: route.params.loaisau,
+                            theCure: route.params.cachtri,
+                          },
                           // de y khuc nay'
                           deTailVal: loaithuocArray,
                           imageData: route.params.imageSend,
@@ -622,6 +626,10 @@ const PhunthuocsauScreen = ({navigation, route}) => {
                             break;
                         }
                         // navigation.navigate('Home');
+                        navigation.reset({
+                          index: 0,
+                          routes: [{name: 'Home'}],
+                        });
                       }
                     // alert(typeThuoc)
                   }

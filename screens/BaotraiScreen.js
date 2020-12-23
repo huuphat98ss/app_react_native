@@ -48,7 +48,7 @@ const BaotraiScreen = ({navigation, route}) => {
   // Bottom Sheet khai báo
   bs = React.createRef();
   fall = new Animated.Value(1);
-  
+
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
       compressImageMaxWidth: 300,
@@ -74,7 +74,7 @@ const BaotraiScreen = ({navigation, route}) => {
         type: image.mime,
         name: image.path.substr(image.path.lastIndexOf('/') + 1),
       };
-      console.log("img"+imgs);
+      console.log('img' + imgs);
       //setImageSend(img);
       if (imageSend.length !== 0) {
         let check = false;
@@ -93,7 +93,7 @@ const BaotraiScreen = ({navigation, route}) => {
       bs.current.snapTo(1);
     });
   };
-  
+
   const choosePhotoFromLibrary = () => {
     ImagePicker.openPicker({
       width: 300,
@@ -328,23 +328,19 @@ const BaotraiScreen = ({navigation, route}) => {
             {imageArr[0] ? <OpenCam image={imageArr[0]} /> : null}
             <View style={styles.button}>
               <TouchableOpacity
-                onPress= {
+                onPress={
                   () =>
                     //navigation.navigate('BookmarkScreen')
-                    { 
+                    {
                       console.log(route.params);
                       // console.log(dataSendServer);
                       // let dataSendServer = {
                       //   cachtri: cachtri,
                       // };
                       let postDataServer = {
-                        work: 'sauhai',
+                        work: 'Baotrai',
                         title: route.params.title,
-                        //isBatch:route.params.idBatch,
                         isFarmer: currentUser.data._id,
-                        cachtri: cachtri,
-                        // de y khuc nay'
-                        //deTailVal: dataSendServer,
                         imageData: imageSend,
                       };
                       console.log(postDataServer);
@@ -374,6 +370,10 @@ const BaotraiScreen = ({navigation, route}) => {
                           break;
                       }
                       // navigation.navigate('Home');
+                      navigation.reset({
+                        index: 0,
+                        routes: [{name: 'Home'}],
+                      });
                     }
                   // alert(typeThuoc)
                 }

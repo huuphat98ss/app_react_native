@@ -95,6 +95,7 @@ const BatdauvuScreen = ({navigation, route}) => {
   const storeData = async () => {
     try {
       const jsonValue = JSON.stringify({
+        //  begin: date,
         toggleXiecNuoc: toggleXiecNuoc,
         toggleGaySoc: toggleGaySoc,
         toggleNhietDo: toggleNhietDo,
@@ -135,11 +136,9 @@ const BatdauvuScreen = ({navigation, route}) => {
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.text_header}>
-          Hợp tác xã: {currentUser.username}
-        </Text>
+        <Text style={styles.text_header}>Hợp tác xã:</Text>
         <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
-          Nông dân: {currentUser.username}
+          Nông dân:
         </Text>
       </View>
       <View style={styles.footer}>
@@ -460,7 +459,20 @@ const BatdauvuScreen = ({navigation, route}) => {
             toggleBondam ? (
               <View style={styles.button}>
                 <TouchableOpacity
-                  onPress={() => {}}
+                  onPress={() => {
+                    data = {
+                      begin: date,
+                      toggleXiecNuoc: toggleXiecNuoc,
+                      toggleGaySoc: toggleGaySoc,
+                      toggleNhietDo: toggleNhietDo,
+                      toggleCatCanh: toggleCatCanh,
+                      toggleTiaCanh: toggleTiaCanh,
+                      togglePaclo: togglePaclo,
+                      toggleBondam: toggleBondam,
+                    };
+                    console.log(data);
+                    // storeData;
+                  }}
                   // alert(typeThuoc)
                   style={styles.xitthuoc}>
                   <LinearGradient

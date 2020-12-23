@@ -243,34 +243,7 @@ const BotriScreen = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
           {imageArr[1] ? <OpenCam image={imageArr[1]} /> : null}
-          <View style={styles.action}>
-            <Text
-              style={{
-                flex: 1,
-                // paddingLeft: 10,
-                color: '#01ab9d',
-                fontSize: 16,
-              }}>
-              {cachtri[1]}
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                imageArr.length === 3
-                  ? navigation.navigate('Phun thuốc sâu', {
-                      cachtri: cachtri[1],
-                      title: route.params.title,
-                      idBatch: route.params.idBatch,
-                      arrayStumps: route.params.arrayStumps,
-                      isStump: route.params.isStump,
-                      arrayChecked: route.params.arrayChecked,
-                      imageSend: imageSend,
-                    })
-                  : alert('Vui lòng nhập đầy đủ hình ảnh');
-              }}>
-              <Feather name="plus-circle" color="green" size={20} />
-            </TouchableOpacity>
-          </View>
-          {imageArr[2] ? <OpenCam image={imageArr[1]} /> : null}
+          {/* {imageArr[2] ? <OpenCam image={imageArr[2]} /> : null} */}
           <View style={styles.action}>
             <Text
               style={{
@@ -285,7 +258,35 @@ const BotriScreen = ({navigation, route}) => {
               <Feather name="camera" color="green" size={20} />
             </TouchableOpacity>
           </View>
-          {imageArr[3] ? <OpenCam image={imageArr[1]} /> : null}
+          {imageArr[2] ? <OpenCam image={imageArr[2]} /> : null}
+          <View style={styles.action}>
+            <Text
+              style={{
+                flex: 1,
+                // paddingLeft: 10,
+                color: '#01ab9d',
+                fontSize: 16,
+              }}>
+              {cachtri[1]}
+            </Text>
+            <TouchableOpacity
+              onPress={() => {
+                imageArr.length === 3
+                  ? navigation.navigate('Phun thuốc sâu', {
+                      cachtri: cachtri[0],
+                      loaisau: loaisau,
+                      title: route.params.title,
+                      idBatch: route.params.idBatch,
+                      arrayStumps: route.params.arrayStumps,
+                      isStump: route.params.isStump,
+                      arrayChecked: route.params.arrayChecked,
+                      imageSend: imageSend,
+                    })
+                  : alert('Vui lòng nhập đầy đủ hình ảnh');
+              }}>
+              <Feather name="plus-circle" color="green" size={20} />
+            </TouchableOpacity>
+          </View>
         </View>
       );
       break;
