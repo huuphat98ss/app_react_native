@@ -14,51 +14,103 @@ import {
 import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import Menu from '../model/Menu';
+import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
 
 const NotificationScreen = ({route}) => {
   // const currentUser = useSelector((state) => state.authReducer.currentUser);
   console.log(Menu[5]);
+  let startDate = '2020-12-01';
+  let newD = moment(startDate, 'YYYY-MM-DD');
+  newD.add(10, 'days');
+  console.log(newD.format('YYYY-MM-DD'));
   const navigation = useNavigation();
   const giaodoan = [
     {
       name: 'Giai đoạn 7-10 NSKĐT',
-      date: '7-10',
+      date: {from: 7, to: 10},
       screen: 'Bón phân',
       position: 1,
       type: ['NPK (16-16-8)', 'NPK (20-20-15)', 'Đạm', 'Lân', 'Kali', 'Canxi'],
     },
-    {name: 'Giai đoạn 30 NSKĐT', date: '30',position: 5, screen: 'Phun thuốc'},
+    {
+      name: 'Giai đoạn 30 NSKĐT',
+      date: {from: 30, to: 35},
+      position: 5,
+      screen: 'Phun thuốc',
+    },
+    {
+      name: 'Giai đoạn 30-45 NSKĐT',
+      date: {from: 30, to: 45},
+      screen: 'Bao trái',
+      position: 7,
+    },
     {
       name: 'Giai đoạn 45 NSKĐT',
-      date: '45',
+      date: {from: 45, to: 50},
       position: 5,
       screen: ['Bón phân', 'Phun thuốc'],
     },
-    {name: 'Giai đoạn 60 NSKĐT', date: '60', screen: 'Bón phân', position: 1},
-    {name: 'Giai đoạn 70-80 NSKĐT', date: '70-80', screen: 'Phun thuốc', position: 5},
-    {name: 'Giai đoạn 30-45 NSKĐT', date: '30-45', screen: 'Bao trái', position: 7},
+    {
+      name: 'Giai đoạn 60 NSKĐT',
+      date: {from: 60, to: 65},
+      screen: 'Bón phân',
+      position: 1,
+    },
+    {
+      name: 'Giai đoạn 70-80 NSKĐT',
+      date: {from: 70, to: 80},
+      screen: 'Phun thuốc',
+      position: 5,
+    },
   ];
   //Sẽ có 1 biến thời gian trừ lại từ ngày bắt đầu vụ
   let menus = giaodoan.map((element, index) => (
     <View key={index} style={styles.button}>
       <TouchableOpacity
-        onPress={() => navigation.navigate('TempScreen', {
-          initialState: Menu[element.position],
-          name: element.screen,
-        })}
+        onPress={() =>
+          navigation.navigate('TempScreen', {
+            initialState: Menu[element.position],
+            name: element.screen,
+          })
+        }
         // alert(typeThuoc)
         style={styles.xitthuoc}>
-        <LinearGradient colors={['#08d4c4', '#01ab9d']} style={styles.xitthuoc}>
-          <Text
-            style={[
-              styles.textSign,
-              {
-                color: '#fff',
-              },
-            ]}>
-            {element.name}
-          </Text>
+        <LinearGradient colors={['#fff', '#fff']} style={styles.xitthuoc1}>
+          <View style={styles.action}>
+            <ImageBackground
+              source={{uri: Menu[element.position].album}}
+              style={{
+                marginRight: 30,
+                height: 70,
+                width: 70,
+                alignContent: 'flex-start',
+                flexDirection: 'column',
+              }}></ImageBackground>
+            <View style={{flexDirection: 'column'}}>
+              <Text
+                style={[
+                  styles.textSign,
+                  {
+                    color: '#01ab9d',
+                  },
+                ]}>
+                {element.name}
+              </Text>
+              <Text
+                style={[
+                  styles.textDuDoan,
+                  {
+                    color: '#01ab9d',
+                  },
+                ]}>
+                Ngày thực hiện:{' '}
+                {moment(startDate, 'YYYY-MM-DD')
+                  .add(element.date.from, 'days')
+                  .format('YYYY-MM-DD')}
+              </Text>
+            </View>
+          </View>
         </LinearGradient>
       </TouchableOpacity>
     </View>
@@ -92,12 +144,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footer: {
-    height: '90%',
+    height: '100%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingHorizontal: 20,
-    // paddingVertical: 30,
+    paddingBottom: 10,
     alignContent: 'center',
   },
   picker: {
@@ -115,13 +167,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  textDuDoan: {
+    fontSize: 10,
+  },
   action: {
     flexDirection: 'row',
     marginBottom: 10,
     marginTop: 10,
-    borderBottomWidth: 0.5,
-    borderBottomColor: '#f1f1f1',
-    justifyContent: 'space-between',
+    alignContent: 'space-between',
   },
   actionError: {
     flexDirection: 'row',
@@ -162,10 +215,22 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 1,
     borderRadius: 10,
+    borderColor: '#01ab9d',
+    borderWidth: 3,
+  },
+  xitthuoc1: {
+    flex: 1,
+    alignSelf: 'stretch',
+    height: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 1,
+    borderRadius: 10,
   },
   textSign: {
     fontSize: 18,
     fontWeight: 'bold',
+    marginTop: 20,
   },
   commandButton: {
     padding: 15,
