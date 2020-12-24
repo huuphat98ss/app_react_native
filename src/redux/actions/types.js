@@ -8,4 +8,4 @@ export const DATA_VIEW_DIARY = 'DATA_VIEW_DIARY';
 export const DATA_STAY_DIARY = 'DATA_STAY_DIARY';
 export const DATA_ID_DELETE_DIARY = 'DATA_ID_DELETE_DIARY';
 export const DATA_PROFILE = 'DATA_PROFILE';
-export const LOCALHOST = '192.168.1.4';
+export const LOCALHOST = '192.168.1.6';
