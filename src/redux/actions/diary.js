@@ -1,10 +1,44 @@
 import * as actionTypes from './types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import * as actions from './auth';
 const localhost = actionTypes.LOCALHOST;
+
+export const createSeason = (id, data, startSeason) => {
+  console.log('tao vu mua moi');
+  console.log(id);
+  console.log(data);
+  let dataCreate = {
+    startSeason: startSeason,
+    iduser: id,
+    datecreate: data,
+  };
+  return (dispatch) => {
+    console.log('diary');
+    fetch(`http://${localhost}:3456/createseason`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        dataCreate,
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(' tao vu moi thanh cong vao tab noti lam nhiem vu');
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+};
+
 export const pushDiaryToServer = (data) => {
-  console.log(data.deTailVal);
-  //console.log(data.imageData);
+  console.log('dispasth diary');
+  console.log(data.isFarmer);
+  let idfarmer = data.isFarmer;
+  //console.log(data);
   imageData = data.imageData;
   const formData = new FormData();
   if (imageData.length !== 0) {
@@ -50,12 +84,21 @@ export const pushDiaryToServer = (data) => {
       // body: formData,
       // dataset,
     })
-      .then((response) => response.json())
+      .then((response) => {
+        response.json();
+        //console.log('tien hanh luu vao tab nhat ky trong ngay');
+        // console.log(idfarmer);
+        //  dispatch(actions.dataNotification(idfarmer));
+      })
       .then((json) => {
         console.log('tien hanh luu vao tab nhat ky trong ngay');
+        console.log(idfarmer);
+        dispatch(actions.dataNotification(idfarmer));
       })
       // .then((res) => {
       //   console.log('dua vao nhat ki trong ngay');
+
+      //   dispatch(actions.dataNotification(data.isFarmer));
       // })
       .catch((error) => {
         console.error(error);
@@ -190,6 +233,36 @@ export const getDataFarmer = (id) => {
         //console.log('map get');
         // console.log(data);
         dispatch(dataProfile(data));
+      });
+  };
+};
+export const updateSeasonEnd = (data) => {
+  console.log(data);
+  return (dispatch) => {
+    console.log('diary');
+    fetch(`http://${localhost}:3456/updateendseason`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        // 'Content-Type': 'multipart/form-data',
+      },
+      body: JSON.stringify({
+        data,
+      }),
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log('ok oko oko');
+        // console.log(json);
+        // dispatch(dataStayDiary(json));
+        // return true;
+      })
+      // .then((res) => {
+      //   console.log('dua vao nhat ki trong ngay');
+      // })
+      .catch((error) => {
+        console.error(error);
       });
   };
 };

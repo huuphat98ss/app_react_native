@@ -312,7 +312,7 @@ const TuoinuocScreen = ({navigation, route}) => {
                 <Feather name="plus-circle" color="black" size={20} />
               </TouchableOpacity>
             </View>
-            <View style={styles.action}>
+            {/* <View style={styles.action}>
               <Text
                 style={{
                   flex: 1,
@@ -325,7 +325,7 @@ const TuoinuocScreen = ({navigation, route}) => {
               <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
                 <Feather name="camera" color="green" size={20} />
               </TouchableOpacity>
-            </View>
+            </View> */}
             {imageArr[0] ? <OpenCam image={imageArr[0]} /> : null}
             <View style={styles.button}>
               <TouchableOpacity
@@ -352,6 +352,7 @@ const TuoinuocScreen = ({navigation, route}) => {
                         imageData: imageSend,
                       };
                       console.log(postDataServer);
+                      // console.log('switch');
                       switch (route.params.title) {
                         case 'allbatch':
                           dispatch(actions.pushDiaryToServer(postDataServer));

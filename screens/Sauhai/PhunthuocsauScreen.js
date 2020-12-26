@@ -434,7 +434,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
               </Animatable.View>
             </View>
           )}
-          <View style={styles.action}>
+          {/* <View style={styles.action}>
             <Text
               style={{
                 flex: 1,
@@ -447,7 +447,7 @@ const PhunthuocsauScreen = ({navigation, route}) => {
             <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
               <Feather name="video" color="green" size={20} />
             </TouchableOpacity>
-          </View>
+          </View> */}
           {image !== 0 ? (
             <View style={{alignItems: 'center'}}>
               <TouchableOpacity onPress={() => bs.current.snapTo(0)}>

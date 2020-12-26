@@ -1,11 +1,11 @@
 import React from 'react';
 
 import HomeScreen from './HomeScreen';
-import DetailsScreen from './DetailsScreen';
+import NotificationScreen from './NotificationScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const HomeStack = createStackNavigator();
-const DetailsStack = createStackNavigator();
+const NotificationStack = createStackNavigator();
 
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -36,7 +36,7 @@ const MainTabScreen = () => {
       />
       <Tab.Screen
         name="Notifications"
-        component={DetailsStackScreen}
+        component={NotificationStackScreen}
         options={{
           tabBarLabel: 'Updates',
           tabBarColor: '#009387',
@@ -82,9 +82,9 @@ const HomeStackScreen = ({navigation}) => {
   );
 };
 
-const DetailsStackScreen = ({navigation}) => {
+const NotificationStackScreen = ({navigation}) => {
   return (
-    <DetailsStack.Navigator
+    <NotificationStack.Navigator
       screenOptions={{
         headerStyle: {
           backgroundColor: '#009387',
@@ -94,11 +94,11 @@ const DetailsStackScreen = ({navigation}) => {
           fontWeight: 'bold',
         },
       }}>
-      <DetailsStack.Screen
-        name="Details"
-        component={DetailsScreen}
+      <NotificationStack.Screen
+        name="Notification"
+        component={NotificationScreen}
         options={{
-          title: 'Thông tin',
+          title: 'Notification',
           headerLeft: () => (
             <Icon.Button
               name="ios-menu"
@@ -110,7 +110,7 @@ const DetailsStackScreen = ({navigation}) => {
           ),
         }}
       />
-    </DetailsStack.Navigator>
+    </NotificationStack.Navigator>
   );
 };
 

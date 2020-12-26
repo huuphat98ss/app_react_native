@@ -45,10 +45,57 @@ export const userLoginFetch = (data) => {
         dispatch(authStart());
         dispatch(login(decodedToken));
         dispatch(getDataMap(decodedToken.data._id));
+        dispatch(dataNotification(decodedToken.data._id));
       })
       .catch((error) => {
         console.error(error);
       });
+  };
+};
+export const dataCheckNotifi = (dataArray) => ({
+  type: actionTypes.DATA_CHECK_NOTIFI,
+  dataCheckNotifi: dataArray,
+});
+export const startSeason = (dataArray) => ({
+  type: actionTypes.DATA_SEASON,
+  dataSeasonStart: dataArray,
+});
+export const idSeason = (id) => ({
+  type: actionTypes.ID_DATA_SEASON,
+  idSeason: id,
+});
+export const Notification = (idfarmer) => {
+  return (dispatch) => {
+    fetch(`http://${localhost}:3456/getdataseason/${idfarmer}`)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log('notifi');
+        console.log(json);
+        if (json === null) {
+          json = {
+            listTasks: [],
+            startSeason: '',
+            _id: '',
+          };
+        }
+        dispatch(dataCheckNotifi(json.listTasks));
+        dispatch(startSeason(json.startSeason));
+        dispatch(idSeason(json._id));
+      })
+      .catch((error) => console.error(error));
+  };
+};
+
+export const dataNotification = (idfarmer) => {
+  return (dispatch) => {
+    fetch(`http://${localhost}:3456/checknotifi/${idfarmer}`)
+      .then((response) => response.json())
+      .then((json) => {
+        console.log('notifi check');
+        // console.log(json);
+        dispatch(Notification(idfarmer));
+      })
+      .catch((error) => console.error(error));
   };
 };
 
@@ -92,6 +139,7 @@ export const checkLogin = (data) => {
     //console.log(decodedToken);
     dispatch(login(decodedToken));
     dispatch(getDataMap(decodedToken.data._id));
+    dispatch(dataNotification(decodedToken.data._id));
   };
   //}
 };

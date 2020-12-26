@@ -6,6 +6,9 @@ const initialState = {
   isLogin: false,
   loading: true,
   arrayMap: [],
+  dataCheckNotifi: [],
+  dataSeasonStart: '',
+  idSeason: '',
 };
 
 const authStart = (state, action) => {
@@ -42,6 +45,25 @@ export const dataMap = (state, action) => {
     arrayMap: action.data,
   });
 };
+
+const dataCheckNotifi = (state, action) => {
+  // console.log(action.data);
+  return updateObject(state, {
+    dataCheckNotifi: action.dataCheckNotifi,
+  });
+};
+const startSeason = (state, action) => {
+  // console.log(action.data);
+  return updateObject(state, {
+    dataSeasonStart: action.dataSeasonStart,
+  });
+};
+const idSeason = (state, action) => {
+  // console.log(action.data);
+  return updateObject(state, {
+    idSeason: action.idSeason,
+  });
+};
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.LOGIN_USER:
@@ -54,6 +76,12 @@ const authReducer = (state = initialState, action) => {
       return checkLoginFail(state, action);
     case actionTypes.MAP_FARMER:
       return dataMap(state, action);
+    case actionTypes.DATA_CHECK_NOTIFI:
+      return dataCheckNotifi(state, action);
+    case actionTypes.DATA_SEASON:
+      return startSeason(state, action);
+    case actionTypes.ID_DATA_SEASON:
+      return idSeason(state, action);
     default:
       return state;
   }

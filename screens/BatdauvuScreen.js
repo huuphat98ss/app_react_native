@@ -18,23 +18,26 @@ import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 
 import {useSelector} from 'react-redux';
-
+import {useDispatch} from 'react-redux';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import CheckBox from '@react-native-community/checkbox';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as actionDiary from '../src/redux/actions/diary';
+import moment from 'moment';
 
 const BatdauvuScreen = ({navigation, route}) => {
+  const dispatch = useDispatch();
+  const dataSeasonStart = useSelector(
+    (state) => state.authReducer.dataSeasonStart,
+  );
   const album = route.params.initialState;
-  // const menus = album.type.map((x, index) => (
-  //   <Picker.Item key={index} label={x} value={x} />
-  // ));
-  // console.log(menus);
-
+  const currentUser = useSelector((state) => state.authReducer.currentUser);
   // DATE PICKER
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
-  console.log(date);
+  console.log('bac dau vu');
+  console.log(dataSeasonStart);
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     setShow(Platform.OS === 'ios');
@@ -51,50 +54,64 @@ const BatdauvuScreen = ({navigation, route}) => {
   };
 
   // DATE PICKER
-  const currentUser = useSelector((state) => state.authReducer.currentUser);
+  //const currentUser = useSelector((state) => state.authReducer.currentUser);
   // SET HOOKS STATE
-  const [state, setState] = useState(async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('tempKey');
+  // const [state, setState] = useState(async () => {
+  //   try {
+  //     const jsonValue = await AsyncStorage.getItem('tempKey');
 
-      return jsonValue != null
-        ? (setState(JSON.parse(jsonValue)),
-          // setToggleXietNuoc(JSON.parse(jsonValue))
-          setToggleXietNuoc(JSON.parse(jsonValue)['toggleXiecNuoc']),
-          setToggleGaySoc(JSON.parse(jsonValue)['toggleGaySoc']),
-          setToggleNhietDo(JSON.parse(jsonValue)['toggleNhietDo']),
-          setToggleCatCanh(JSON.parse(jsonValue)['toggleCatCanh']),
-          setToggleTiaCanh(JSON.parse(jsonValue)['toggleTiaCanh']),
-          setTooglePaclo(JSON.parse(jsonValue)['togglePaclo']),
-          setToggleBondam(JSON.parse(jsonValue)['toggleBondam']))
-        : async () => {
-            try {
-              const jsonValue = JSON.stringify({
-                toggleXiecNuoc: false,
-                toggleGaySoc: false,
-                toggleNhietDo: false,
-                toggleCatCanh: false,
-                toggleTiaCanh: false,
-                togglePaclo: false,
-                toggleBondam: false,
-              });
-              await AsyncStorage.setItem('tempKey', jsonValue);
-            } catch (e) {
-              // saving error
-            }
-          };
-    } catch (e) {
-      return null;
-    }
-  });
+  //     return jsonValue != null
+  //       ? (setState(JSON.parse(jsonValue)),
+  //         // setToggleXietNuoc(JSON.parse(jsonValue))
+  //         setToggleXietNuoc(JSON.parse(jsonValue)['toggleXiecNuoc']),
+  //         setToggleGaySoc(JSON.parse(jsonValue)['toggleGaySoc']),
+  //         setToggleNhietDo(JSON.parse(jsonValue)['toggleNhietDo']),
+  //         setToggleCatCanh(JSON.parse(jsonValue)['toggleCatCanh']),
+  //         setToggleTiaCanh(JSON.parse(jsonValue)['toggleTiaCanh']),
+  //         setTooglePaclo(JSON.parse(jsonValue)['togglePaclo']),
+  //         setToggleBondam(JSON.parse(jsonValue)['toggleBondam']))
+  //       : async () => {
+  //           try {
+  //             const jsonValue = JSON.stringify({
+  //               toggleXiecNuoc: false,
+  //               toggleGaySoc: false,
+  //               toggleNhietDo: false,
+  //               toggleCatCanh: false,
+  //               toggleTiaCanh: false,
+  //               togglePaclo: false,
+  //               toggleBondam: false,
+  //             });
+  //             await AsyncStorage.setItem('tempKey', jsonValue);
+  //           } catch (e) {
+  //             // saving error
+  //           }
+  //         };
+  //   } catch (e) {
+  //     return null;
+  //   }
+  // });
 
-  const [toggleXiecNuoc, setToggleXietNuoc] = useState(false);
-  const [toggleGaySoc, setToggleGaySoc] = useState(false);
-  const [toggleNhietDo, setToggleNhietDo] = useState(false);
-  const [toggleCatCanh, setToggleCatCanh] = useState(false);
-  const [toggleTiaCanh, setToggleTiaCanh] = useState(false);
-  const [togglePaclo, setTooglePaclo] = useState(false);
-  const [toggleBondam, setToggleBondam] = useState(false);
+  const [toggleXiecNuoc, setToggleXietNuoc] = useState(
+    dataSeasonStart.toggleXiecNuoc || false,
+  );
+  const [toggleGaySoc, setToggleGaySoc] = useState(
+    dataSeasonStart.toggleGaySoc || false,
+  );
+  const [toggleNhietDo, setToggleNhietDo] = useState(
+    dataSeasonStart.toggleNhietDo || false,
+  );
+  const [toggleCatCanh, setToggleCatCanh] = useState(
+    dataSeasonStart.toggleCatCanh || false,
+  );
+  const [toggleTiaCanh, setToggleTiaCanh] = useState(
+    dataSeasonStart.toggleTiaCanh || false,
+  );
+  const [togglePaclo, setTooglePaclo] = useState(
+    dataSeasonStart.togglePaclo || false,
+  );
+  const [toggleBondam, setToggleBondam] = useState(
+    dataSeasonStart.toggleBondam || false,
+  );
   // STORE DATA
   const storeData = async () => {
     try {
@@ -145,9 +162,10 @@ const BatdauvuScreen = ({navigation, route}) => {
           Nông dân:
         </Text>
       </View>
-      <View style={styles.footer}>
-        <View>
-          <ScrollView>
+      <ScrollView>
+        <View style={styles.footer}>
+          <View>
+            {/* <ScrollView> */}
             <View>
               {show && (
                 <DateTimePicker
@@ -187,7 +205,9 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }}>
                 {JSON.stringify(date).substring(1, 11)}
               </Text>
-              <TouchableOpacity onPress={showDatepicker}>
+              <TouchableOpacity
+                onPress={showDatepicker}
+                style={{display: dataSeasonStart !== '' ? 'none' : 'flex'}}>
                 <Feather name="clock" color="green" size={20} />
               </TouchableOpacity>
             </View>
@@ -222,11 +242,19 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Từ 18 - 20
               </Text>
-              <CheckBox
-                disabled={false}
-                value={toggleNhietDo}
-                onValueChange={(newValue) => setToggleNhietDo(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={toggleNhietDo ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  //  disabled={false}
+                  value={toggleNhietDo}
+                  onValueChange={(newValue) => setToggleNhietDo(newValue)}
+                />
+              )}
             </View>
             <View style={styles.action}>
               <Text
@@ -259,11 +287,20 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Xiếc nước
               </Text>
-              <CheckBox
-                disabled={false}
-                value={toggleXiecNuoc}
-                onValueChange={(newValue) => setToggleXietNuoc(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={toggleXiecNuoc ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  disabled={false}
+                  value={toggleXiecNuoc}
+                  onValueChange={(newValue) => setToggleXietNuoc(newValue)}
+                  // style={{display: dataSeasonStart !== '' ? 'none' : 'flex'}}
+                />
+              )}
             </View>
             <View style={styles.action}>
               <Text
@@ -280,11 +317,20 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Gây sốc
               </Text>
-              <CheckBox
-                disabled={false}
-                value={toggleGaySoc}
-                onValueChange={(newValue) => setToggleGaySoc(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={toggleGaySoc ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  disabled={false}
+                  value={toggleGaySoc}
+                  onValueChange={(newValue) => setToggleGaySoc(newValue)}
+                  // style={{display: dataSeasonStart !== '' ? 'none' : 'flex'}}
+                />
+              )}
             </View>
             <View style={styles.action}>
               <Text
@@ -317,11 +363,20 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Cắt những cành có tuổi quá già
               </Text>
-              <CheckBox
-                disabled={false}
-                value={toggleCatCanh}
-                onValueChange={(newValue) => setToggleCatCanh(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={toggleCatCanh ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  disabled={false}
+                  value={toggleCatCanh}
+                  onValueChange={(newValue) => setToggleCatCanh(newValue)}
+                  //style={{display: dataSeasonStart !== '' ? 'none' : 'flex'}}
+                />
+              )}
             </View>
             <View style={styles.action}>
               <Text
@@ -370,11 +425,20 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Tỉa cành, bón phân
               </Text>
-              <CheckBox
-                disabled={false}
-                value={toggleTiaCanh}
-                onValueChange={(newValue) => setToggleTiaCanh(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={toggleTiaCanh ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  disabled={false}
+                  value={toggleTiaCanh}
+                  onValueChange={(newValue) => setToggleTiaCanh(newValue)}
+                  // style={{display: dataSeasonStart !== '' ? 'none' : 'flex'}}
+                />
+              )}
             </View>
             <View style={styles.action}>
               <Text
@@ -407,11 +471,19 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Hạn chế bón đạm
               </Text>
-              <CheckBox
-                disabled={false}
-                value={toggleBondam}
-                onValueChange={(newValue) => setToggleBondam(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={toggleBondam ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  //  disabled={false}
+                  value={toggleBondam}
+                  onValueChange={(newValue) => setToggleBondam(newValue)}
+                />
+              )}
             </View>
             <View style={styles.action}>
               <Text
@@ -428,11 +500,19 @@ const BatdauvuScreen = ({navigation, route}) => {
                 }>
                 Sử dụng Paclobutrazol
               </Text>
-              <CheckBox
-                disabled={false}
-                value={togglePaclo}
-                onValueChange={(newValue) => setTooglePaclo(newValue)}
-              />
+              {dataSeasonStart !== '' ? (
+                <Feather
+                  name={togglePaclo ? 'check-circle' : 'alert-circle'}
+                  color="#01ab9d"
+                  size={18}
+                />
+              ) : (
+                <CheckBox
+                  // disabled={false}
+                  value={togglePaclo}
+                  onValueChange={(newValue) => setTooglePaclo(newValue)}
+                />
+              )}
             </View>
             {/* <View style={styles.button}>
               <TouchableOpacity
@@ -454,7 +534,7 @@ const BatdauvuScreen = ({navigation, route}) => {
                 </LinearGradient>
               </TouchableOpacity>
             </View> */}
-            {toggleXiecNuoc &&
+            {/* {toggleXiecNuoc &&
             toggleGaySoc &&
             toggleNhietDo &&
             toggleCatCanh &&
@@ -464,7 +544,8 @@ const BatdauvuScreen = ({navigation, route}) => {
               <View style={styles.button}>
                 <TouchableOpacity
                   onPress={() => {
-                    data = {
+                    console.log('bac dau vu');
+                    startSeason = {
                       begin: date,
                       toggleXiecNuoc: toggleXiecNuoc,
                       toggleGaySoc: toggleGaySoc,
@@ -475,6 +556,14 @@ const BatdauvuScreen = ({navigation, route}) => {
                       toggleBondam: toggleBondam,
                     };
                     console.log(data);
+                    let begin = moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD');
+                    dispatch(
+                      actionDiary.createSeason(
+                        currentUser.data._id,
+                        begin,
+                        startSeason,
+                      ),
+                    );
                     // storeData;
                   }}
                   // alert(typeThuoc)
@@ -515,10 +604,58 @@ const BatdauvuScreen = ({navigation, route}) => {
                   </LinearGradient>
                 </TouchableOpacity>
               </View>
-            )}
-          </ScrollView>
+            )} */}
+            <View
+              style={[
+                styles.button,
+                {display: dataSeasonStart !== '' ? 'none' : 'flex'},
+              ]}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('bac dau vu aa');
+                  startSeason = {
+                    begin: date,
+                    toggleXiecNuoc: toggleXiecNuoc,
+                    toggleGaySoc: toggleGaySoc,
+                    toggleNhietDo: toggleNhietDo,
+                    toggleCatCanh: toggleCatCanh,
+                    toggleTiaCanh: toggleTiaCanh,
+                    togglePaclo: togglePaclo,
+                    toggleBondam: toggleBondam,
+                  };
+                  console.log(startSeason);
+                  let begin = moment(date, 'YYYY-MM-DD').format('YYYY-MM-DD');
+                  dispatch(
+                    actionDiary.createSeason(
+                      currentUser.data._id,
+                      begin,
+                      startSeason,
+                    ),
+                  );
+                  navigation.navigate('Home');
+                  // storeData;
+                }}
+                // alert(typeThuoc)
+                style={styles.xitthuoc}>
+                <LinearGradient
+                  colors={['#08d4c4', '#01ab9d']}
+                  style={styles.xitthuoc}>
+                  <Text
+                    style={[
+                      styles.textSign,
+                      {
+                        color: '#fff',
+                      },
+                    ]}>
+                    Hoàn tất nhật ký
+                  </Text>
+                </LinearGradient>
+              </TouchableOpacity>
+            </View>
+            {/* </ScrollView> */}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -539,7 +676,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footer: {
-    height: '90%',
+    height: '100%',
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
@@ -591,7 +728,7 @@ const styles = StyleSheet.create({
   },
   button: {
     alignItems: 'center',
-    marginTop: 50,
+    marginTop: 20,
   },
   signIn: {
     flex: 1,

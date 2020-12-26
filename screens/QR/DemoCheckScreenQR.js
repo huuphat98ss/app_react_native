@@ -32,8 +32,8 @@ const DemoCheckScreenQR = ({navigation, route}) => {
   const [arrayStumps, handleStump] = useState([]);
   // getdataStumps
   const [getarrayStump, getStump] = useState([]);
-  //console.log(arrayMapFarmer);
-  //console.log('get data tem ' + route.params.initialState);
+  console.log('open checkQR diary ');
+  console.log(route.params);
   function ifScaned(e) {
     //console.log('alalalalsdld ldlds');
     console.log(e.data);
@@ -193,7 +193,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           {/* <Text style={styles.modalText}>Hello World!</Text> */}
-          <View style={{flexDirection: 'row', flexWrap: 'wrap'}}>
+          <View style={{flexDirection: 'row', flexWrap: 'wrap', width: '100%'}}>
             {SettingStump}
           </View>
           <View style={{flexDirection: 'row'}}>
@@ -231,35 +231,33 @@ const DemoCheckScreenQR = ({navigation, route}) => {
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
-      <View style={styles.container}>
-        <View style={styles.header}>
-          {showModal ? null : (
-            <QRCodeScanner
-              containerStyle={{
-                backgroundColor: '#FFF',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              onRead={ifScaned}
-              reactivate={true} // first time true
-              permissionDialogMessage="Need premission to Access Camera"
-              reactivateTimeout={2000}
-              showMarker={true}
-              markerStyle={{borderColor: '#FFF', borderRadius: 10}}
-            />
-          )}
-        </View>
-        {dataScan !== 0 ? (
-          <Animatable.View style={styles.footer} animation="fadeInUpBig">
-            <Animatable.View animation="fadeInLeft" style={{height: 300}}>
-              <View>
-                <Text>Thông tin thửa check</Text>
-              </View>
-              <ScrollView>{applyArrayRender}</ScrollView>
-            </Animatable.View>
-          </Animatable.View>
-        ) : null}
+      {/* <View style={styles.container}> */}
+      <View style={styles.header}>
+        {showModal ? null : (
+          <QRCodeScanner
+            containerStyle={{
+              backgroundColor: '#0a0a0a',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            onRead={ifScaned}
+            reactivate={true} // first time true
+            permissionDialogMessage="Need premission to Access Camera"
+            reactivateTimeout={2000}
+            showMarker={true}
+            markerStyle={{borderColor: '#FFF', borderRadius: 10}}
+          />
+        )}
       </View>
+      {dataScan !== 0 ? (
+        <Animatable.View style={styles.footer} animation="fadeInUpBig">
+          <Animatable.View animation="fadeInLeft" style={{height: 300}}>
+            <View>{/* <Text>Thông tin thửa check</Text> */}</View>
+            <ScrollView>{applyArrayRender}</ScrollView>
+          </Animatable.View>
+        </Animatable.View>
+      ) : null}
+      {/* </View> */}
       {modalConform}
     </View>
   );
@@ -273,7 +271,7 @@ const height_logo = height * 0.28;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#0a0a0a',
   },
   header: {
     flex: 3,
@@ -348,7 +346,7 @@ const styles = StyleSheet.create({
     marginTop: -20,
     marginBottom: 5,
     alignSelf: 'stretch',
-    // height: 50,
+    height: 30,
     justifyContent: 'center',
     alignItems: 'center',
     // padding: 1,
@@ -374,7 +372,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 22,
+    marginTop: -200,
   },
   modalView: {
     margin: 20,
