@@ -225,11 +225,9 @@ const BonphanScreen = ({navigation, route}) => {
         enabledGestureInteraction={true}
       />
       <View style={styles.header}>
-        <Text style={styles.text_header}>
-          Hợp tác xã: {currentUser.username}
-        </Text>
+        <Text style={styles.text_header}>Nông hộ</Text>
         <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
-          Nông dân: {currentUser.username}
+          {currentUser.data.username}
         </Text>
       </View>
       <View style={styles.footer}>

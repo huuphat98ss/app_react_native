@@ -35,7 +35,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
   console.log('open checkQR diary ');
   console.log(route.params);
   function ifScaned(e) {
-    //console.log('alalalalsdld ldlds');
+    console.log('alalalalsdld ldlds');
     console.log(e.data);
     let arrayString = e.data.split('.');
     console.log(arrayString);

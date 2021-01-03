@@ -55,13 +55,16 @@ class CheckProduct1 extends Component {
   };
 
   ifScaned = (e) => {
+    console.log('data read qr');
+    console.log(e.data);
     this.changeShowData();
     this.changeCountLink(e.data);
     this.setState({linkInfor: e.data});
     fetch(`http://${localhost}:3456/search/${e.data}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log('data qr read');
+        // console.log(data);
         this.setState({
           nameOfCooperative: data[0].nameOfCooperative,
           farmOwner: data[1].farmOwner,

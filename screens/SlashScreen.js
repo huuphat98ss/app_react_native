@@ -28,9 +28,7 @@ const SlashScreen = ({navigation}) => {
         />
       </View>
       <Animatable.View style={styles.footer} animation="fadeInUpBig">
-        <Text style={styles.title}>
-          Kiểm tra nguồn gốc và ghi nhật ký sản xuất
-        </Text>
+        <Text style={styles.title}>Ghi nhật ký sản xuất</Text>
         <Text style={styles.text}>Đăng nhập khi bạn là thành viên HTX</Text>
         <View style={styles.button}>
           <TouchableOpacity onPress={() => navigation.navigate('SignInScreen')}>
@@ -42,14 +40,14 @@ const SlashScreen = ({navigation}) => {
             </LinearGradient>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.navigate('checkProduct')}>
+          {/* <TouchableOpacity onPress={() => navigation.navigate('checkProduct')}>
             <LinearGradient
               colors={['#08d4c4', '#01ab9d']}
               style={styles.checkQr}>
               <Text style={styles.textSign}>Check QR</Text>
               <MaterialIcons name="navigate-next" color="#fff" size={20} />
             </LinearGradient>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </Animatable.View>
     </View>

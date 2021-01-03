@@ -50,8 +50,19 @@ const CaptionContainer = styled.View`
 
 const HomeScreenComponent = ({album, name, route, initialState}) => {
   const navigation = useNavigation();
+  console.log('trang chu');
+
   return (
-    <Animatable.View animation="fadeInUpBig">
+    <Animatable.View
+      animation="fadeInUpBig"
+      style={{
+        display:
+          name === 'Làm đất'
+            ? 'none'
+            : name === 'Quan sát hằng ngày'
+            ? 'none'
+            : 'flex',
+      }}>
       <TouchableOpacity
         onPress={() =>
           navigation.navigate(route, {

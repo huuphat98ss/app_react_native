@@ -61,7 +61,8 @@ class HomeScreen extends Component {
       }
     }
     menuArray.push(tempArray);
-
+    console.log('aloo');
+    console.log(menuArray);
     let menus = menuArray.map((a, index) => (
       <HorizontalRow key={index}>
         {a.map((album) => (

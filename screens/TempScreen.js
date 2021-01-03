@@ -73,7 +73,7 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.navigate('Check QR');
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -91,10 +91,11 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.reset({
-                      index: 0,
-                      routes: [{name: 'Home'}],
-                    });
+                    // navigation.reset({
+                    //   index: 0,
+                    //   routes: [{name: 'Home'}],
+                    // });
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -216,7 +217,7 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.navigate('Check QR');
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -233,10 +234,11 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.reset({
-                      index: 0,
-                      routes: [{name: 'Home'}],
-                    });
+                    // navigation.reset({
+                    //   index: 0,
+                    //   routes: [{name: 'Home'}],
+                    // });
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -288,7 +290,7 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.navigate('Check QR');
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -305,10 +307,11 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.reset({
-                      index: 0,
-                      routes: [{name: 'Home'}],
-                    });
+                    // navigation.reset({
+                    //   index: 0,
+                    //   routes: [{name: 'Home'}],
+                    // });
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -317,6 +320,94 @@ const TempScreen = ({route, navigation}) => {
       );
       break;
     case 'Phun thuốc':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="CheckQR"
+            component={DemoCheckScreenQR}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'CheckQR',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                    //navigation.navigate('CheckQR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Show Map"
+            component={ShowMap}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'Show Map',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('CheckQR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Phun thuốc"
+            component={PhunthuocScreen}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'Phun thuốc',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    //navigation.goBack();
+                    navigation.navigate('CheckQR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Xịt thuốc"
+            component={BookmarkScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Xịt thuốc',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Chuẩn bị thuốc');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Sâu hại':
       navTo = (
         <TempStack.Navigator
           screenOptions={{
@@ -360,94 +451,7 @@ const TempScreen = ({route, navigation}) => {
                   size={25}
                   backgroundColor="#009387"
                   onPress={() => {
-                    navigation.navigate('Check QR');
-                  }}></Icon.Button>
-              ),
-            }}
-          />
-          <TempStack.Screen
-            name="Phun thuốc"
-            component={PhunthuocScreen}
-            initialParams={{initialState: initialState, name: name}}
-            options={{
-              title: 'Phun thuốc',
-              headerLeft: () => (
-                <Icon.Button
-                  name="chevron-back-outline"
-                  size={25}
-                  backgroundColor="#009387"
-                  onPress={() => {
-                    navigation.goBack();
-                    // navigation.navigate('Check QR');
-                  }}></Icon.Button>
-              ),
-            }}
-          />
-          <TempStack.Screen
-            name="Xịt thuốc"
-            component={BookmarkScreen}
-            initialParams={{initialState: initialState}}
-            options={{
-              title: 'Xịt thuốc',
-              headerLeft: () => (
-                <Icon.Button
-                  name="chevron-back-outline"
-                  size={25}
-                  backgroundColor="#009387"
-                  onPress={() => {
-                    navigation.navigate('Chuẩn bị thuốc');
-                  }}></Icon.Button>
-              ),
-            }}
-          />
-        </TempStack.Navigator>
-      );
-      break;
-    case 'Sâu hại':
-      navTo = (
-        <TempStack.Navigator
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: '#009387',
-            },
-            headerTintColor: '#fff',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-            },
-          }}>
-          <TempStack.Screen
-            name="Check QR"
-            component={DemoCheckScreenQR}
-            initialParams={{initialState: initialState, name: name}}
-            options={{
-              title: 'CheckQR',
-              headerLeft: () => (
-                <Icon.Button
-                  name="chevron-back-outline"
-                  size={25}
-                  backgroundColor="#009387"
-                  onPress={() => {
-                    navigation.reset({
-                      index: 0,
-                      routes: [{name: 'Home'}],
-                    });
-                  }}></Icon.Button>
-              ),
-            }}
-          />
-          <TempStack.Screen
-            name="Show Map"
-            component={ShowMap}
-            initialParams={{initialState: initialState, name: name}}
-            options={{
-              title: 'Show Map',
-              headerLeft: () => (
-                <Icon.Button
-                  name="chevron-back-outline"
-                  size={25}
-                  backgroundColor="#009387"
-                  onPress={() => {
-                    navigation.navigate('Check QR');
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}
@@ -465,7 +469,7 @@ const TempScreen = ({route, navigation}) => {
                   backgroundColor="#009387"
                   onPress={() => {
                     //navigation.goBack();
-                    navigation.navigate('Check QR');
+                    navigation.navigate('CheckQR');
                   }}></Icon.Button>
               ),
             }}

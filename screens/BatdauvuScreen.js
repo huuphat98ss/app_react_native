@@ -152,14 +152,14 @@ const BatdauvuScreen = ({navigation, route}) => {
 
     console.log('Done.');
   };
-
+  console.log(currentUser.data);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
       <View style={styles.header}>
-        <Text style={styles.text_header}>Hợp tác xã:</Text>
+        <Text style={styles.text_header}>Nông hộ</Text>
         <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
-          Nông dân:
+          {currentUser.data.username}
         </Text>
       </View>
       <ScrollView>

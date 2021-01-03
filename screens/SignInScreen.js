@@ -58,7 +58,7 @@ class SignInScreen extends Component {
   };
 
   handlePasswordChange = (val) => {
-    if (val.trim().length >= 8) {
+    if (val.trim().length >= 5) {
       this.setState({
         password: val,
         isValidPassword: true,
@@ -119,14 +119,14 @@ class SignInScreen extends Component {
       <View style={styles.container}>
         <StatusBar backgroundColor="#009387" barStyle="light-content" />
         <View style={styles.header}>
-          <Text style={styles.text_header}>Welcome!</Text>
+          <Text style={styles.text_header}>Đăng Nhập Nông Hộ</Text>
         </View>
         <Animatable.View animation="fadeInUpBig" style={styles.footer}>
-          <Text style={styles.text_footer}>Email</Text>
+          <Text style={styles.text_footer}>Key Đăng Nhập</Text>
           <View style={styles.action}>
             <FontAwesome name="user-o" color="black" size={20} />
             <TextInput
-              placeholder="Your Email"
+              placeholder="Nhập key"
               style={styles.textInput}
               autoCapitalize="none"
               onChangeText={(val) => this.textInputChange(val)}
@@ -140,16 +140,14 @@ class SignInScreen extends Component {
           </View>
           {this.state.isValidUser ? null : (
             <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-                Username must be 4 characters long.
-              </Text>
+              <Text style={styles.errorMsg}>Key phải từ 5 kí tự trở lên.</Text>
             </Animatable.View>
           )}
-          <Text style={[styles.text_footer, {marginTop: 35}]}>Password</Text>
+          <Text style={[styles.text_footer, {marginTop: 35}]}>Mập khẩu</Text>
           <View style={styles.action}>
             <FontAwesome name="lock" color="black" size={20} />
             <TextInput
-              placeholder="Your Password"
+              placeholder="Nhập mật khẩu"
               style={styles.textInput}
               autoCapitalize="none"
               secureTextEntry={this.state.secureTextEntry ? true : false}
@@ -166,16 +164,14 @@ class SignInScreen extends Component {
           </View>
           {this.state.isValidPassword ? null : (
             <Animatable.View animation="fadeInLeft" duration={500}>
-              <Text style={styles.errorMsg}>
-                Password must be 8 characters long.
-              </Text>
+              <Text style={styles.errorMsg}>Mật Khẩu Phải Từ 5 kí tự</Text>
             </Animatable.View>
           )}
-          <TouchableOpacity>
+          {/* <TouchableOpacity>
             <Text style={{color: '#009387', marginTop: 15}}>
               Forgot Password?
             </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <View style={styles.button}>
             <TouchableOpacity
               onPress={() => {
@@ -192,7 +188,7 @@ class SignInScreen extends Component {
                       color: '#fff',
                     },
                   ]}>
-                  Sign In
+                  Đăng Nhập
                 </Text>
               </LinearGradient>
             </TouchableOpacity>

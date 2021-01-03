@@ -27,7 +27,7 @@ const MainTabScreen = () => {
         name="Home"
         component={HomeStackScreen}
         options={{
-          tabBarLabel: 'Home',
+          tabBarLabel: 'Trang chủ',
           tabBarColor: '#009387',
           tabBarIcon: ({color}) => (
             <Icon name="ios-home" color="#009387" size={26} />
@@ -38,7 +38,7 @@ const MainTabScreen = () => {
         name="Notifications"
         component={NotificationStackScreen}
         options={{
-          tabBarLabel: 'Updates',
+          tabBarLabel: 'Nhiệm vụ',
           tabBarColor: '#009387',
           tabBarIcon: ({color}) => (
             <Icon name="ios-notifications" color="#009387" size={26} />
@@ -98,7 +98,7 @@ const NotificationStackScreen = ({navigation}) => {
         name="Notification"
         component={NotificationScreen}
         options={{
-          title: 'Notification',
+          title: 'Nhiệm Vụ',
           headerLeft: () => (
             <Icon.Button
               name="ios-menu"

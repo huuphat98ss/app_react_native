@@ -159,7 +159,7 @@ const ProfileFarmer = ({navigation, route}) => {
                 {dataProfile.totalTrees}
               </Text>
             </View>
-            <View style={styles.action}>
+            {/* <View style={styles.action}>
               <Text
                 style={
                   (styles.textInput,
@@ -190,7 +190,7 @@ const ProfileFarmer = ({navigation, route}) => {
                 }>
                 {dataProfile.totalNumberQR}
               </Text>
-            </View>
+            </View> */}
           </ScrollView>
         </View>
       </View>

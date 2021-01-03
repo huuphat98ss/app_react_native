@@ -273,12 +273,18 @@ const TuoinuocScreen = ({navigation, route}) => {
           // margin: 20,
           opacity: Animated.add(0.1, Animated.multiply(fall, 1.0)),
         }}> */}
-      <View style={styles.header}>
+      {/* <View style={styles.header}>
         <Text style={styles.text_header}>
           Hợp tác xã: {currentUser.username}
         </Text>
         <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
           Nông dân: {currentUser.username}
+        </Text>
+      </View> */}
+      <View style={styles.header}>
+        <Text style={styles.text_header}>Nông hộ</Text>
+        <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
+          {currentUser.data.username}
         </Text>
       </View>
       <View style={styles.footer}>

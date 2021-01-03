@@ -100,7 +100,7 @@ const ViewDiary = ({navigation, route}) => {
   // const idDiaryDeleted = useSelector(
   //   (state) => state.diaryReducer.idDiaryDeleted,
   // );
-  // console.log('xoa nhat ky nay ' + idDiaryDeleted);
+  console.log('show ' + ViewDiary);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />

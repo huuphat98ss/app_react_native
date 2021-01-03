@@ -27,6 +27,7 @@ export const createSeason = (id, data, startSeason) => {
       .then((response) => response.json())
       .then((json) => {
         console.log(' tao vu moi thanh cong vao tab noti lam nhiem vu');
+        dispatch(actions.Notification(id));
       })
       .catch((error) => {
         console.error(error);
