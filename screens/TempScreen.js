@@ -24,7 +24,9 @@ import BonphanScreen from './BonphanScreen';
 import BaotraiScreen from './BaotraiScreen';
 import TuoinuocScreen from './TuoinuocScreen';
 import ProfileScreen from './ProfileScreen';
-
+import BenhHaiScreen from './BenhHaiScreen';
+import CheckQrForBenh from './QR/CheckQrForBenh';
+import ShowMapForBenh from './QR/ShowMapForBenh';
 const TempScreen = ({route, navigation}) => {
   const {initialState, name} = route.params;
   let navTo = null;
@@ -623,6 +625,94 @@ const TempScreen = ({route, navigation}) => {
                   backgroundColor="#009387"
                   onPress={() => {
                     navigation.navigate('Sâu hại');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+        </TempStack.Navigator>
+      );
+      break;
+    case 'Bệnh hại':
+      navTo = (
+        <TempStack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: '#009387',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          }}>
+          <TempStack.Screen
+            name="CheckQR"
+            component={DemoCheckScreenQR}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'CheckQR',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.reset({
+                      index: 0,
+                      routes: [{name: 'Home'}],
+                    });
+                    //navigation.navigate('CheckQR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Show Map"
+            component={ShowMap}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'Show Map',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('CheckQR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Bệnh hại"
+            component={BenhHaiScreen}
+            initialParams={{initialState: initialState, name: name}}
+            options={{
+              title: 'Bệnh hại',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    //navigation.goBack();
+                    navigation.navigate('CheckQR');
+                  }}></Icon.Button>
+              ),
+            }}
+          />
+          <TempStack.Screen
+            name="Xịt thuốc"
+            component={BookmarkScreen}
+            initialParams={{initialState: initialState}}
+            options={{
+              title: 'Hoàn tất ',
+              headerLeft: () => (
+                <Icon.Button
+                  name="chevron-back-outline"
+                  size={25}
+                  backgroundColor="#009387"
+                  onPress={() => {
+                    navigation.navigate('Chuẩn bị thuốc');
                   }}></Icon.Button>
               ),
             }}

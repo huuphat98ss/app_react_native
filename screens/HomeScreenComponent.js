@@ -57,7 +57,7 @@ const HomeScreenComponent = ({album, name, route, initialState}) => {
       animation="fadeInUpBig"
       style={{
         display:
-          name === 'Làm đất'
+          name === 'Làm đấts'
             ? 'none'
             : name === 'Quan sát hằng ngày'
             ? 'none'

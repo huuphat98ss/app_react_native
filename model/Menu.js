@@ -17,10 +17,10 @@ const Menu = [
   },
   {
     id: 3,
-    name: 'Làm đất',
+    name: 'Bệnh hại',
     album:
       'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605413659/menu/043-shovel_pffe3f.png',
-    route: 'SupportScreen',
+    route: 'TempScreen',
   },
   {
     id: 4,

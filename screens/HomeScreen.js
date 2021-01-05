@@ -78,7 +78,7 @@ class HomeScreen extends Component {
         ))}
       </HorizontalRow>
     ));
-    console.log('menus' + menus);
+    // console.log('menus' + menus);
     //
     if (this.props.loading) {
       return (
