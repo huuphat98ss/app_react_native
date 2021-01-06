@@ -238,7 +238,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
             </TouchableOpacity>
           </View>
           {imageArr[1] ? <OpenCam image={imageArr[1]} /> : null}
-          <View style={styles.action}>
+          {/* <View style={styles.action}>
             <Text
               style={{
                 flex: 1,
@@ -251,7 +251,7 @@ const RaybongxoaiScreen = ({navigation, route}) => {
             <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
               <Feather name="camera" color="green" size={20} />
             </TouchableOpacity>
-          </View>
+          </View> */}
         </View>
       );
       break;

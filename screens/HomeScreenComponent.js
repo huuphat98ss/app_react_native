@@ -57,22 +57,25 @@ const HomeScreenComponent = ({album, name, route, initialState}) => {
       animation="fadeInUpBig"
       style={{
         display:
-          name === 'Làm đấts'
+          name === 'Làm đất'
             ? 'none'
             : name === 'Quan sát hằng ngày'
             ? 'none'
             : 'flex',
       }}>
       <TouchableOpacity
-        onPress={() =>
-          navigation.navigate(route, {
-            initialState: initialState,
-            name: name,
-          })
-        }>
+        onPress={() => {
+          if (name !== 'chuacode') {
+            navigation.navigate(route, {
+              initialState: initialState,
+              name: name,
+            });
+          }
+        }}>
         <Container>
-          <AlbumArt source={{uri: album}}></AlbumArt>
-          <Name>{name}</Name>
+          <AlbumArt
+            source={{uri: name == 'chuacode' ? null : album}}></AlbumArt>
+          <Name>{name == 'chuacode' ? null : name}</Name>
         </Container>
       </TouchableOpacity>
     </Animatable.View>

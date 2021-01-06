@@ -173,6 +173,7 @@ const ViewDiary = ({navigation, route}) => {
             {label: 'Sâu hại', value: 'sauhai'},
             {label: 'Phun Thuốc', value: 'phunthuoc'},
             {label: 'Bao trái', value: 'Baotrai'},
+            {label: 'Bệnh hại', value: 'benhhai'},
           ]}
           value={selectedValue}
         />

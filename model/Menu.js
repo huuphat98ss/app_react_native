@@ -17,7 +17,7 @@ const Menu = [
   },
   {
     id: 3,
-    name: 'Bệnh hại',
+    name: 'Làm đất',
     album:
       'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605413659/menu/043-shovel_pffe3f.png',
     route: 'TempScreen',
@@ -115,6 +115,20 @@ const Menu = [
       'Thông tin':
         'Bao trái sẽ hạn chế được số lần phun thuốc hóa học từ 5 - 7 lần/vụ, giúp vỏ trái bóng đẹp, bán được giá cao, góp phần hạ giá thành sản phẩm, tăng lợi nhuận, giúp giảm ô nhiễm môi trường và không tồn dư thuốc BVTV trên trái.',
     },
+  },
+  {
+    id: 9,
+    name: 'Bệnh hại',
+    album:
+      'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605413659/menu/043-shovel_pffe3f.png',
+    route: 'TempScreen',
+  },
+  {
+    id: 10,
+    name: 'chuacode',
+    album:
+      'https://res.cloudinary.com/huy-thanh-nguyen/image/upload/v1605413659/menu/043-shovel_pffe3f.png',
+    route: '',
   },
 ];
 

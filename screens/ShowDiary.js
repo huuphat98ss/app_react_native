@@ -39,7 +39,7 @@ const ShowDiary = ({navigation, route}) => {
   console.log('data stay');
   // console.log(route.params.date);
   // console.log(moment(new Date()).format('MM/DD/YY'));
-  //const currentUser = useSelector((state) => state.authReducer.currentUser);
+  const currentUser = useSelector((state) => state.authReducer.currentUser);
   let ShowModalImage = (i) => {
     console.log(i);
     dataFile = null;
@@ -82,6 +82,141 @@ const ShowDiary = ({navigation, route}) => {
     if (data.work === 'sauhai') return 'Sâu Hại';
     if (data.work === 'Baotrai') return 'Bao trái';
     if (data.work === 'tuoinuoc') return 'Tưới nước';
+    if (data.work === 'benhhai') return 'Bệnh hại';
+  };
+  let ViewBenhHai = () => {
+    let views = data.preparation.map((e, i) => {
+      return (
+        <View
+          style={[
+            styles.action,
+            {flex: 1, flexDirection: 'column', justifyContent: 'space-between'},
+          ]}
+          key={i}>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              //justifyContent: 'space-between',
+            }}>
+            <Text
+              style={{
+                flex: 1,
+                color: '#090a0a',
+                fontSize: 14,
+              }}>
+              Tên thuốc: {e.thuoc}, loại: {e.loai}, số lượng: {e.soluong}, dung
+              tích: {e.dungtich} ml, lượng nước: {e.luongnuoc} lit
+            </Text>
+            <TouchableOpacity
+              // style={{flex: 1}}
+              onPress={() => {
+                ShowModalImage(i);
+              }}>
+              <Feather name="aperture" color="#01ab9d" size={20} />
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    });
+    let vitri = '';
+    if (data.node.length !== 0) {
+      vitri = data.node.map((e) => {
+        let stay = dataStayDiary.map((element, i) => {
+          return (
+            <View style={styles.action} key={i}>
+              <Text
+                style={{
+                  flex: 1,
+                  color: '#090a0a',
+                  fontSize: 14,
+                }}>
+                tại Lô {element.batch}, Thửa {element.stump}, hàng {e.row}, stt{' '}
+                {e.col}
+              </Text>
+            </View>
+          );
+        });
+        return stay;
+      });
+    } else {
+      vitri = dataStayDiary.map((element, i) => {
+        return (
+          <View style={styles.action} key={i}>
+            <Text
+              style={{
+                flex: 1,
+                color: '#090a0a',
+                fontSize: 14,
+              }}>
+              tại Lô {element.batch},
+              {element.stump === 'all'
+                ? ' các thửa trong lô' + element.batch
+                : 'Thửa ' + element.stump}
+              , áp dụng cho các cây trong thửa
+            </Text>
+          </View>
+        );
+      });
+    }
+
+    return (
+      <View>
+        <View
+          style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <Text
+            style={{
+              flex: 2,
+              color: '#01ab9d',
+              fontSize: 16,
+              paddingTop: 10,
+            }}>
+            Danh sách thuốc đã dùng
+          </Text>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              color: '#01ab9d',
+              fontSize: 16,
+              paddingTop: 10,
+            }}>
+            {/* <Feather name="edit-3" color="#01ab9d" size={20} /> */}
+          </TouchableOpacity>
+        </View>
+        {views}
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'column',
+            justifyContent: 'center',
+            padding: 10,
+          }}>
+          {ShowImages}
+        </View>
+        <View
+          style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-start'}}>
+          <Text
+            style={{
+              flex: 1,
+              color: '#01ab9d',
+              fontSize: 16,
+              paddingTop: 10,
+            }}>
+            Vị trí thực hành
+          </Text>
+          <TouchableOpacity
+            style={{
+              flex: 1,
+              color: '#01ab9d',
+              fontSize: 16,
+              paddingTop: 10,
+            }}>
+            {/* <Feather name="edit-3" color="#01ab9d" size={20} /> */}
+          </TouchableOpacity>
+        </View>
+        <ScrollView style={{height: 200}}>{vitri}</ScrollView>
+      </View>
+    );
   };
   let ViewPhunThuoc = () => {
     let views = data.preparation.map((e, i) => {
@@ -179,7 +314,7 @@ const ShowDiary = ({navigation, route}) => {
               fontSize: 16,
               paddingTop: 10,
             }}>
-            <Feather name="edit-3" color="#01ab9d" size={20} />
+            {/* <Feather name="edit-3" color="#01ab9d" size={20} /> */}
           </TouchableOpacity>
         </View>
         {views}
@@ -210,7 +345,7 @@ const ShowDiary = ({navigation, route}) => {
               fontSize: 16,
               paddingTop: 10,
             }}>
-            <Feather name="edit-3" color="#01ab9d" size={20} />
+            {/* <Feather name="edit-3" color="#01ab9d" size={20} /> */}
           </TouchableOpacity>
         </View>
         <ScrollView style={{height: 200}}>{vitri}</ScrollView>
@@ -729,7 +864,7 @@ const ShowDiary = ({navigation, route}) => {
           Xem nhật ký : {route.params.date}{' '}
         </Text>
         <Text style={[styles.text_header, {fontSize: 16, color: '#cf7a13'}]}>
-          Nông dân:
+          Nông dân: {currentUser.data.username}
         </Text>
       </View>
       <ScrollView>
@@ -764,6 +899,8 @@ const ShowDiary = ({navigation, route}) => {
             ? ViewTuoiNuoc()
             : data.work === 'sauhai'
             ? ViewSauHai()
+            : data.work === 'benhhai'
+            ? ViewBenhHai()
             : null}
           <View
             style={[

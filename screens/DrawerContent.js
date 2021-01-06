@@ -106,6 +106,7 @@ export function DrawerContent(props) {
                 let data = {
                   date: dateReal,
                   idfarmer: currentUser.data._id,
+                  //username: currentUser.data.username,
                 };
                 dispatch(actionDiary.showDiary(data));
 
