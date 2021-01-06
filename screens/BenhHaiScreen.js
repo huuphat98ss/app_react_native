@@ -687,6 +687,7 @@ const BenhHaiScreen = ({navigation, route}) => {
                   flexDirection: 'row',
                   alignItems: 'flex-start',
                   padding: 10,
+                  display: selectedValue === '' ? 'none' : 'flex',
                 }}>
                 <Text>Xem cách phòng và trị bệnh</Text>
                 <TouchableOpacity
@@ -695,129 +696,138 @@ const BenhHaiScreen = ({navigation, route}) => {
                   <Feather name="plus-circle" color="black" size={20} />
                 </TouchableOpacity>
               </View>
-              <Text style={styles.text_footer}>Nhập thuốc đã dùng</Text>
-              {thuocArray}
-              <View style={styles.action}>
-                <TouchableOpacity
-                  onPress={() =>
-                    handleloaithuocArray((dataArr) => [
-                      ...dataArr,
-                      {
-                        thuoc: '',
-                        loai: 0,
-                        soluong: 0,
-                        dungtich: 0,
-                        luongnuoc: 0,
-                      },
-                    ])
-                  }>
-                  <Feather
-                    name="plus-circle"
-                    color="green"
-                    size={30}
-                    style={{alignSelf: 'center'}}
-                  />
-                </TouchableOpacity>
-                {loaithuocArray.length > 1 ? (
+              <View style={{display: selectedValue === '' ? 'none' : 'flex'}}>
+                <Text style={styles.text_footer}>Nhập thuốc đã dùng</Text>
+                {thuocArray}
+                <View style={styles.action}>
                   <TouchableOpacity
-                    onPress={() => {
-                      loaithuocArray.pop(),
-                        handleloaithuocArray((dataArr) => [...dataArr]);
-                    }}>
+                    onPress={() =>
+                      handleloaithuocArray((dataArr) => [
+                        ...dataArr,
+                        {
+                          thuoc: '',
+                          loai: 0,
+                          soluong: 0,
+                          dungtich: 0,
+                          luongnuoc: 0,
+                        },
+                      ])
+                    }>
                     <Feather
-                      name="minus-circle"
+                      name="plus-circle"
                       color="green"
                       size={30}
                       style={{alignSelf: 'center'}}
                     />
                   </TouchableOpacity>
-                ) : (
-                  <Feather
-                    name="minus-circle"
-                    color="gray"
-                    size={30}
-                    style={{alignSelf: 'center'}}
-                  />
-                )}
-              </View>
-              {/* <Temp /> */}
-              <View style={styles.button}>
-                <TouchableOpacity
-                  onPress={
-                    () =>
-                      //navigation.navigate('BookmarkScreen')
-                      {
-                        //console.log(route.params);
-                        // console.log(dataSendServer);
-                        //let dataSendServer = {
-                        // dataSendServer.cachtri = route.params.cachtri;
-                        // };
-                        // let dataSendServer = dataSendServer
-                        let postDataServer = {
-                          work: 'benhhai',
-                          title: route.params.title,
-                          //ten banh hại
-                          isFarmer: currentUser.data._id,
-                          Disease: {
-                            name: setNameBenh(selectedValue),
-                            cachtri: PhongbenhValue(),
-                          },
-                          // de y khuc nay'
-                          deTailVal: loaithuocArray,
-                          imageData: imageSend,
-                        };
-                        console.log(postDataServer);
-                        switch (route.params.title) {
-                          case 'allbatch':
-                            dispatch(actions.pushDiaryToServer(postDataServer));
-                            //dispatch(actions.pushDiaryToServer(imageSend));
-                            break;
-                          case 'allStumpinBatch':
-                            postDataServer.isBatch = route.params.idBatch;
-                            console.log(route.params.idBatch);
-                            dispatch(actions.pushDiaryToServer(postDataServer));
-                            break;
-                          case 'Stumps':
-                            postDataServer.arrayStumps =
-                              route.params.arrayStumps;
-                            postDataServer.isBatch = route.params.idBatch;
-                            dispatch(actions.pushDiaryToServer(postDataServer));
-                            break;
-                          case 'detailStump':
-                            postDataServer.arrayChecked =
-                              route.params.arrayChecked;
-                            postDataServer.isBatch = route.params.idBatch;
-                            postDataServer.isStump = route.params.isStump;
-                            dispatch(actions.pushDiaryToServer(postDataServer));
-                            break;
-                          default:
-                            break;
-                        }
-                        // navigation.navigate('Home');
-                        navigation.reset({
-                          index: 0,
-                          routes: [{name: 'Home'}],
-                        });
-                      }
-                    // alert(typeThuoc)
-                  }
-                  style={styles.xitthuoc}>
-                  <LinearGradient
-                    colors={['#08d4c4', '#01ab9d']}
-                    style={styles.xitthuoc}>
-                    <Text
-                      style={[
-                        styles.textSign,
+                  {loaithuocArray.length > 1 ? (
+                    <TouchableOpacity
+                      onPress={() => {
+                        loaithuocArray.pop(),
+                          handleloaithuocArray((dataArr) => [...dataArr]);
+                      }}>
+                      <Feather
+                        name="minus-circle"
+                        color="green"
+                        size={30}
+                        style={{alignSelf: 'center'}}
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <Feather
+                      name="minus-circle"
+                      color="gray"
+                      size={30}
+                      style={{alignSelf: 'center'}}
+                    />
+                  )}
+                </View>
+                {/* <Temp /> */}
+                <View style={styles.button}>
+                  <TouchableOpacity
+                    onPress={
+                      () =>
+                        //navigation.navigate('BookmarkScreen')
                         {
-                          color: '#fff',
-                        },
-                      ]}>
-                      Hoàn tất nhật ký
-                    </Text>
-                  </LinearGradient>
-                </TouchableOpacity>
+                          //console.log(route.params);
+                          // console.log(dataSendServer);
+                          //let dataSendServer = {
+                          // dataSendServer.cachtri = route.params.cachtri;
+                          // };
+                          // let dataSendServer = dataSendServer
+                          let postDataServer = {
+                            work: 'benhhai',
+                            title: route.params.title,
+                            //ten banh hại
+                            isFarmer: currentUser.data._id,
+                            Disease: {
+                              name: setNameBenh(selectedValue),
+                              theCure: PhongbenhValue(),
+                            },
+                            // de y khuc nay'
+                            deTailVal: loaithuocArray,
+                            imageData: imageSend,
+                          };
+                          console.log(postDataServer);
+                          switch (route.params.title) {
+                            case 'allbatch':
+                              dispatch(
+                                actions.pushDiaryToServer(postDataServer),
+                              );
+                              //dispatch(actions.pushDiaryToServer(imageSend));
+                              break;
+                            case 'allStumpinBatch':
+                              postDataServer.isBatch = route.params.idBatch;
+                              console.log(route.params.idBatch);
+                              dispatch(
+                                actions.pushDiaryToServer(postDataServer),
+                              );
+                              break;
+                            case 'Stumps':
+                              postDataServer.arrayStumps =
+                                route.params.arrayStumps;
+                              postDataServer.isBatch = route.params.idBatch;
+                              dispatch(
+                                actions.pushDiaryToServer(postDataServer),
+                              );
+                              break;
+                            case 'detailStump':
+                              postDataServer.arrayChecked =
+                                route.params.arrayChecked;
+                              postDataServer.isBatch = route.params.idBatch;
+                              postDataServer.isStump = route.params.isStump;
+                              dispatch(
+                                actions.pushDiaryToServer(postDataServer),
+                              );
+                              break;
+                            default:
+                              break;
+                          }
+                          // navigation.navigate('Home');
+                          navigation.reset({
+                            index: 0,
+                            routes: [{name: 'Home'}],
+                          });
+                        }
+                      // alert(typeThuoc)
+                    }
+                    style={styles.xitthuoc}>
+                    <LinearGradient
+                      colors={['#08d4c4', '#01ab9d']}
+                      style={styles.xitthuoc}>
+                      <Text
+                        style={[
+                          styles.textSign,
+                          {
+                            color: '#fff',
+                          },
+                        ]}>
+                        Hoàn tất nhật ký
+                      </Text>
+                    </LinearGradient>
+                  </TouchableOpacity>
+                </View>
               </View>
-
               <Modal
                 isVisible={isModalVisible}
                 style={{

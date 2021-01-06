@@ -273,7 +273,7 @@ const BotriScreen = ({navigation, route}) => {
               onPress={() => {
                 imageArr.length === 3
                   ? navigation.navigate('Phun thuốc sâu', {
-                      cachtri: cachtri[0],
+                      cachtri: cachtri[0] + ',' + cachtri[2],
                       loaisau: loaisau,
                       title: route.params.title,
                       idBatch: route.params.idBatch,
