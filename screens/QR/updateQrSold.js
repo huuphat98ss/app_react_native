@@ -50,6 +50,7 @@ class UpdateQrSold extends Component {
   };
   sendDataUpdateToServer = () => {
     data = this.state.dataSendServer;
+    console.log(data);
     if (data.length === 0) return;
     fetch(`http://${localhost}:3456/updateqrsold`, {
       method: 'POST',

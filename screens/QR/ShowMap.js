@@ -42,18 +42,24 @@ const ShowMap = ({navigation, route}) => {
       }
     }
     dataArray.push(tempArray);
-    dataArray.unshift([
-      'H1',
-      'H2',
-      'H3',
-      'H4',
-      'H5',
-      'H6',
-      'H7',
-      'H8',
-      'H9',
-      'H10',
-    ]);
+    let dataH = [];
+    for (let i = 1; i <= dataMap.row; i++) {
+      let dataIndex = 'H' + i;
+      dataH.push(dataIndex);
+    }
+    dataArray.unshift(dataH);
+    // dataArray.unshift([
+    //   'H1',
+    //   'H2',
+    //   'H3',
+    //   'H4',
+    //   'H5',
+    //   'H6',
+    //   'H7',
+    //   'H8',
+    //   'H9',
+    //   'H10',
+    // ]);
     return dataArray;
   });
   //const [chooseBy, handleChoose] = useState(0);

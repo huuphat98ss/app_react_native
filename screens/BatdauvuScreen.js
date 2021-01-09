@@ -647,7 +647,7 @@ const BatdauvuScreen = ({navigation, route}) => {
                         color: '#fff',
                       },
                     ]}>
-                    Hoàn tất nhật ký
+                    Bắc đầu vụ mới
                   </Text>
                 </LinearGradient>
               </TouchableOpacity>
