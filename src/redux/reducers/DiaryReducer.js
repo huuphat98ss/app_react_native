@@ -6,6 +6,7 @@ const initialState = {
   dataStayDiary: [],
   idDiaryDeleted: '',
   dataProfile: '',
+  dataScanQrdiary: null,
 };
 
 const dataViewDiary = (state, action) => {
@@ -32,6 +33,12 @@ const dataProfile = (state, action) => {
     dataProfile: action.dataProfile,
   });
 };
+const dataScanQr = (state, action) => {
+  // console.log(action.data);
+  return updateObject(state, {
+    dataScanQrdiary: action.dataScanQrdiary,
+  });
+};
 const diaryReducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.DATA_PROFILE:
@@ -42,6 +49,8 @@ const diaryReducer = (state = initialState, action) => {
       return dataStayDiary(state, action);
     case actionTypes.DATA_ID_DELETE_DIAR:
       return idDiaryDelete(state, action);
+    case actionTypes.DATA_QR_DIARY:
+      return dataScanQr(state, action);
     default:
       return state;
   }

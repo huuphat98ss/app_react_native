@@ -267,3 +267,26 @@ export const updateSeasonEnd = (data) => {
       });
   };
 };
+
+export const dataScanQr = (dataBatch) => ({
+  type: actionTypes.DATA_QR_DIARY,
+  dataScanQrdiary: dataBatch,
+});
+export const GetStay = (lo, thua) => {
+  console.log(lo + ' + ' + thua);
+  return (dispatch) => {
+    fetch(`http://${localhost}:3456/getdatastay/${lo}`)
+      .then((response) => response.json())
+      .then((data) => {
+        //console.log('map get');
+        console.log('batch say');
+        // console.log(data);
+        let datais = {
+          batch: data.dataBatch.numberbatch,
+          stump: thua,
+        };
+        // console.log(datais);
+        dispatch(dataScanQr(datais));
+      });
+  };
+};

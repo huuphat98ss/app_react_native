@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Text, Button, StyleSheet, StatusBar} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {createStackNavigator} from '@react-navigation/stack';
@@ -27,7 +27,20 @@ import ProfileScreen from './ProfileScreen';
 import BenhHaiScreen from './BenhHaiScreen';
 import CheckQrForBenh from './QR/CheckQrForBenh';
 import ShowMapForBenh from './QR/ShowMapForBenh';
+import * as actions from '../src/redux/actions/diary';
+import {useDispatch} from 'react-redux';
+import {useSelector} from 'react-redux';
 const TempScreen = ({route, navigation}) => {
+  // const dataQrDiary = useSelector(
+  //   (state) => state.diaryReducer.dataScanQrdiary,
+  // );
+  /// const dispatch = useDispatch();
+  // useEffect(() => {
+  //   console.log(dataQrDiary);
+  //   if (dataQrDiary !== null) {
+  //     dispatch(actions.dataScanQr(null));
+  //   }
+  // });
   const {initialState, name} = route.params;
   let navTo = null;
   switch (name) {

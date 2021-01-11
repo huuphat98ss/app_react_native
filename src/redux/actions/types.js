@@ -12,4 +12,5 @@ export const DATA_PROFILE = 'DATA_PROFILE';
 export const DATA_CHECK_NOTIFI = 'DATA_CHECK_NOTIFI';
 export const DATA_SEASON = 'DATA_SEASON';
 export const ID_DATA_SEASON = 'ID_DATA_SEASON';
-export const LOCALHOST = '192.168.1.6';
+export const DATA_QR_DIARY = 'DATA_QR_DIARY';
+export const LOCALHOST = '192.168.1.2';

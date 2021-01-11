@@ -19,8 +19,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {useSelector} from 'react-redux';
-
+import * as actions from '../../src/redux/actions/diary';
+import {useDispatch} from 'react-redux';
 const DemoCheckScreenQR = ({navigation, route}) => {
+  const dispatch = useDispatch();
   const arrayMapFarmer = useSelector((state) => state.authReducer.arrayMap);
 
   const currentUser = useSelector((state) => state.authReducer.currentUser);
@@ -32,6 +34,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
   const [arrayStumps, handleStump] = useState([]);
   // getdataStumps
   const [getarrayStump, getStump] = useState([]);
+  const [Stopscant, setStopcant] = useState(false);
   console.log('open checkQR diary ');
   console.log(route.params);
   function ifScaned(e) {
@@ -40,6 +43,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
     let arrayString = e.data.split('.');
     console.log(arrayString);
     handleMap(arrayString);
+    dispatch(actions.GetStay(arrayString[1], arrayString[2]));
     if (arrayString[0] !== currentUser.data._id) {
       alert('QR ko dung');
       return;
@@ -63,6 +67,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
     <View key={index} style={styles.button}>
       <TouchableOpacity
         onPress={() => {
+          //  setStopcant(true);
           // if (index === 3) {
           //   handleData(0);
           //   navigation.navigate('Show Map');
@@ -228,6 +233,11 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       </View>
     </Modal>
   );
+  const dataQrDiary = useSelector(
+    (state) => state.diaryReducer.dataScanQrdiary,
+  );
+  console.log('tai scaner');
+  console.log(dataQrDiary);
   return (
     <View style={styles.container}>
       <StatusBar backgroundColor="#009387" barStyle="light-content" />
@@ -239,6 +249,7 @@ const DemoCheckScreenQR = ({navigation, route}) => {
               backgroundColor: '#0a0a0a',
               justifyContent: 'center',
               alignItems: 'center',
+              //display: Stopscant ? 'none' : 'flex',
             }}
             onRead={ifScaned}
             reactivate={true} // first time true
@@ -252,7 +263,22 @@ const DemoCheckScreenQR = ({navigation, route}) => {
       {dataScan !== 0 ? (
         <Animatable.View style={styles.footer} animation="fadeInUpBig">
           <Animatable.View animation="fadeInLeft" style={{height: 300}}>
-            <View>{/* <Text>Thông tin thửa check</Text> */}</View>
+            <View>
+              <Text
+                style={{
+                  display: dataQrDiary === null ? 'none' : 'flex',
+                  fontSize: 25,
+                  alignContent: 'center',
+                  paddingLeft: 12,
+                }}>
+                {dataQrDiary !== null
+                  ? 'Qr Thửa số ' +
+                    dataQrDiary.stump +
+                    ` của Lô số ` +
+                    dataQrDiary.batch
+                  : null}
+              </Text>
+            </View>
             <ScrollView>{applyArrayRender}</ScrollView>
           </Animatable.View>
         </Animatable.View>
@@ -279,7 +305,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footer: {
-    flex: 2,
+    flex: 3,
     backgroundColor: '#fff',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
